@@ -38,5 +38,15 @@
     "before": "No models configured yet. Please go to",
     "link": "Settings Center",
     "after": "to configure models, or customize them in project settings after creation."
-  }
+  },
+  "novelFile": "Novel File",
+  "optional": "optional",
+  "dragDropFile": "Drag and drop file here, or",
+  "browse": "browse",
+  "supportedFormats": "Supports .txt, .md formats, max 5MB",
+  "invalidFileType": "Unsupported file type. Please upload a .txt or .md file",
+  "fileTooLarge": "File too large. Please upload a file under 5MB",
+  "fileReadError": "Failed to read file. Please try again",
+  "novelWillBeSplit": "Novel has {chars} characters. Will be auto-split into episodes after creation",
+  "createProjectWithNovel": "Create Project with Novel"
 }

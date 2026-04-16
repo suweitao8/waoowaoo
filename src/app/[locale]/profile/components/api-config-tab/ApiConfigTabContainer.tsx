@@ -145,11 +145,13 @@ export function ApiConfigTabContainer() {
     baseUrl: string
     apiKey: string
     apiType: CustomProviderType
+    llmModel: string
   }>({
     name: '',
     baseUrl: '',
     apiKey: '',
     apiType: 'gemini-compatible',
+    llmModel: '',
   })
   const [testStatus, setTestStatus] = useState<TestStatus>('idle')
   const [testSteps, setTestSteps] = useState<TestStep[]>([])
@@ -171,7 +173,7 @@ export function ApiConfigTabContainer() {
       apiMode: newGeminiProvider.apiType === 'openai-compatible' ? 'openai-official' : 'gemini-sdk',
     })
 
-    setNewGeminiProvider({ name: '', baseUrl: '', apiKey: '', apiType: 'gemini-compatible' })
+    setNewGeminiProvider({ name: '', baseUrl: '', apiKey: '', apiType: 'gemini-compatible', llmModel: '' })
     setTestStatus('idle')
     setTestSteps([])
     setShowAddGeminiProvider(false)
@@ -194,6 +196,7 @@ export function ApiConfigTabContainer() {
           apiType: newGeminiProvider.apiType,
           baseUrl: newGeminiProvider.baseUrl.trim(),
           apiKey: newGeminiProvider.apiKey.trim(),
+          llmModel: newGeminiProvider.llmModel.trim() || undefined,
         }),
       })
 
@@ -219,7 +222,7 @@ export function ApiConfigTabContainer() {
   }, [doAddProvider])
 
   const handleCancelAddGeminiProvider = () => {
-    setNewGeminiProvider({ name: '', baseUrl: '', apiKey: '', apiType: 'gemini-compatible' })
+    setNewGeminiProvider({ name: '', baseUrl: '', apiKey: '', apiType: 'gemini-compatible', llmModel: '' })
     setTestStatus('idle')
     setTestSteps([])
     setShowAddGeminiProvider(false)
@@ -434,6 +437,28 @@ export function ApiConfigTabContainer() {
               placeholder={t('apiKeyLabel')}
               className="glass-input-base w-full px-3 py-2.5 text-sm"
             />
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-[var(--glass-text-primary)]">
+              {t('llmModelLabel')} ({t('llmModelOptional')})
+            </label>
+            <input
+              type="text"
+              value={newGeminiProvider.llmModel}
+              onChange={(event) =>
+                setNewGeminiProvider({
+                  ...newGeminiProvider,
+                  llmModel: event.target.value,
+                })
+              }
+              disabled={testStatus === 'testing'}
+              placeholder={t('llmModelPlaceholder')}
+              className="glass-input-base w-full px-3 py-2.5 text-sm font-mono"
+            />
+            <p className="mt-1 text-[11px] text-[var(--glass-text-tertiary)]">
+              {t('llmModelHint')}
+            </p>
           </div>
 
           {/* Test Results */}

@@ -9,7 +9,6 @@ import { useTranslations } from 'next-intl'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import '@/styles/animations.css'
 import AiWriteModal from '@/components/home/AiWriteModal'
-import LongTextDetectionPrompt from '@/components/story-input/LongTextDetectionPrompt'
 import StoryInputComposer from '@/components/story-input/StoryInputComposer'
 import { ART_STYLES, VIDEO_RATIOS } from '@/lib/constants'
 import TaskStatusInline from '@/components/task/TaskStatusInline'
@@ -20,11 +19,6 @@ import { PROJECT_STORY_INPUT_MIN_ROWS } from '@/lib/ui/textarea-height'
 import { apiFetch } from '@/lib/api-fetch'
 import { expandHomeStory } from '@/lib/home/ai-story-expand'
 
-/** 触发智能分集建议的字数阈值 */
-const LONG_TEXT_THRESHOLD = 1000
-
-
-
 interface NovelInputStageProps {
   // 核心数据
   novelText: string
@@ -33,8 +27,6 @@ interface NovelInputStageProps {
   // 回调函数
   onNovelTextChange: (value: string) => void
   onNext: () => void
-  /** 触发智能分集流程（携带当前文本） */
-  onSmartSplit?: (text: string) => void
   // 状态
   isSubmittingTask?: boolean
   isSwitchingStage?: boolean
@@ -53,13 +45,12 @@ export default function NovelInputStage({
   episodeName,
   onNovelTextChange,
   onNext,
-  onSmartSplit,
   isSubmittingTask = false,
   isSwitchingStage = false,
   enableNarration = false,
   onEnableNarrationChange,
-  videoRatio = '9:16',
-  artStyle = 'american-comic',
+  videoRatio = '16:9',
+  artStyle = 'realistic',
   onVideoRatioChange,
   onArtStyleChange
 }: NovelInputStageProps) {
@@ -95,17 +86,11 @@ export default function NovelInputStage({
   }
 
   const hasContent = localText.trim().length > 0
-  const [showLongTextPrompt, setShowLongTextPrompt] = useState(false)
 
-  /** 点击"开始创作"时，先检测文本长度 */
+  /** 点击"开始创作"时，直接进入创作流程 */
   const handleStartClick = useCallback(() => {
-    const textLength = localText.trim().length
-    if (textLength > LONG_TEXT_THRESHOLD && onSmartSplit) {
-      setShowLongTextPrompt(true)
-    } else {
-      onNext()
-    }
-  }, [localText, onNext, onSmartSplit])
+    onNext()
+  }, [onNext])
 
   const handleAiWriteStart = useCallback(async (prompt: string) => {
     if (aiWriteLoading) return
@@ -285,30 +270,6 @@ export default function NovelInputStage({
           </div>
         </div>
       )}
-
-      <LongTextDetectionPrompt
-        open={showLongTextPrompt}
-        copy={{
-          title: t('storyInput.longTextDetection.title'),
-          description: t('storyInput.longTextDetection.description', {
-            count: localText.trim().length.toLocaleString(),
-          }),
-          strongRecommend: t('storyInput.longTextDetection.strongRecommend'),
-          smartSplitLabel: t('storyInput.longTextDetection.smartSplit'),
-          smartSplitBadge: t('storyInput.longTextDetection.smartSplitRecommend'),
-          continueLabel: t('storyInput.longTextDetection.continueAnyway'),
-          continueHint: t('storyInput.longTextDetection.singleEpisodeWarning'),
-        }}
-        onClose={() => setShowLongTextPrompt(false)}
-        onSmartSplit={() => {
-          setShowLongTextPrompt(false)
-          onSmartSplit?.(localText)
-        }}
-        onContinue={() => {
-          setShowLongTextPrompt(false)
-          onNext()
-        }}
-      />
     </div>
   )
 }

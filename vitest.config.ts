@@ -27,6 +27,9 @@ export default defineConfig({
     include: ['**/*.test.ts'],
     testTimeout: 30_000,
     hookTimeout: 60_000,
+    deps: {
+      interopDefault: true,
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'json-summary'],

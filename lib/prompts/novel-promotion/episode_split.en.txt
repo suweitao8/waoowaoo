@@ -1,41 +1,82 @@
-You are a long-text episode splitter.
-Analyze the full text and split it into balanced episodes.
+You are a professional content analysis assistant. Analyze the text and split it into episodes based on chapter structure.
+
+## ⚠️ Core Rule: Prioritize Chapter-Based Splitting
+
+**Identify chapter boundaries first, each chapter becomes one episode!**
+
+### 📊 Step 1: Identify Chapter Structure
+
+1. **Scan for chapter markers**:
+   - Chinese format: 「第X章」「第一章」「第1章」「第X节」
+   - English format: 「Chapter X」「Episode X」
+   - Numeric format: Paragraphs starting with 「1.」「2.」「1、」「2、」
+
+2. **Count chapters**: Identify all chapter boundaries and count total chapters
+
+3. **Validate chapter length**:
+   - Ideal range: 1500-3000 words per chapter
+   - If a chapter exceeds 4000 words, consider splitting into two episodes
+   - If a chapter is under 500 words, consider merging with adjacent chapter
+
+### 📐 Step 2: Split by Chapters
+
+✅ **Prioritize**:
+- Each chapter becomes an independent episode (unless too short and needs merging)
+- Preserve complete chapter titles
+- Title format: 「第X章 Chapter Name」→ Extract as episode title
+
+❌ **Avoid**:
+- Forcing splits within chapters
+- Ignoring chapter boundaries for mechanical word-count splitting
+
+### 🎬 Step 3: Fine-tune Split Points
+
+1. **Chapter boundaries first**: Split at chapter titles
+2. **Extra-long chapters**: Split at scene changes or time jumps if over 4000 words
+3. **Short chapters**: Merge with next chapter if under 500 words
 
 Input text:
 {CONTENT}
 
-Core rules:
-1. Keep episode lengths as balanced as possible.
-2. Prefer natural breakpoints (chapter boundary, scene shift, time jump).
-3. Keep chronology and full coverage (no overlap, no missing text).
-4. Provide reliable startMarker and endMarker copied from source text.
-5. Return JSON only.
-6. ⚠️ JSON SAFETY: All quotation marks in text (""''「」 etc.) MUST be converted to corner brackets「」in JSON string values. NEVER use raw ASCII double quotes " inside string values.
+### 📝 Output format:
 
-Output format:
+```json
 {
   "analysis": {
-    "totalWords": 0,
-    "episodeCount": 0,
-    "targetWordsPerEpisode": 0,
-    "allowedRange": "0-0"
+    "totalWords": 25000,
+    "chapterCount": 10,
+    "episodeCount": 10,
+    "avgWordsPerEpisode": 2500
   },
   "episodes": [
     {
       "number": 1,
-      "title": "Episode title",
-      "summary": "Short summary",
-      "estimatedWords": 0,
-      "startMarker": "exact start marker",
-      "endMarker": "exact end marker",
+      "title": "Chapter title (without 第X章 prefix)",
+      "summary": "Brief summary within 50 words",
+      "estimatedWords": 2500,
+      "startMarker": "First 30 characters of this episode (must include chapter title, exact copy from source)",
+      "endMarker": "Last 30 characters of this episode (exact copy from source)",
       "startIndex": 0,
-      "endIndex": 0
+      "endIndex": 2500
     }
   ],
   "validation": {
-    "maxWords": 0,
-    "minWords": 0,
-    "variance": 0,
+    "maxWords": 3200,
+    "minWords": 1800,
     "isBalanced": true
   }
 }
+```
+
+### ⚠️ Final Validation Checklist (Check before output)
+
+1. ☐ episodes.length equals identified chapter count (or adjusted count)
+2. ☐ Each episode contains a complete chapter title
+3. ☐ No episode exceeds 5000 words (split extra-long chapters)
+4. ☐ Previous episode's endMarker is adjacent to next episode's startMarker, no content missing
+5. ☐ endMarker does not contain any content from the next episode
+6. ☐ All chapters are assigned to corresponding episodes
+
+**If validation fails, adjust split points until it passes!**
+
+⚠️ JSON SAFETY: All quotation marks in text (""''「」 etc.) MUST be converted to corner brackets「」in JSON string values. NEVER use raw ASCII double quotes " inside string values. Return JSON only, no markdown code blocks.

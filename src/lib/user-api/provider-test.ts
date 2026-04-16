@@ -309,27 +309,29 @@ async function testCompatibleProvider(baseUrl: string, apiKey: string, llmModel?
     return { success: true, steps }
   }
 
+  // 如果提供了 LLM 模型名称，尝试实际的 LLM 调用作为 fallback
+  // 这对于不支持 /models 或 /credits 端点但支持 chat completions 的提供商很有用
+  const fallbackModel = typeof llmModel === 'string' ? llmModel.trim() : ''
+  if (fallbackModel) {
+    const llmStep = await runCompatibleLlmFallback(baseUrl, apiKey, fallbackModel)
+    steps.push(llmStep)
+    return {
+      success: llmStep.status === 'pass',
+      steps,
+    }
+  }
+
   const allUnsupported = modelProbe.outcome === 'unsupported' && creditProbe.outcome === 'unsupported'
   if (!allUnsupported) {
     return { success: false, steps }
   }
 
-  const fallbackModel = typeof llmModel === 'string' ? llmModel.trim() : ''
-  if (!fallbackModel) {
-    steps.push({
-      name: 'textGen',
-      status: 'fail',
-      message: 'No free probe endpoint detected. Please configure an LLM model first, then retry / 未发现可用的免费探测接口，请先配置 LLM 模型后再测试',
-    })
-    return { success: false, steps }
-  }
-
-  const llmStep = await runCompatibleLlmFallback(baseUrl, apiKey, fallbackModel)
-  steps.push(llmStep)
-  return {
-    success: llmStep.status === 'pass',
-    steps,
-  }
+  steps.push({
+    name: 'textGen',
+    status: 'fail',
+    message: 'No free probe endpoint detected. Please configure an LLM model first, then retry / 未发现可用的免费探测接口，请先配置 LLM 模型后再测试',
+  })
+  return { success: false, steps }
 }
 
 // ---------------------------------------------------------------------------

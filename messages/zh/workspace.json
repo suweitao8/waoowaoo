@@ -38,5 +38,15 @@
     "before": "检测到尚未配置模型，请先前往",
     "link": "设置中心",
     "after": "配置模型，或在创建项目后于项目配置中自定义。"
-  }
+  },
+  "novelFile": "小说文件",
+  "optional": "可选",
+  "dragDropFile": "拖放文件到此处，或",
+  "browse": "点击选择",
+  "supportedFormats": "支持 .txt, .md 格式，最大 5MB",
+  "invalidFileType": "不支持的文件类型，请上传 .txt 或 .md 文件",
+  "fileTooLarge": "文件过大，请上传 5MB 以内的文件",
+  "fileReadError": "读取文件失败，请重试",
+  "novelWillBeSplit": "小说共 {chars} 字，创建后将自动智能分集",
+  "createProjectWithNovel": "创建项目并导入小说"
 }

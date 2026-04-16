@@ -42,6 +42,106 @@ interface Pagination {
 const PAGE_SIZE = 7 // 加上新建项目按钮正好8个，4列布局下2行
 const DEFAULT_BILLING_CURRENCY = 'CNY'
 
+/**
+ * 章节拆分接口
+ */
+interface ChapterSplit {
+  title: string        // 完整标题：第X章 章节名
+  chapterNumber: string // 章节号：第X章
+  chapterName: string   // 章节名：章节名（不含第X章）
+  content: string
+  startIndex: number
+  endIndex: number
+}
+
+/**
+ * 使用正则表达式按章节标题拆分小说内容
+ * 支持：第X章、第一章、第1章 等格式
+ */
+function splitNovelByChapters(content: string): ChapterSplit[] {
+  // 匹配章节标题：第X章 或 第X章 章节名（X可以是中文数字或阿拉伯数字）
+  const chapterRegex = /(?:^|\n)(第[一二三四五六七八九十百千万\d]+章[^\n]*)/g
+
+  const chapters: ChapterSplit[] = []
+  let match
+
+  // 找到所有章节标题的位置
+  const matches: { title: string; index: number }[] = []
+  while ((match = chapterRegex.exec(content)) !== null) {
+    const title = match[1].trim()
+    // 确保标题长度合理（过滤掉可能的误匹配）
+    if (title.length <= 50) {
+      matches.push({ title, index: match.index + (match[0].length - match[1].length) })
+    }
+  }
+
+  // 如果没有找到章节，返回整个内容作为一章
+  if (matches.length === 0) {
+    const trimmedContent = content.trim()
+    if (trimmedContent.length > 0) {
+      return [{
+        title: '第一章',
+        chapterNumber: '第一章',
+        chapterName: '',
+        content: '\t' + trimmedContent,
+        startIndex: 0,
+        endIndex: trimmedContent.length
+      }]
+    }
+    return []
+  }
+
+  // 按章节分割内容
+  for (let i = 0; i < matches.length; i++) {
+    const current = matches[i]
+    const next = matches[i + 1]
+
+    // 如果是第一个匹配，检查前面是否有内容（序章）
+    if (i === 0 && current.index > 0) {
+      const prologueContent = content.substring(0, current.index).trim()
+      if (prologueContent.length > 100) {
+        chapters.push({
+          title: '序章',
+          chapterNumber: '序章',
+          chapterName: '',
+          content: '\t' + prologueContent,
+          startIndex: 0,
+          endIndex: current.index
+        })
+      }
+    }
+
+    // 提取章节内容
+    const endIndex = next ? next.index : content.length
+    const rawContent = content.substring(current.index, endIndex)
+
+    // 只有内容足够长才添加（避免空章节）
+    if (rawContent.trim().length > 50) {
+      // 提取章节号和章节名
+      const titleMatch = current.title.match(/(第[一二三四五六七八九十百千万\d]+章)\s*(.*)/)
+      const chapterNumber = titleMatch ? titleMatch[1] : '第一章'
+      const chapterName = titleMatch && titleMatch[2] ? titleMatch[2].trim() : ''
+
+      // 从内容中移除章节标题行（第一行）
+      const contentWithoutTitle = rawContent.replace(/^[^\n]*\n/, '').trim()
+
+      // 给正文第一行加tab缩进
+      const contentWithIndent = '\t' + contentWithoutTitle
+
+      chapters.push({
+        title: chapterName ? `${chapterNumber} ${chapterName}` : chapterNumber,
+        chapterNumber,
+        chapterName,
+        content: contentWithIndent,
+        startIndex: current.index,
+        endIndex: endIndex
+      })
+    }
+  }
+
+  return chapters
+}
+
 function formatProjectCost(amount: number, currency = DEFAULT_BILLING_CURRENCY): string {
   if (currency === 'USD') return `$${amount.toFixed(2)}`
   return `¥${amount.toFixed(2)}`
@@ -93,6 +193,14 @@ export default function WorkspacePage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchInput, setSearchInput] = useState('')
   const [modelNotConfigured, setModelNotConfigured] = useState(false)
+
+  // 小说文件上传状态
+  const [novelFile, setNovelFile] = useState<File | null>(null)
+  const [novelContent, setNovelContent] = useState<string>('')
+  const [novelFileName, setNovelFileName] = useState<string>('')
+
+  // 拆解进度状态
+  const [splitProgress, setSplitProgress] = useState<{ current: number; total: number; status: string } | null>(null)
 
   const t = useTranslations('workspace')
   const tc = useTranslations('common')
@@ -147,6 +255,10 @@ export default function WorkspacePage() {
   // 打开新建项目弹窗并检测模型配置
   const openCreateModal = useCallback(() => {
     setCreateError(null)
+    setNovelFile(null)
+    setNovelContent('')
+    setNovelFileName('')
+    setSplitProgress(null)
     setShowCreateModal(true)
     // 异步检测模型配置状态
     void (async () => {
@@ -160,6 +272,49 @@ export default function WorkspacePage() {
         // 忽略检测失败
       }
     })()
+  }, [])
+
+  // 处理小说文件上传
+  const handleNovelFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // 检查文件类型
+    const validTypes = ['.txt', '.md', '.text']
+    const fileName = file.name.toLowerCase()
+    const isValidType = validTypes.some(ext => fileName.endsWith(ext))
+    if (!isValidType) {
+      setCreateError(t('invalidFileType'))
+      return
+    }
+
+    // 检查文件大小 (最大 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setCreateError(t('fileTooLarge'))
+      return
+    }
+
+    try {
+      const content = await file.text()
+      setNovelFile(file)
+      setNovelContent(content)
+      setNovelFileName(file.name)
+      // 自动填充项目名称（去掉扩展名）
+      if (!formData.name) {
+        const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '')
+        setFormData(prev => ({ ...prev, name: nameWithoutExt }))
+      }
+      setCreateError(null)
+    } catch {
+      setCreateError(t('fileReadError'))
+    }
+  }, [formData.name, t])
+
+  // 清除已上传的小说文件
+  const handleClearNovelFile = useCallback(() => {
+    setNovelFile(null)
+    setNovelContent('')
+    setNovelFileName('')
   }, [])
 
   // 分页处理
@@ -187,6 +342,83 @@ export default function WorkspacePage() {
       })
 
       if (response.ok) {
+        const projectData = await response.json()
+        const projectId = projectData.project?.id
+
+        // 如果有小说内容，使用脚本自动拆分章节并创建剧集
+        if (novelContent && novelContent.length >= 100 && projectId) {
+          try {
+            // 保存项目配置
+            setSplitProgress({ current: 0, total: 1, status: '正在初始化...' })
+            await apiFetch(`/api/novel-promotion/${projectId}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ videoRatio: '16:9', artStyle: 'realistic' }),
+            })
+
+            // 使用正则脚本拆分章节
+            setSplitProgress({ current: 0, total: 1, status: '正在分析章节结构...' })
+            const chapters = splitNovelByChapters(novelContent)
+
+            if (chapters.length > 0) {
+              // 先清空现有剧集
+              await apiFetch(`/api/novel-promotion/${projectId}/episodes/batch`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ clearExisting: true, episodes: [], importStatus: 'splitting' }),
+              })
+
+              // 逐个创建剧集以显示进度
+              const total = chapters.length
+              for (let i = 0; i < chapters.length; i++) {
+                const ch = chapters[i]
+                setSplitProgress({
+                  current: i + 1,
+                  total,
+                  status: `正在创建：${ch.title}（${i + 1}/${total}）`
+                })
+
+                // 调用单个创建API
+                const createResponse = await apiFetch(`/api/novel-promotion/${projectId}/episodes`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    name: ch.title || `第${i + 1}章`,
+                    description: `共${ch.content.length}字`,
+                    novelText: ch.content
+                  }),
+                })
+
+                if (!createResponse.ok) {
+                  _ulogError(`创建剧集 ${ch.title} 失败:`, await createResponse.text())
+                }
+              }
+
+              // 更新导入状态为完成
+              await apiFetch(`/api/novel-promotion/${projectId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ importStatus: 'split' }),
+              })
+
+              setSplitProgress({ current: total, total, status: '拆解完成！' })
+
+              // 剧集创建成功，跳转到项目工作区
+              setTimeout(() => {
+                router.push({ pathname: `/workspace/${projectId}` })
+              }, 500)
+              return
+            }
+          } catch (splitError) {
+            _ulogError('章节拆分失败:', splitError)
+            setSplitProgress(null)
+            // 即使拆分失败，也跳转到工作区让用户手动处理
+            router.push({ pathname: `/workspace/${projectId}` })
+            return
+          }
+        }
+
+        // 原有逻辑：检查模型配置
         let shouldOpenModelSetup = true
         const preferenceResponse = await apiFetch('/api/user-preference')
         if (preferenceResponse.ok) {
@@ -602,6 +834,50 @@ export default function WorkspacePage() {
               </div>
             )}
             <form onSubmit={handleCreateProject}>
+              {/* 小说文件上传区域 */}
+              <div className="mb-4">
+                <label className="glass-field-label block mb-2">
+                  {t('novelFile')} ({t('optional')})
+                </label>
+                {!novelFile ? (
+                  <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[var(--glass-stroke-strong)] rounded-xl cursor-pointer hover:border-[var(--glass-tone-info-fg)]/40 transition-colors">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <AppIcon name="upload" className="w-6 h-6 mb-2 text-[var(--glass-text-tertiary)]" />
+                      <p className="text-sm text-[var(--glass-text-secondary)]">
+                        {t('dragDropFile')} <span className="font-semibold">{t('browse')}</span>
+                      </p>
+                      <p className="text-xs text-[var(--glass-text-tertiary)]">{t('supportedFormats')}</p>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept=".txt,.md,.text"
+                      onChange={handleNovelFileChange}
+                    />
+                  </label>
+                ) : (
+                  <div className="flex items-center justify-between p-3 border border-[var(--glass-stroke-strong)] rounded-xl bg-[var(--glass-bg-muted)]">
+                    <div className="flex items-center gap-2">
+                      <AppIcon name="fileText" className="w-5 h-5 text-[var(--glass-tone-info-fg)]" />
+                      <span className="text-sm text-[var(--glass-text-primary)] truncate max-w-[200px]">{novelFileName}</span>
+                      <span className="text-xs text-[var(--glass-text-tertiary)]">({Math.round(novelContent.length / 1024)}KB)</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleClearNovelFile}
+                      className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
+                    >
+                      <AppIcon name="close" className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+                {novelContent && (
+                  <p className="mt-2 text-xs text-[var(--glass-text-tertiary)]">
+                    {t('novelWillBeSplit', { chars: novelContent.length.toLocaleString() })}
+                  </p>
+                )}
+              </div>
+
               <div className="mb-4">
                 <label htmlFor="name" className="glass-field-label block mb-2">
                   {t('projectName')} *
@@ -647,6 +923,22 @@ export default function WorkspacePage() {
                   {createError}
                 </p>
               )}
+
+              {/* 拆解进度条 */}
+              {splitProgress && (
+                <div className="mb-4 p-4 rounded-xl border border-[var(--glass-stroke-strong)] bg-[var(--glass-bg-muted)]">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-[var(--glass-text-primary)]">{splitProgress.status}</span>
+                    <span className="text-xs text-[var(--glass-text-tertiary)]">{splitProgress.current}/{splitProgress.total}</span>
+                  </div>
+                  <div className="w-full h-2 bg-[var(--glass-stroke-subtle)] rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 ease-out"
+                      style={{ width: `${splitProgress.total > 0 ? (splitProgress.current / splitProgress.total * 100) : 0}%` }}
+                    />
+                  </div>
+                </div>
+              )}
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
@@ -654,6 +946,10 @@ export default function WorkspacePage() {
                     setShowCreateModal(false)
                     setCreateError(null)
                     setFormData({ name: '', description: '' })
+                    setNovelFile(null)
+                    setNovelContent('')
+                    setNovelFileName('')
+                    setSplitProgress(null)
                   }}
                   className="glass-btn-base glass-btn-secondary px-4 py-2"
                   disabled={createLoading}
@@ -665,7 +961,7 @@ export default function WorkspacePage() {
                   className="glass-btn-base glass-btn-primary px-4 py-2 disabled:opacity-50"
                   disabled={createLoading || !formData.name.trim()}
                 >
-                  {createLoading ? t('creating') : t('createProject')}
+                  {createLoading ? t('creating') : (novelContent ? t('createProjectWithNovel') : t('createProject'))}
                 </button>
               </div>
             </form>
