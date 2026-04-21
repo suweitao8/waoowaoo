@@ -14,6 +14,15 @@ interface WorkspaceStageContentProps {
 export default function WorkspaceStageContent({
   currentStage,
 }: WorkspaceStageContentProps) {
+  // 强制：如果是 editor 阶段，直接显示剪辑页面
+  if (currentStage === 'editor') {
+    return (
+      <div key="editor" className="animate-page-enter">
+        <EditorStage />
+      </div>
+    )
+  }
+
   return (
     <div key={currentStage} className="animate-page-enter">
       {currentStage === 'config' && <ConfigStage />}
@@ -25,8 +34,6 @@ export default function WorkspaceStageContent({
       {currentStage === 'videos' && <VideoStageRoute />}
 
       {currentStage === 'voice' && <VoiceStageRoute />}
-
-      {currentStage === 'editor' && <EditorStage />}
     </div>
   )
 }
