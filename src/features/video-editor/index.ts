@@ -33,6 +33,14 @@ export {
     validateProjectData
 } from './utils/migration'
 
+// Audiobook Builder
+export {
+    msToFrames,
+    buildAudiobookTimeline,
+    type VoiceLineForBuild,
+    type PanelForBuild
+} from './utils/audiobook-builder'
+
 // Components
 export { VideoEditorStage } from './components/VideoEditorStage'
 export { TransitionPicker } from './components/TransitionPicker'
