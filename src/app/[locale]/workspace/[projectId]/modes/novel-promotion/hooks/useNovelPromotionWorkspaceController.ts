@@ -147,6 +147,7 @@ export function useNovelPromotionWorkspaceController({
   const capsuleNavItems = useWorkspaceStageNavigation({
     isAnyOperationRunning,
     stageArtifacts,
+    projectType: projectSection.projectType,
     t,
   })
 
@@ -160,6 +161,7 @@ export function useNovelPromotionWorkspaceController({
     videoRatio: projectSnapshot.videoRatio,
     artStyle: projectSnapshot.artStyle,
     videoModel: projectSnapshot.videoModel,
+    projectType: projectSnapshot.projectType,
     capabilityOverrides: projectSnapshot.capabilityOverrides,
     userVideoModels: userModels.userVideoModels || [],
     handleUpdateEpisode: configActions.handleUpdateEpisode,

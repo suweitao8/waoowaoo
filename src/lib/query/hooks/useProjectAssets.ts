@@ -26,6 +26,7 @@ function mapCharacterAssetToProjectCharacter(asset: AssetGroupMap['character'][n
             appearanceIndex: variant.index,
             changeReason: variant.label,
             description: variant.description,
+            imagePrompt: variant.imagePrompt,
             descriptions: null,
             imageUrl: variant.renders.find((render) => render.isSelected)?.imageUrl
                 ?? variant.renders[0]?.imageUrl
@@ -65,6 +66,7 @@ function mapLocationVariantToProjectImage(
         id: variant.id,
         imageIndex: variant.index,
         description: variant.description,
+        imagePrompt: variant.imagePrompt,
         imageUrl: render?.imageUrl ?? null,
         media: render?.media ?? null,
         previousImageUrl: render?.previousImageUrl ?? null,

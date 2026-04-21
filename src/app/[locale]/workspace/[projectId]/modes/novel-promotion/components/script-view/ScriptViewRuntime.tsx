@@ -422,6 +422,8 @@ export default function ScriptView({
         onClipUpdate={handleClipUpdateWithSaving}
         t={(key, values) => t(key, toTranslationValues(values))}
         tScript={(key, values) => tScript(key, toTranslationValues(values))}
+        tJump={(key, values) => tScript(`jump.${key}`, toTranslationValues(values))}
+        characters={characters}
       />
 
       <ScriptViewAssetsPanel

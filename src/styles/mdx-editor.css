@@ -1,0 +1,215 @@
+/* MDXEditor 自定义样式 */
+
+/* ============ 故事编辑器专用样式 ============ */
+
+/* 编辑器根容器 */
+.story-editor-root {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* 编辑器内容区域 */
+.story-editor-content {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 14px !important;
+  line-height: 24px !important;
+  color: var(--glass-text-primary) !important;
+  background: transparent !important;
+  padding: 0 !important;
+  min-height: 400px !important;
+  max-height: 70vh !important;
+  overflow-y: auto !important;
+}
+
+.story-editor-content:focus {
+  outline: none !important;
+}
+
+/* 故事编辑器容器 */
+.story-editor-container {
+  position: relative;
+}
+
+.story-editor-container .mdxeditor-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--glass-bg-surface) !important;
+}
+
+/* 工具栏 */
+.mdx-editor-toolbar {
+  background: transparent !important;
+  border-bottom: 1px solid var(--glass-stroke-base) !important;
+  border-radius: 0 !important;
+  padding: 8px 0 !important;
+  margin-bottom: 12px !important;
+  gap: 4px !important;
+}
+
+/* 工具栏按钮 */
+.mdx-editor-toolbar button {
+  background: transparent !important;
+  border: none !important;
+  color: var(--glass-text-secondary) !important;
+  border-radius: 6px !important;
+  padding: 6px 8px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.mdx-editor-toolbar button:hover {
+  background: var(--glass-bg-muted) !important;
+  color: var(--glass-text-primary) !important;
+}
+
+.mdx-editor-toolbar button[data-active="true"] {
+  background: var(--glass-accent-from) !important;
+  color: white !important;
+}
+
+/* 分隔线 */
+.mdx-editor-toolbar [role="separator"] {
+  background: var(--glass-stroke-base) !important;
+  width: 1px !important;
+  height: 20px !important;
+  margin: 0 4px !important;
+}
+
+/* 下拉选择器 */
+.mdx-editor-toolbar select {
+  background: var(--glass-bg-surface) !important;
+  border: 1px solid var(--glass-stroke-default) !important;
+  color: var(--glass-text-primary) !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  cursor: pointer !important;
+}
+
+/* 编辑器中的标题 */
+.mdx-editor-content h1 {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  margin: 1rem 0 0.5rem !important;
+  color: var(--glass-text-primary) !important;
+}
+
+.mdx-editor-content h2 {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin: 0.875rem 0 0.5rem !important;
+  color: var(--glass-text-primary) !important;
+}
+
+.mdx-editor-content h3 {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin: 0.75rem 0 0.5rem !important;
+  color: var(--glass-text-primary) !important;
+}
+
+/* 段落和文本 */
+.mdx-editor-content p {
+  margin: 0.5rem 0 !important;
+  line-height: 1.75 !important;
+}
+
+/* 链接 */
+.mdx-editor-content a {
+  color: var(--glass-accent-from) !important;
+  text-decoration: underline !important;
+}
+
+/* 列表 */
+.mdx-editor-content ul,
+.mdx-editor-content ol {
+  margin: 0.5rem 0 !important;
+  padding-left: 1.5rem !important;
+}
+
+.mdx-editor-content li {
+  margin: 0.25rem 0 !important;
+}
+
+/* 引用 */
+.mdx-editor-content blockquote {
+  border-left: 3px solid var(--glass-accent-from) !important;
+  padding-left: 1rem !important;
+  margin: 0.5rem 0 !important;
+  color: var(--glass-text-secondary) !important;
+  font-style: italic !important;
+}
+
+/* 代码 */
+.mdx-editor-content code {
+  background: var(--glass-bg-muted) !important;
+  padding: 0.125rem 0.375rem !important;
+  border-radius: 4px !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 0.875em !important;
+}
+
+/* 代码块 */
+.mdx-editor-content pre {
+  background: var(--glass-bg-muted) !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  overflow-x: auto !important;
+  margin: 0.5rem 0 !important;
+}
+
+.mdx-editor-content pre code {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* 表格 */
+.mdx-editor-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 0.5rem 0 !important;
+}
+
+.mdx-editor-content th,
+.mdx-editor-content td {
+  border: 1px solid var(--glass-stroke-default) !important;
+  padding: 0.5rem !important;
+  text-align: left !important;
+}
+
+.mdx-editor-content th {
+  background: var(--glass-bg-muted) !important;
+  font-weight: 600 !important;
+}
+
+/* 图片 */
+.mdx-editor-content img {
+  max-width: 100% !important;
+  border-radius: 8px !important;
+  margin: 0.5rem 0 !important;
+}
+
+/* 分割线 */
+.mdx-editor-content hr {
+  border: none !important;
+  border-top: 1px solid var(--glass-stroke-default) !important;
+  margin: 1rem 0 !important;
+}
+
+/* 占位符 */
+.mdx-editor-content:empty::before {
+  content: attr(data-placeholder) !important;
+  color: var(--glass-text-tertiary) !important;
+  pointer-events: none !important;
+}
+
+/* 源码编辑模式 */
+.mdx-editor-source {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 14px !important;
+  line-height: 24px !important;
+  background: var(--glass-bg-muted) !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+}

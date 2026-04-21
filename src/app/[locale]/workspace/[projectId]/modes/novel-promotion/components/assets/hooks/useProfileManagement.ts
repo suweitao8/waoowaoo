@@ -42,10 +42,17 @@ export function useProfileManagement({
     const [confirmingCharacterIds, setConfirmingCharacterIds] = useState<Set<string>>(new Set())
     const [deletingCharacterId, setDeletingCharacterId] = useState<string | null>(null)
     const [batchConfirmingLocal, setBatchConfirmingLocal] = useState(false)
+    // 🔥 V8: 扩展 editingProfile 状态以支持统一面板
     const [editingProfile, setEditingProfile] = useState<{
         characterId: string
         characterName: string
         profileData: CharacterProfileData
+        // 统一面板新增字段
+        description?: string
+        introduction?: string | null
+        appearanceId?: string
+        hasGeneratedImage?: boolean
+        hasGeneratedVoice?: boolean
     } | null>(null)
 
     // 获取未确认的角色
@@ -70,7 +77,7 @@ export function useProfileManagement({
         return unconfirmedCharacters.some(char => char.profileConfirmTaskRunning)
     }, [batchConfirmingLocal, unconfirmedCharacters])
 
-    // 打开编辑对话框
+    // 打开编辑对话框 - 🔥 V8: 扩展以支持统一面板
     const handleEditProfile = useCallback((characterId: string, characterName: string) => {
         const character = characters.find(c => c.id === characterId)
         if (!character?.profileData) return
@@ -81,7 +88,20 @@ export function useProfileManagement({
             return
         }
 
-        setEditingProfile({ characterId, characterName, profileData })
+        // 获取第一个形象的信息（如果存在）
+        const firstAppearance = character.appearances?.[0]
+        const hasGeneratedImage = firstAppearance?.images && firstAppearance.images.length > 0
+
+        setEditingProfile({
+            characterId,
+            characterName,
+            profileData,
+            description: firstAppearance?.description || '',
+            introduction: character.introduction,
+            appearanceId: firstAppearance?.id,
+            hasGeneratedImage,
+            hasGeneratedVoice: !!character.customVoiceUrl,
+        })
     }, [characters, showToast, t])
 
     // 确认单个角色
@@ -111,6 +131,24 @@ export function useProfileManagement({
                 return newSet
             })
             setEditingProfile(null)
+        }
+    }, [confirmCharacterProfileMutation, refreshAssets, showToast, t])
+
+    // 只更新 profileData，不触发生成
+    const handleProfileDataUpdate = useCallback(async (
+        characterId: string,
+        updatedProfileData: CharacterProfileData
+    ) => {
+        try {
+            await confirmCharacterProfileMutation.mutateAsync({
+                characterId,
+                profileData: updatedProfileData,
+                generateImage: false,
+            })
+            refreshAssets()
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : t('common.unknownError')
+            showToast?.(t('characterProfile.updateFailed', { error: message }), 'error')
         }
     }, [confirmCharacterProfileMutation, refreshAssets, showToast, t])
 
@@ -169,6 +207,7 @@ export function useProfileManagement({
         editingProfile,
         handleEditProfile,
         handleConfirmProfile,
+        handleProfileDataUpdate,
         handleBatchConfirm,
         handleDeleteProfile,
         setEditingProfile

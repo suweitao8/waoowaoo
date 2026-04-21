@@ -13,6 +13,11 @@ vi.mock('@/components/selectors/RatioStyleSelectors', () => ({
   StylePresetSelector: (props: Record<string, unknown>) => createElement('div', props, 'StylePresetSelector'),
 }))
 
+vi.mock('@/components/ui/icons', () => ({
+  AppIcon: ({ name, ...props }: { name: string } & Record<string, unknown>) =>
+    createElement('span', { ...props, 'data-icon': name }),
+}))
+
 describe('StoryInputComposer', () => {
   it('renders a shared composer shell with configurable textarea rows and shared controls', () => {
     Reflect.set(globalThis, 'React', React)
@@ -23,12 +28,6 @@ describe('StoryInputComposer', () => {
         onValueChange: () => undefined,
         placeholder: '请输入内容',
         minRows: 8,
-        videoRatio: '9:16',
-        onVideoRatioChange: () => undefined,
-        ratioOptions: [{ value: '9:16', label: '9:16' }],
-        artStyle: 'realistic',
-        onArtStyleChange: () => undefined,
-        styleOptions: [{ value: 'realistic', label: '真人风格' }],
         stylePresetValue: 'horror-suspense',
         onStylePresetChange: () => undefined,
         stylePresetOptions: [{ value: 'horror-suspense', label: '恐怖悬疑', description: '压迫氛围' }],
@@ -40,8 +39,6 @@ describe('StoryInputComposer', () => {
     )
 
     expect(html).toContain('rows="8"')
-    expect(html).toContain('RatioSelector')
-    expect(html).toContain('StyleSelector')
     expect(html).toContain('StylePresetSelector')
     expect(html).toContain('字数：4')
     expect(html).toContain('当前配置')
@@ -58,12 +55,6 @@ describe('StoryInputComposer', () => {
         onValueChange: () => undefined,
         placeholder: '请输入内容',
         minRows: 8,
-        videoRatio: '9:16',
-        onVideoRatioChange: () => undefined,
-        ratioOptions: [{ value: '9:16', label: '9:16' }],
-        artStyle: 'realistic',
-        onArtStyleChange: () => undefined,
-        styleOptions: [{ value: 'realistic', label: '真人风格' }],
         stylePresetValue: '',
         onStylePresetChange: () => undefined,
         stylePresetOptions: [],
@@ -71,8 +62,27 @@ describe('StoryInputComposer', () => {
       }),
     )
 
-    expect(html).toContain('RatioSelector')
-    expect(html).toContain('StyleSelector')
     expect(html).not.toContain('StylePresetSelector')
+  })
+
+  it('displays line numbers for content', () => {
+    Reflect.set(globalThis, 'React', React)
+
+    const html = renderToStaticMarkup(
+      createElement(StoryInputComposer, {
+        value: '第一行\n第二行\n第三行',
+        onValueChange: () => undefined,
+        placeholder: '请输入内容',
+        minRows: 8,
+        stylePresetValue: '',
+        onStylePresetChange: () => undefined,
+        stylePresetOptions: [],
+        primaryAction: createElement('button', { type: 'button' }, '开始创作'),
+      }),
+    )
+
+    expect(html).toContain('1')
+    expect(html).toContain('2')
+    expect(html).toContain('3')
   })
 })

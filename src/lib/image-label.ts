@@ -24,8 +24,8 @@ async function createLabeledImageBuffer(sourceBuffer: Buffer, labelText: string)
   await initializeFonts()
 
   const meta = await sharp(sourceBuffer).metadata()
-  const width = meta.width || 2160
-  const height = meta.height || 2160
+  const width = meta.width || 1920
+  const height = meta.height || 1080
   const fontSize = Math.floor(height * 0.04)
   const pad = Math.floor(fontSize * 0.5)
   const barHeight = fontSize + pad * 2

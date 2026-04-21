@@ -90,13 +90,7 @@
     "cancelConfirm": "Are you sure you want to cancel? Analyzed episodes will be cleared."
   },
   "storyInput": {
-    "currentEditing": "Currently editing: {name}",
-    "editingTip": "The following workflow is for this episode only. Switch episodes in the top left if needed",
     "wordCount": "Word count:",
-    "assetLibraryTip": {
-      "title": "Need custom characters and locations?",
-      "description": "Click the 「Asset Library」 button in the top right to upload asset setting documents or manually add characters/locations. AI will prioritize using settings from the asset library for analysis."
-    },
     "videoRatio": "Video Ratio",
     "videoRatioHint": "Pick a ratio that matches your target platform and content format",
     "ratioUsage": {

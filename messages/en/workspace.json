@@ -18,6 +18,8 @@
   "projectNamePlaceholder": "Enter project name",
   "projectDescription": "Project Description (Optional)",
   "projectDescriptionPlaceholder": "Enter project description",
+  "artStyle": "Art Style",
+  "videoRatio": "Aspect Ratio",
   "creating": "Creating...",
   "saving": "Saving...",
   "createFailed": "Failed to create project",

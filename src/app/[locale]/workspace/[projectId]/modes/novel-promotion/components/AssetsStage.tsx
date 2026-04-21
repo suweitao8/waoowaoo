@@ -327,6 +327,7 @@ export default function AssetsStage({
     editingProfile,
     handleEditProfile,
     handleConfirmProfile,
+    handleProfileDataUpdate,
     handleBatchConfirm,
     handleDeleteProfile,
     setEditingProfile
@@ -507,7 +508,7 @@ export default function AssetsStage({
         handleVoiceDesignSave={handleVoiceDesignSave}
         handleCloseCopyPicker={handleCloseCopyPicker}
         handleConfirmCopyFromGlobal={handleConfirmCopyFromGlobal}
-        handleConfirmProfile={handleConfirmProfile}
+        handleProfileDataUpdate={handleProfileDataUpdate}
         closeEditingAppearance={closeEditingAppearance}
         closeEditingLocation={closeEditingLocation}
         closeEditingProp={closeEditingProp}
@@ -516,7 +517,6 @@ export default function AssetsStage({
         closeAddProp={closeAddProp}
         closeImageEditModal={closeImageEditModal}
         closeCharacterImageEditModal={closeCharacterImageEditModal}
-        isConfirmingCharacter={isConfirmingCharacter}
         setEditingProfile={setEditingProfile}
         previewImage={previewImage}
         imageEditModal={imageEditModal}

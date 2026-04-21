@@ -13,6 +13,7 @@ import { Link, useRouter } from '@/i18n/navigation'
 import { apiFetch } from '@/lib/api-fetch'
 import { readApiErrorMessage } from '@/lib/api/read-error-message'
 import { validateProjectDraft } from '@/lib/projects/validation'
+import { ART_STYLES, VIDEO_RATIOS } from '@/lib/constants'
 
 interface ProjectStats {
   episodes: number
@@ -55,6 +56,25 @@ interface ChapterSplit {
 }
 
 /**
+ * 格式化小说正文：每行前加 tab，行与行之间加空行
+ */
+function formatNovelContent(text: string): string {
+  if (!text) return ''
+
+  // 按换行符分割
+  const lines = text.split(/\n/)
+
+  // 过滤空行，然后每行前加 tab
+  const formattedLines = lines
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => '\t' + line)
+
+  // 行与行之间加空行（即用 \n\n 连接）
+  return formattedLines.join('\n\n')
+}
+
+/**
  * 使用正则表达式按章节标题拆分小说内容
  * 支持：第X章、第一章、第1章 等格式
  */
@@ -83,7 +103,7 @@ function splitNovelByChapters(content: string): ChapterSplit[] {
         title: '第一章',
         chapterNumber: '第一章',
         chapterName: '',
-        content: '\t' + trimmedContent,
+        content: formatNovelContent(trimmedContent),
         startIndex: 0,
         endIndex: trimmedContent.length
       }]
@@ -104,7 +124,7 @@ function splitNovelByChapters(content: string): ChapterSplit[] {
           title: '序章',
           chapterNumber: '序章',
           chapterName: '',
-          content: '\t' + prologueContent,
+          content: formatNovelContent(prologueContent),
           startIndex: 0,
           endIndex: current.index
         })
@@ -125,14 +145,14 @@ function splitNovelByChapters(content: string): ChapterSplit[] {
       // 从内容中移除章节标题行（第一行）
       const contentWithoutTitle = rawContent.replace(/^[^\n]*\n/, '').trim()
 
-      // 给正文第一行加tab缩进
-      const contentWithIndent = '\t' + contentWithoutTitle
+      // 格式化正文：每行前加 tab，行与行之间加空行
+      const formattedContent = formatNovelContent(contentWithoutTitle)
 
       chapters.push({
         title: chapterName ? `${chapterNumber} ${chapterName}` : chapterNumber,
         chapterNumber,
         chapterName,
-        content: contentWithIndent,
+        content: formattedContent,
         startIndex: current.index,
         endIndex: endIndex
       })
@@ -140,6 +160,144 @@ function splitNovelByChapters(content: string): ChapterSplit[] {
   }
 
   return chapters
+}
+
+/**
+ * 预处理小说文本，清理常见格式问题
+ * - 移除分隔线（如 ------------、===========、***********）
+ * - 移除文件名标识（如 "1-10"、"第1-100章" 等）
+ * - 清理多余空行
+ */
+function preprocessNovelContent(content: string): string {
+  if (!content || content.length < 100) {
+    return content
+  }
+
+  let processed = content
+
+  // 1. 移除文件名标识行（常见于复制的内容开头）
+  // 匹配：凡人修仙传1-10、斗破苍穹第1-100章、小说名+数字范围 等
+  processed = processed.replace(/^[^\n]*[\u4e00-\u9fa5]+\s*\d+\s*[-~至到]\s*\d+\s*[章回集部卷]?\s*$/gm, '')
+  processed = processed.replace(/^[^\n]*[\u4e00-\u9fa5]+\s*第?\s*\d+\s*[-~至到]\s*\d+\s*[章回集部卷]?\s*$/gm, '')
+
+  // 2. 移除"第X卷"标记（整行）
+  // 匹配：第一卷、第二卷、第1卷、第壹卷 等
+  processed = processed.replace(/^第[一二三四五六七八九十百千\d零壹贰叁肆伍陆柒捌玖拾]+卷[^\n]*$/gm, '')
+
+  // 3. 移除常见分隔线
+  // 匹配：------------、===========、***********、──────────── 等
+  processed = processed.replace(/^[──\-_=*~·•]{3,}$/gm, '')
+
+  // 4. 移除多余的连续空行（保留最多一个空行）
+  processed = processed.replace(/\n{3,}/g, '\n\n')
+
+  // 5. 移除行首行尾的空白（保留段落缩进）
+  processed = processed.replace(/[ \t]+$/gm, '')  // 行尾空白
+
+  // 6. 清理文档开头和结尾的空白
+  processed = processed.trim()
+
+  return processed
+}
+
+/**
+ * 检测文件编码并解码为 UTF-8 字符串
+ * 支持：UTF-8 (带/不带BOM)、GB2312、GBK、GB18030、Big5
+ */
+function detectEncodingAndDecode(uint8Array: Uint8Array): string {
+  const len = uint8Array.length
+
+  // 1. 检查 BOM (Byte Order Mark)
+  // UTF-8 BOM: EF BB BF
+  if (len >= 3 && uint8Array[0] === 0xEF && uint8Array[1] === 0xBB && uint8Array[2] === 0xBF) {
+    return new TextDecoder('utf-8').decode(uint8Array)
+  }
+
+  // UTF-16 LE BOM: FF FE
+  if (len >= 2 && uint8Array[0] === 0xFF && uint8Array[1] === 0xFE) {
+    return new TextDecoder('utf-16le').decode(uint8Array)
+  }
+
+  // UTF-16 BE BOM: FE FF
+  if (len >= 2 && uint8Array[0] === 0xFE && uint8Array[1] === 0xFF) {
+    return new TextDecoder('utf-16be').decode(uint8Array)
+  }
+
+  // 2. 尝试 UTF-8 解码，检查是否有效
+  const utf8Decoder = new TextDecoder('utf-8', { fatal: true })
+  try {
+    const text = utf8Decoder.decode(uint8Array)
+    // 检查是否有替换字符（无效 UTF-8 序列会被替换为 \uFFFD）
+    if (!text.includes('\uFFFD')) {
+      return text
+    }
+  } catch {
+    // UTF-8 解码失败，继续尝试其他编码
+  }
+
+  // 3. 检测是否为中文编码 (GB2312/GBK/GB18030)
+  // 中文编码特征：高字节 0x81-0xFE，低字节 0x40-0xFE（排除 0x7F）
+  let isLikelyChineseEncoding = false
+  let chineseBytePairs = 0
+  let totalBytePairs = 0
+
+  for (let i = 0; i < len - 1; i++) {
+    const b1 = uint8Array[i]
+    const b2 = uint8Array[i + 1]
+
+    // GB2312/GBK 双字节字符：第一字节 0x81-0xFE，第二字节 0x40-0xFE（不含 0x7F）
+    if (b1 >= 0x81 && b1 <= 0xFE && b2 >= 0x40 && b2 <= 0xFE && b2 !== 0x7F) {
+      chineseBytePairs++
+      i++ // 跳过下一字节
+    }
+    totalBytePairs++
+  }
+
+  // 如果有较多中文双字节字符，很可能是中文编码
+  if (totalBytePairs > 0 && chineseBytePairs / totalBytePairs > 0.05) {
+    isLikelyChineseEncoding = true
+  }
+
+  // 4. 尝试 GB18030（GB2312/GBK 的超集）
+  if (isLikelyChineseEncoding) {
+    try {
+      const gb18030Decoder = new TextDecoder('gb18030', { fatal: true })
+      const text = gb18030Decoder.decode(uint8Array)
+      // 验证解码结果是否包含合理的中文内容
+      if (!text.includes('\uFFFD') && /[\u4e00-\u9fa5]/.test(text)) {
+        return text
+      }
+    } catch {
+      // GB18030 解码失败
+    }
+  }
+
+  // 5. 尝试 Big5（繁体中文）
+  if (isLikelyChineseEncoding) {
+    try {
+      const big5Decoder = new TextDecoder('big5', { fatal: true })
+      const text = big5Decoder.decode(uint8Array)
+      if (!text.includes('\uFFFD') && /[\u4e00-\u9fa5]/.test(text)) {
+        return text
+      }
+    } catch {
+      // Big5 解码失败
+    }
+  }
+
+  // 6. 最后回退：尝试 GB18030（即使检测不强烈也尝试）
+  try {
+    const gb18030Decoder = new TextDecoder('gb18030')
+    const text = gb18030Decoder.decode(uint8Array)
+    if (/[\u4e00-\u9fa5]/.test(text)) {
+      return text
+    }
+  } catch {
+    // 忽略
+  }
+
+  // 7. 最终回退：UTF-8（宽松模式）
+  return new TextDecoder('utf-8').decode(uint8Array)
 }
 
 function formatProjectCost(amount: number, currency = DEFAULT_BILLING_CURRENCY): string {
@@ -175,7 +333,9 @@ export default function WorkspacePage() {
   const [createError, setCreateError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: '',
-    description: ''
+    description: '',
+    artStyle: 'realistic',
+    videoRatio: '16:9'
   })
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [showEditModal, setShowEditModal] = useState(false)
@@ -295,13 +455,26 @@ export default function WorkspacePage() {
     }
 
     try {
-      const content = await file.text()
+      // 读取文件为 ArrayBuffer 进行编码检测
+      const arrayBuffer = await file.arrayBuffer()
+      const uint8Array = new Uint8Array(arrayBuffer)
+
+      // 检测编码并转换为 UTF-8
+      // 检测编码并解码，然后预处理清理格式
+      const rawContent = detectEncodingAndDecode(uint8Array)
+      const content = preprocessNovelContent(rawContent)
+
       setNovelFile(file)
       setNovelContent(content)
       setNovelFileName(file.name)
-      // 自动填充项目名称（去掉扩展名）
+      // 自动填充项目名称（去掉扩展名和数字范围后缀）
       if (!formData.name) {
-        const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '')
+        let nameWithoutExt = file.name.replace(/\.[^/.]+$/, '')
+        // 移除数字范围后缀（如 "1-10"、"第1-100章" 等）
+        nameWithoutExt = nameWithoutExt
+          .replace(/\s*\d+\s*[-~至到]\s*\d+\s*[章回集部卷]?\s*$/, '')
+          .replace(/\s*第?\s*\d+\s*[-~至到]\s*\d+\s*[章回集部卷]?\s*$/, '')
+          .trim()
         setFormData(prev => ({ ...prev, name: nameWithoutExt }))
       }
       setCreateError(null)
@@ -348,12 +521,15 @@ export default function WorkspacePage() {
         // 如果有小说内容，使用脚本自动拆分章节并创建剧集
         if (novelContent && novelContent.length >= 100 && projectId) {
           try {
-            // 保存项目配置
+            // 保存项目配置（使用用户选择的画面风格和比例）
             setSplitProgress({ current: 0, total: 1, status: '正在初始化...' })
             await apiFetch(`/api/novel-promotion/${projectId}`, {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ videoRatio: '16:9', artStyle: 'realistic' }),
+              body: JSON.stringify({
+                videoRatio: formData.videoRatio,
+                artStyle: formData.artStyle
+              }),
             })
 
             // 使用正则脚本拆分章节
@@ -434,7 +610,7 @@ export default function WorkspacePage() {
         setPagination(prev => ({ ...prev, page: 1 }))
         void fetchProjects(1, '')
         setShowCreateModal(false)
-        setFormData({ name: '', description: '' })
+        setFormData({ name: '', description: '', artStyle: 'realistic', videoRatio: '16:9' })
 
         if (shouldOpenModelSetup) {
           alert(t('analysisModelRequiredAfterCreate'))
@@ -918,6 +1094,54 @@ export default function WorkspacePage() {
                   maxLength={500}
                 />
               </div>
+
+              {/* 画面风格选择 */}
+              <div className="mb-4">
+                <label className="glass-field-label block mb-2">
+                  {t('artStyle')}
+                </label>
+                <div className="grid grid-cols-5 gap-2">
+                  {ART_STYLES.map((style) => (
+                    <button
+                      key={style.value}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, artStyle: style.value })}
+                      className={`flex flex-col items-center justify-center p-2 rounded-lg border transition-all ${
+                        formData.artStyle === style.value
+                          ? 'border-[var(--glass-tone-info-fg)] bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)]'
+                          : 'border-[var(--glass-stroke-strong)] hover:border-[var(--glass-tone-info-fg)]/40 text-[var(--glass-text-secondary)]'
+                      }`}
+                      title={style.label}
+                    >
+                      <span className="text-lg font-bold">{style.preview}</span>
+                      <span className="text-[10px] mt-1 truncate w-full text-center">{style.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 画面比例选择 */}
+              <div className="mb-6">
+                <label className="glass-field-label block mb-2">
+                  {t('videoRatio')}
+                </label>
+                <div className="grid grid-cols-5 gap-2">
+                  {VIDEO_RATIOS.slice(0, 5).map((ratio) => (
+                    <button
+                      key={ratio.value}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, videoRatio: ratio.value })}
+                      className={`flex items-center justify-center p-2 rounded-lg border transition-all text-sm ${
+                        formData.videoRatio === ratio.value
+                          ? 'border-[var(--glass-tone-info-fg)] bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)]'
+                          : 'border-[var(--glass-stroke-strong)] hover:border-[var(--glass-tone-info-fg)]/40 text-[var(--glass-text-secondary)]'
+                      }`}
+                    >
+                      {ratio.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               {createError && (
                 <p className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-600">
                   {createError}
@@ -945,7 +1169,7 @@ export default function WorkspacePage() {
                   onClick={() => {
                     setShowCreateModal(false)
                     setCreateError(null)
-                    setFormData({ name: '', description: '' })
+                    setFormData({ name: '', description: '', artStyle: 'realistic', videoRatio: '16:9' })
                     setNovelFile(null)
                     setNovelContent('')
                     setNovelFileName('')

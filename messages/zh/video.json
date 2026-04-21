@@ -138,6 +138,15 @@
     "thenTransitionTo": "然后镜头转换到"
   },
   "editor": {
+    "loading": "加载剪辑器...",
+    "retry": "重试",
+    "error": {
+      "loadFailed": "加载剪辑项目失败"
+    },
+    "empty": {
+      "title": "暂无可剪辑的视频",
+      "description": "请先在成片阶段生成视频素材"
+    },
     "alert": {
       "saveSuccess": "保存成功",
       "saveFailed": "保存失败",

@@ -132,6 +132,17 @@ export const PRESET_MODELS: PresetModel[] = [
     { modelId: 'imagen-4.0-generate-001', name: 'Imagen 4', type: 'image', provider: 'google' },
     { modelId: 'imagen-4.0-ultra-generate-001', name: 'Imagen 4 Ultra', type: 'image', provider: 'google' },
     { modelId: 'imagen-4.0-fast-generate-001', name: 'Imagen 4 Fast', type: 'image', provider: 'google' },
+    // Grsai Nano Banana 图像模型
+    { modelId: 'nano-banana-fast', name: 'Nano Banana Fast', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana', name: 'Nano Banana', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-pro', name: 'Nano Banana Pro', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-pro-vt', name: 'Nano Banana Pro VT', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-pro-cl', name: 'Nano Banana Pro CL', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-pro-vip', name: 'Nano Banana Pro VIP', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-2', name: 'Nano Banana 2', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-2-cl', name: 'Nano Banana 2 CL', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-2-4k-cl', name: 'Nano Banana 2 4K CL', type: 'image', provider: 'grsai' },
+    { modelId: 'nano-banana-pro-4k-vip', name: 'Nano Banana Pro 4K VIP', type: 'image', provider: 'grsai' },
     // 视频模型
     { modelId: 'doubao-seedance-1-0-pro-fast-251015', name: 'Seedance 1.0 Pro Fast', type: 'video', provider: 'ark' },
     { modelId: 'doubao-seedance-1-0-lite-i2v-250428', name: 'Seedance 1.0 Lite', type: 'video', provider: 'ark' },
@@ -205,6 +216,7 @@ export const PRESET_PROVIDERS: Omit<Provider, 'apiKey' | 'hasApiKey'>[] = [
     { id: 'minimax', name: 'MiniMax Hailuo', baseUrl: 'https://api.minimaxi.com/v1' },
     { id: 'vidu', name: 'Vidu' },
     { id: 'fal', name: 'FAL' },
+    { id: 'grsai', name: 'Grsai Nano Banana', baseUrl: 'https://grsai.dakka.com.cn' },
 ]
 
 const ZH_PROVIDER_NAME_MAP: Record<string, string> = {
@@ -213,6 +225,7 @@ const ZH_PROVIDER_NAME_MAP: Record<string, string> = {
     vidu: '生数科技 Vidu',
     bailian: '阿里云百炼',
     siliconflow: '硅基流动',
+    grsai: 'Grsai 绘画',
 }
 
 function isZhLocale(locale?: string): boolean {
@@ -387,6 +400,15 @@ export const PROVIDER_TUTORIALS: ProviderTutorial[] = [
             {
                 text: 'siliconflow_step1',
                 url: 'https://cloud.siliconflow.cn/account/ak'
+            }
+        ]
+    },
+    {
+        providerId: 'grsai',
+        steps: [
+            {
+                text: 'grsai_step1',
+                url: 'https://grsai.dakka.com.cn'
             }
         ]
     },

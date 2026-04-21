@@ -50,6 +50,7 @@
         "noSpeaker": "未设置",
         "primary": "主形象",
         "secondary": "子状态",
+        "imagePrompt": "AI提示词",
         "generateFromPrimary": "基于主形象生成",
         "selectPrimaryFirst": "请先选择主形象",
         "editing": "编辑中...",
@@ -70,6 +71,7 @@
         "summary": "简要描述",
         "summaryPlaceholder": "场景用途/人物关联，如：张三居住的主卧室",
         "description": "场景描述",
+        "imagePrompt": "AI提示词",
         "generateImage": "生成图片",
         "regenerateImage": "重新生成",
         "updateFailed": "更新描述失败",
@@ -191,7 +193,26 @@
         "introduction": "角色介绍",
         "introductionPlaceholder": "例如：本书主角，第一人称'我'指的就是她。其他角色称她为'小雪'或'雪姐'...",
         "introductionTip": "描述角色在故事中的身份、叙述视角（如'我'对应谁）、其他角色如何称呼她等",
-        "saveIntroduction": "保存介绍"
+        "saveIntroduction": "保存介绍",
+        "generatePrompt": "生成提示词",
+        "generatePromptFailed": "生成提示词失败",
+        "imagePromptPlaceholder": "AI生成的文生图提示词将显示在这里，你也可以手动编辑...",
+        "imagePromptHint": "此提示词将用于生成场景图片，可手动编辑或点击按钮自动生成"
+    },
+    "basicAttributes": {
+        "title": "基本属性",
+        "gender": "性别",
+        "genderPlaceholder": "例如：女",
+        "age": "年龄",
+        "agePlaceholder": "例如：25岁左右",
+        "identity": "身份",
+        "identityPlaceholder": "例如：店老板、小妹妹",
+        "height": "身高",
+        "heightPlaceholder": "例如：168cm",
+        "bodyType": "外貌体型",
+        "bodyTypePlaceholder": "例如：身材高挑，体态优雅",
+        "personality": "性格",
+        "personalityPlaceholder": "输入性格标签"
     },
     "toolbar": {
         "filter": "筛选",
@@ -329,7 +350,7 @@
             "age": "年龄:",
             "era": "时代:",
             "class": "阶层:",
-            "occupation": "职业:",
+            "identity": "身份:",
             "personality": "性格:",
             "costume": "服装:",
             "identifier": "标志:"
@@ -362,5 +383,32 @@
         "referenceImages": "参考图片",
         "referenceImagesHint": "(可选，支持粘贴)",
         "startEditing": "开始编辑"
+    },
+    "unifiedPanel": {
+        "editTitle": "编辑角色 - {name}",
+        "sections": {
+            "basic": "基础信息",
+            "positioning": "角色定位",
+            "visual": "视觉设定",
+            "prompts": "AI 提示词"
+        },
+        "fields": {
+            "era": "时代背景",
+            "socialClass": "社会阶层",
+            "voicePrompt": "音色提示词"
+        },
+        "placeholders": {
+            "era": "例如：现代都市、古代宫廷、民国时期",
+            "socialClass": "例如：豪门世家、中产阶级、平民百姓",
+            "voicePrompt": "AI 生成的音色提示词将显示在这里，你也可以手动编辑..."
+        },
+        "generating": "生成中...",
+        "imagePromptHint": "此提示词将用于生成角色形象图片，可手动编辑",
+        "voicePromptHint": "此提示词将用于生成角色音色，可手动编辑",
+        "regenerateWarning": {
+            "title": "确认重新生成",
+            "message": "修改属性后需要重新生成形象和音色，确定继续吗？",
+            "confirm": "确认重新生成"
+        }
     }
 }

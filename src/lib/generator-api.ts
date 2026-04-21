@@ -57,14 +57,30 @@ export async function generateImage(
         aspectRatio?: string
         resolution?: string
         outputFormat?: string
+        imageSize?: string  // Grsai 专用：'720p' | '1K' | '2K' | '4K'
         keepOriginalAspectRatio?: boolean  // 🔥 编辑时保持原图比例
         size?: string  // 🔥 直接指定像素尺寸如 "5016x3344"（优先于 aspectRatio）
     }
 ): Promise<GenerateResult> {
+    // 调试日志：打印所有传入参数
+    console.log('[generateImage] ========== START ==========')
+    console.log('[generateImage] userId:', userId)
+    console.log('[generateImage] modelKey:', modelKey)
+    console.log('[generateImage] prompt (first 100 chars):', prompt?.substring(0, 100))
+    console.log('[generateImage] options:', JSON.stringify(options, null, 2))
+
     const selection = await resolveModelSelection(userId, modelKey, 'image')
     _ulogInfo(`[generateImage] resolved model selection: ${selection.modelKey}`)
     const providerConfig = await getProviderConfig(userId, selection.provider)
     const providerKey = getProviderKey(selection.provider).toLowerCase()
+
+    console.log('[generateImage] providerKey:', providerKey)
+    console.log('[generateImage] selection:', JSON.stringify({
+      provider: selection.provider,
+      modelId: selection.modelId,
+      modelKey: selection.modelKey,
+    }))
+
     if (providerKey === 'bailian') {
         return await generateBailianImage({
             userId,
@@ -91,6 +107,36 @@ export async function generateImage(
             },
         })
     }
+    // 调试日志：跟踪参数传递
+    console.log('[generateImage] providerKey:', providerKey, 'options:', JSON.stringify(options))
+
+    // 调用生成（提取 referenceImages 单独传递，其余选项合并进 options）
+    const { referenceImages, ...generatorOptions } = options || {}
+
+    // 🔥 grsai 使用专用的 GrsaiNanoImageGenerator
+    if (providerKey === 'grsai') {
+        console.log('[generateImage] grsai path, generatorOptions:', JSON.stringify(generatorOptions))
+        const generator = createImageGenerator(selection.provider, selection.modelId)
+        const result = await generator.generate({
+            userId,
+            prompt,
+            referenceImages,
+            options: {
+                ...generatorOptions,
+                provider: selection.provider,
+                modelId: selection.modelId,
+                modelKey: selection.modelKey,
+            }
+        })
+        console.log('[generateImage] grsai result:', JSON.stringify({
+            success: result.success,
+            hasImageUrl: !!result.imageUrl,
+            imageUrlLength: result.imageUrl?.length,
+            error: result.error,
+        }))
+        return result
+    }
+
     const defaultGatewayRoute = resolveModelGatewayRoute(selection.provider)
     let gatewayRoute = OFFICIAL_ONLY_PROVIDER_KEYS.has(providerKey)
         ? 'official'
@@ -101,8 +147,7 @@ export async function generateImage(
         gatewayRoute = providerConfig.apiMode === 'openai-official' ? 'openai-compat' : 'official'
     }
 
-    // 调用生成（提取 referenceImages 单独传递，其余选项合并进 options）
-    const { referenceImages, ...generatorOptions } = options || {}
+    console.log('[generateImage] gatewayRoute:', gatewayRoute)
     if (gatewayRoute === 'openai-compat') {
         const compatTemplate = selection.compatMediaTemplate
         if (providerKey === 'openai-compatible' && !compatTemplate) {

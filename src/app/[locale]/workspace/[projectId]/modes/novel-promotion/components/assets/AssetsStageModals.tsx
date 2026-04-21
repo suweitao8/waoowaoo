@@ -3,7 +3,7 @@
 import ImagePreviewModal from '@/components/ui/ImagePreviewModal'
 import ImageEditModal from './ImageEditModal'
 import VoiceDesignDialog from '../voice/VoiceDesignDialog'
-import CharacterProfileDialog from './CharacterProfileDialog'
+import UnifiedCharacterPropertyPanel from '@/components/shared/assets/UnifiedCharacterPropertyPanel'
 import {
   CharacterCreationModal,
   CharacterEditModal,
@@ -23,12 +23,15 @@ interface EditingAppearanceState {
   description: string
   descriptionIndex?: number
   introduction?: string | null
+  imagePrompt?: string | null
+  profileData?: CharacterProfileData | null
 }
 
 interface EditingLocationState {
   locationId: string
   locationName: string
   description: string
+  imagePrompt?: string
 }
 
 interface EditingPropState {
@@ -57,6 +60,12 @@ interface EditingProfileState {
   characterId: string
   characterName: string
   profileData: CharacterProfileData
+  // 🔥 V8: 统一面板扩展字段
+  description?: string
+  introduction?: string | null
+  appearanceId?: string
+  hasGeneratedImage?: boolean
+  hasGeneratedVoice?: boolean
 }
 
 interface AssetsStageModalsProps {
@@ -72,7 +81,7 @@ interface AssetsStageModalsProps {
   handleVoiceDesignSave: (voiceId: string, audioBase64: string) => Promise<void>
   handleCloseCopyPicker: () => void
   handleConfirmCopyFromGlobal: (globalAssetId: string) => Promise<void>
-  handleConfirmProfile: (characterId: string, updatedProfileData?: CharacterProfileData) => Promise<void>
+  handleProfileDataUpdate: (characterId: string, profileData: CharacterProfileData) => Promise<void>
   closeEditingAppearance: () => void
   closeEditingLocation: () => void
   closeEditingProp: () => void
@@ -81,7 +90,6 @@ interface AssetsStageModalsProps {
   closeAddProp: () => void
   closeImageEditModal: () => void
   closeCharacterImageEditModal: () => void
-  isConfirmingCharacter: (characterId: string) => boolean
   setEditingProfile: (value: EditingProfileState | null) => void
   previewImage: string | null
   imageEditModal: LocationImageEditModalState | null
@@ -111,7 +119,8 @@ export default function AssetsStageModals({
   handleVoiceDesignSave,
   handleCloseCopyPicker,
   handleConfirmCopyFromGlobal,
-  handleConfirmProfile,
+  // handleConfirmProfile - 不再需要，统一面板使用 handleProfileDataUpdate
+  handleProfileDataUpdate,
   closeEditingAppearance,
   closeEditingLocation,
   closeEditingProp,
@@ -120,7 +129,7 @@ export default function AssetsStageModals({
   closeAddProp,
   closeImageEditModal,
   closeCharacterImageEditModal,
-  isConfirmingCharacter,
+  // isConfirmingCharacter - 不再需要，统一面板内部管理状态
   setEditingProfile,
   previewImage,
   imageEditModal,
@@ -167,10 +176,13 @@ export default function AssetsStageModals({
           description={editingAppearance.description}
           descriptionIndex={editingAppearance.descriptionIndex}
           introduction={editingAppearance.introduction}
+          imagePrompt={editingAppearance.imagePrompt}
+          profileData={editingAppearance.profileData}
           projectId={projectId}
           onClose={closeEditingAppearance}
           onSave={(characterId, appearanceId) => void handleGenerateImage('character', characterId, appearanceId)}
           onUpdate={handleUpdateAppearanceDescription}
+          onProfileDataUpdate={(profileData) => handleProfileDataUpdate(editingAppearance.characterId, profileData)}
         />
       )}
 
@@ -180,6 +192,7 @@ export default function AssetsStageModals({
           locationId={editingLocation.locationId}
           locationName={editingLocation.locationName}
           description={editingLocation.description}
+          imagePrompt={editingLocation.imagePrompt}
           projectId={projectId}
           onClose={closeEditingLocation}
           onSave={(locationId) => void handleGenerateImage('location', locationId)}
@@ -249,13 +262,25 @@ export default function AssetsStageModals({
       )}
 
       {editingProfile && (
-        <CharacterProfileDialog
-          isOpen={!!editingProfile}
+        <UnifiedCharacterPropertyPanel
+          mode="project"
+          characterId={editingProfile.characterId}
           characterName={editingProfile.characterName}
           profileData={editingProfile.profileData}
+          description={editingProfile.description || ''}
+          introduction={editingProfile.introduction}
+          appearanceId={editingProfile.appearanceId}
+          hasGeneratedImage={editingProfile.hasGeneratedImage}
+          hasGeneratedVoice={editingProfile.hasGeneratedVoice}
+          projectId={projectId}
           onClose={() => setEditingProfile(null)}
-          onSave={(profileData) => handleConfirmProfile(editingProfile.characterId, profileData)}
-          isSaving={isConfirmingCharacter(editingProfile.characterId)}
+          onSave={async (data) => {
+            await handleProfileDataUpdate(editingProfile.characterId, data.profileData)
+          }}
+          onGenerateImage={editingProfile.appearanceId ? async () => {
+            await handleGenerateImage('character', editingProfile.characterId, editingProfile.appearanceId)
+          } : undefined}
+          onRefresh={onRefresh}
         />
       )}
 

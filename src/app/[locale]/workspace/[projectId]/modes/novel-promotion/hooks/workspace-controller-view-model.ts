@@ -31,6 +31,10 @@ interface ProjectSnapshotInput {
   capabilityOverrides: CapabilitySelections
   ttsRate: string | number | undefined
   artStyle: string | undefined
+  projectType: string | undefined
+  narratorVoiceId: string | null | undefined
+  narratorVoiceType: string | null | undefined
+  narratorVoicePrompt: string | null | undefined
 }
 
 interface BuildWorkspaceControllerViewModelParams {

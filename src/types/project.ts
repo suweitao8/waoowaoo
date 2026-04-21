@@ -4,6 +4,10 @@ import type { LocationAvailableSlot } from '@/lib/location-available-slots'
 // ============================================
 // 基础项目类型
 // ============================================
+
+/** 项目类型 */
+export type ProjectType = 'animation' | 'audiobook'
+
 export interface BaseProject {
   id: string
   name: string
@@ -37,6 +41,7 @@ export interface CharacterAppearance {
   changeReason: string              // "初始形象"、"落水湿身"
   description: string | null
   descriptions: string[] | null     // 3个描述变体
+  imagePrompt?: string | null       // AI 提示词
   imageUrl: string | null           // 选中的图片
   media?: MediaRef | null
   imageUrls: string[]               // 候选图片数组
@@ -81,6 +86,7 @@ export interface LocationImage {
   locationId?: string               // 可选，API 响应可能不包含
   imageIndex: number              // 图片索引：0, 1, 2
   description: string | null
+  imagePrompt?: string | null       // AI 提示词
   availableSlots?: LocationAvailableSlot[] | null
   imageUrl: string | null
   media?: MediaRef | null
@@ -241,6 +247,7 @@ export interface NovelPromotionProject {
   id: string
   projectId: string
   stage: string
+  projectType: ProjectType  // 项目类型：animation | audiobook
   globalAssetText: string | null
   novelText: string | null
   analysisModel: string
@@ -260,6 +267,10 @@ export interface NovelPromotionProject {
   audioUrl: string | null
   media?: MediaRef | null
   srtContent: string | null
+  // 旁白音色配置
+  narratorVoiceId?: string | null
+  narratorVoiceType?: string | null
+  narratorVoicePrompt?: string | null
   characters?: Character[]
   locations?: Location[]
   props?: Prop[]

@@ -12,6 +12,7 @@ import { useProjectData, useEpisodeData, useUserModels } from '@/lib/query/hooks
 import { queryKeys } from '@/lib/query/keys'
 import NovelPromotionWorkspace from './modes/novel-promotion/NovelPromotionWorkspace'
 import SmartImportWizard, { SplitEpisode } from './modes/novel-promotion/components/SmartImportWizard'
+import AppendNovelWizard from './modes/novel-promotion/components/AppendNovelWizard'
 import { resolveTaskPresentationState } from '@/lib/task/presentation'
 import { resolveSelectedEpisodeId } from './episode-selection'
 import { ModelCapabilityDropdown } from '@/components/ui/config-modals/ModelCapabilityDropdown'
@@ -19,6 +20,7 @@ import { AppIcon } from '@/components/ui/icons'
 import { readConfiguredAnalysisModel, shouldGuideToModelSetup } from '@/lib/workspace/model-setup'
 import { useRouter } from '@/i18n/navigation'
 import { readApiErrorMessage } from '@/lib/api/read-error-message'
+import { useWorkspaceState } from '@/hooks/workspace/useWorkspaceState'
 
 // 有效的stage值
 const VALID_STAGES = ['config', 'script', 'assets', 'text-storyboard', 'storyboard', 'videos', 'voice', 'editor'] as const
@@ -75,6 +77,12 @@ export default function ProjectDetailPage() {
   const [isModelSetupModalOpen, setIsModelSetupModalOpen] = useState(false)
   const [modelSetupSaving, setModelSetupSaving] = useState(false)
 
+  // 追加导入小说状态
+  const [isAppendNovelWizardOpen, setIsAppendNovelWizardOpen] = useState(false)
+
+  // 🔥 工作区状态持久化
+  const { state: savedState, saveEpisodeId, saveStage, saveSearchQuery } = useWorkspaceState(projectId)
+
   const userModelsQuery = useUserModels()
   const llmModelOptions = userModelsQuery.data?.llm || []
 
@@ -108,8 +116,7 @@ export default function ProjectDetailPage() {
 
   // Stage 状态完全由 URL 控制，不再从数据库同步
   // 如果 URL 没有 stage 参数，默认使用 'config'
-  // 🚧 剪辑阶段 (editor) 暂时禁用，自动重定向到成片阶段 (videos)
-  const effectiveStage = currentUrlStage === 'editor' ? 'videos' : (currentUrlStage || 'config')
+  const effectiveStage = currentUrlStage || 'config'
 
   // 获取剧集列表
   const novelPromotionData = project?.novelPromotionData as NovelPromotionData | undefined
@@ -193,13 +200,47 @@ export default function ProjectDetailPage() {
   }, [shouldGateImportWizardByModel])
 
   // 初始化 URL：无效/缺失 episode 时，统一回写默认 episode
+  // 优先级：URL参数 > localStorage > 第一个剧集
   useEffect(() => {
     if (!project || isGlobalAssetsView || episodes.length === 0) return
+    // URL 已有有效 episode，无需恢复
     if (urlEpisodeId && episodes.some((episode) => episode.id === urlEpisodeId)) return
     if (selectedEpisodeId) {
       updateUrlParams({ episode: selectedEpisodeId })
     }
   }, [episodes, isGlobalAssetsView, project, selectedEpisodeId, updateUrlParams, urlEpisodeId])
+
+  // 🔥 从 localStorage 恢复状态（仅在 URL 没有参数时）
+  useEffect(() => {
+    if (!project || isGlobalAssetsView || episodes.length === 0) return
+    // URL 已有参数，不恢复
+    if (urlEpisodeId || currentUrlStage) return
+
+    // 尝试从 localStorage 恢复
+    const savedEpisodeId = savedState.episodeId
+    const savedStage = savedState.stage
+
+    // 检查保存的剧集是否仍然存在
+    if (savedEpisodeId && episodes.some(ep => ep.id === savedEpisodeId)) {
+      updateUrlParams({
+        episode: savedEpisodeId,
+        ...(savedStage && VALID_STAGES.includes(savedStage as Stage) ? { stage: savedStage } : {}),
+      })
+    }
+  }, [project, isGlobalAssetsView, episodes, urlEpisodeId, currentUrlStage, savedState, updateUrlParams])
+
+  // 🔥 状态变化时保存到 localStorage
+  useEffect(() => {
+    if (selectedEpisodeId) {
+      saveEpisodeId(selectedEpisodeId)
+    }
+  }, [selectedEpisodeId, saveEpisodeId])
+
+  useEffect(() => {
+    if (effectiveStage) {
+      saveStage(effectiveStage)
+    }
+  }, [effectiveStage, saveStage])
 
   // 创建剧集
   const handleCreateEpisode = async (name: string, description?: string) => {
@@ -306,6 +347,25 @@ export default function ProjectDetailPage() {
     setIsGlobalAssetsView(false)
     // 同步到URL
     updateUrlParams({ episode: episodeId })
+  }
+
+  // 打开追加导入小说向导
+  const handleOpenAppendNovel = () => {
+    setIsAppendNovelWizardOpen(true)
+  }
+
+  // 追加导入小说完成
+  const handleAppendNovelComplete = async (newEpisodeIds: string[]) => {
+    _ulogInfo('[Page] handleAppendNovelComplete 被调用，新剧集数:', newEpisodeIds.length)
+    setIsAppendNovelWizardOpen(false)
+
+    // 刷新项目数据
+    queryClient.invalidateQueries({ queryKey: queryKeys.projectData(projectId) })
+
+    // 如果有新剧集，跳转到第一个新剧集
+    if (newEpisodeIds.length > 0) {
+      updateUrlParams({ episode: newEpisodeIds[0] })
+    }
   }
 
   const handleSaveDefaultAnalysisModel = async () => {
@@ -521,6 +581,9 @@ export default function ProjectDetailPage() {
               onEpisodeCreate={() => handleCreateEpisode(`${t('episode')} ${episodes.length + 1}`)}
               onEpisodeRename={handleRenameEpisode}
               onEpisodeDelete={handleDeleteEpisode}
+              onImportNovel={handleOpenAppendNovel}
+              savedSearchQuery={savedState.searchQuery}
+              onSearchQueryChange={saveSearchQuery}
             />
           ) : (
             // 加载中
@@ -532,6 +595,16 @@ export default function ProjectDetailPage() {
             </div>
           )}
         </div>
+
+        {/* 追加导入小说向导 - 放在主内容区外部，确保在所有条件下都能渲染 */}
+        {isAppendNovelWizardOpen && (
+          <AppendNovelWizard
+            projectId={projectId}
+            onClose={() => setIsAppendNovelWizardOpen(false)}
+            onComplete={handleAppendNovelComplete}
+            existingEpisodeCount={episodes.length}
+          />
+        )}
       </main>
     </div>
   )

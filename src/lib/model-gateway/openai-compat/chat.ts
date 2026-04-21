@@ -14,6 +14,7 @@ export async function runOpenAICompatChatCompletion(input: OpenAICompatChatReque
     model: input.modelId,
     messages: input.messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
     temperature: input.temperature,
+    max_tokens: input.maxTokens,
   })
 }
 

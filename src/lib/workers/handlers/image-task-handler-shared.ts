@@ -109,6 +109,15 @@ async function generateImageToStorage(params: {
   }
   label?: string
 }) {
+  // 调试日志：打印所有传入参数
+  console.log(`[generateImageToStorage] params:`, {
+    modelId: params.modelId,
+    targetId: params.targetId,
+    keyPrefix: params.keyPrefix,
+    options: params.options,
+    label: params.label,
+  })
+
   const source = await resolveImageSourceFromGeneration(params.job, {
     userId: params.userId,
     modelId: params.modelId,
@@ -116,10 +125,15 @@ async function generateImageToStorage(params: {
     options: params.options,
   })
 
+  console.log(`[generateImageToStorage] source: ${source.substring(0, 100)}...`)
+
   const uploadSource = params.label
     ? await withLabelBar(source, params.label)
     : source
   const cosKey = await uploadImageSourceToCos(uploadSource, params.keyPrefix, params.targetId)
+
+  console.log(`[generateImageToStorage] cosKey: ${cosKey}`)
+
   return cosKey
 }
 

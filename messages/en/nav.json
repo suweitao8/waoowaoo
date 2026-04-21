@@ -1,5 +1,6 @@
 {
   "workspace": "Workspace",
+  "comfyui": "ComfyUI Test",
   "assetHub": "Asset Hub",
   "profile": "Settings",
   "downloadLogs": "Download Logs",

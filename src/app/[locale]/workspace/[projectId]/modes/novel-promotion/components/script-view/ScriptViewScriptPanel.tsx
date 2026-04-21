@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { logWarn as _ulogWarn } from '@/lib/logging/core'
 import { AppIcon } from '@/components/ui/icons'
+import { VoiceGenerationButtons } from './VoiceGenerationButtons'
 
 interface Clip {
   id: string
@@ -58,6 +59,14 @@ interface ScriptViewScriptPanelProps {
   onClipUpdate?: (clipId: string, data: Partial<Clip>) => void
   t: (key: string, values?: Record<string, unknown>) => string
   tScript: (key: string, values?: Record<string, unknown>) => string
+  tJump?: (key: string, values?: Record<string, unknown>) => string
+  /** 角色列表（用于音色绑定查找） */
+  characters?: Array<{
+    id: string
+    name: string
+    voiceId?: string | null
+    customVoiceUrl?: string | null
+  }>
 }
 
 function EditableText({
@@ -122,22 +131,149 @@ export default function ScriptViewScriptPanel({
   onClipUpdate,
   t,
   tScript,
+  tJump,
+  characters = [],
 }: ScriptViewScriptPanelProps) {
+  const [jumpInput, setJumpInput] = useState('')
+  const [jumpError, setJumpError] = useState<string | null>(null)
+  const errorTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const clipRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+
+  // 检查角色是否绑定了音色
+  const checkCharacterVoiceBinding = useCallback((characterName: string): boolean => {
+    const char = characters.find((c) => {
+      // 支持别名（如 "张三/老张" 格式）
+      const aliases = c.name.split('/').map((a) => a.trim())
+      return aliases.includes(characterName) || c.name === characterName
+    })
+    if (!char) return false
+    return !!(char.voiceId || char.customVoiceUrl)
+  }, [characters])
+
   const handleScriptSave = async (clipId: string, newContent: string, isJson: boolean) => {
     if (!onClipUpdate) return
     const updateData: Partial<Clip> = isJson ? { screenplay: newContent } : { content: newContent }
     await onClipUpdate(clipId, updateData)
   }
 
+  const handleJumpToChapter = useCallback(() => {
+    const inputValue = jumpInput.trim()
+    if (!inputValue) {
+      return
+    }
+
+    // Check if input is a number
+    const chapterNum = parseInt(inputValue, 10)
+
+    if (!isNaN(chapterNum) && /^\d+$/.test(inputValue)) {
+      // Numeric input: jump to chapter by number
+      if (chapterNum < 1) {
+        const errorMsg = tJump ? tJump('errorInvalid') : 'Please enter a valid number'
+        setJumpError(errorMsg)
+        if (errorTimeoutRef.current) {
+          clearTimeout(errorTimeoutRef.current)
+        }
+        errorTimeoutRef.current = setTimeout(() => setJumpError(null), 2000)
+        return
+      }
+
+      if (chapterNum > clips.length) {
+        const errorMsg = tJump ? tJump('errorOutOfRange', { max: clips.length }) : `Please enter 1-${clips.length}`
+        setJumpError(errorMsg)
+        if (errorTimeoutRef.current) {
+          clearTimeout(errorTimeoutRef.current)
+        }
+        errorTimeoutRef.current = setTimeout(() => setJumpError(null), 2000)
+        return
+      }
+
+      // Clear any existing error
+      setJumpError(null)
+      const targetClip = clips[chapterNum - 1]
+      if (targetClip) {
+        onSelectClip(targetClip.id)
+        // Scroll to the target clip
+        const clipElement = clipRefs.current.get(targetClip.id)
+        if (clipElement) {
+          clipElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }
+    } else {
+      // Text input: search by summary/content
+      const searchLower = inputValue.toLowerCase()
+      const matchedClip = clips.find((clip) => {
+        const summaryMatch = clip.summary?.toLowerCase().includes(searchLower)
+        const contentMatch = clip.content?.toLowerCase().includes(searchLower)
+        return summaryMatch || contentMatch
+      })
+
+      if (matchedClip) {
+        setJumpError(null)
+        onSelectClip(matchedClip.id)
+        const clipElement = clipRefs.current.get(matchedClip.id)
+        if (clipElement) {
+          clipElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      } else {
+        const errorMsg = tJump ? tJump('errorNotFound') : 'No matching chapter found'
+        setJumpError(errorMsg)
+        if (errorTimeoutRef.current) {
+          clearTimeout(errorTimeoutRef.current)
+        }
+        errorTimeoutRef.current = setTimeout(() => setJumpError(null), 2000)
+        return
+      }
+    }
+
+    setJumpInput('')
+  }, [jumpInput, clips, onSelectClip, tJump])
+
+  const handleJumpKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleJumpToChapter()
+    }
+  }, [handleJumpToChapter])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current)
+      }
+    }
+  }, [])
+
   return (
     <div className="col-span-12 lg:col-span-8 flex flex-col min-h-[400px] lg:h-full gap-4">
-      <div className="flex justify-between items-end px-2">
+      <div className="flex justify-between items-end px-2 flex-wrap gap-2">
         <h2 className="text-xl font-bold text-[var(--glass-text-primary)] flex items-center gap-2">
           <span className="w-1.5 h-6 bg-[var(--glass-accent-from)] rounded-full" /> {tScript('scriptBreakdown')}
         </h2>
-        <span className="text-sm text-[var(--glass-text-tertiary)]">
-          {tScript('splitCount', { count: clips.length })}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-[var(--glass-text-tertiary)]">
+            {tScript('splitCount', { count: clips.length })}
+          </span>
+          {/* Chapter Jump Input */}
+          <div className="flex flex-col items-end">
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={jumpInput}
+                onChange={(e) => setJumpInput(e.target.value)}
+                onKeyDown={handleJumpKeyDown}
+                placeholder={tJump ? tJump('placeholder') : '#'}
+                className="w-32 px-2 py-1 text-sm bg-[var(--glass-bg-surface)] border border-[var(--glass-stroke-base)] rounded-lg text-[var(--glass-text-primary)] placeholder:text-[var(--glass-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--glass-focus-ring-strong)] focus:border-[var(--glass-stroke-focus)]"
+                disabled={clips.length === 0}
+              />
+            </div>
+            {jumpError && (
+              <span className="text-xs text-[var(--glass-tone-danger-fg)] mt-1 animate-fadeIn">
+                {jumpError}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="flex-1 glass-surface-elevated overflow-hidden flex flex-col relative w-full min-h-[300px]">
@@ -154,6 +290,13 @@ export default function ScriptViewScriptPanel({
               return (
                 <div
                   key={clip.id}
+                  ref={(el) => {
+                    if (el) {
+                      clipRefs.current.set(clip.id, el)
+                    } else {
+                      clipRefs.current.delete(clip.id)
+                    }
+                  }}
                   onClick={() => onSelectClip(clip.id)}
                   className={`
                     group p-5 border-[1.5px] rounded-2xl transition-all cursor-pointer relative bg-[var(--glass-bg-surface)]
@@ -247,25 +390,14 @@ export default function ScriptViewScriptPanel({
                           {/* 内容流 - 高密度胶囊文本流 */}
                           <div className="flex flex-col gap-2">
                             {scene.content?.map((item, itemIdx: number) => {
+                              // action 类型不再渲染，但保留数据结构向后兼容
                               if (item.type === 'action') {
-                                return (
-                                  <div key={itemIdx} className="text-sm text-[var(--glass-text-secondary)] bg-[var(--glass-bg-muted)]/60 border border-[var(--glass-stroke-base)] px-2.5 py-1 rounded-lg flex items-start gap-2 w-fit max-w-full leading-[1.5]">
-                                    <AppIcon name="clapperboard" className="w-3.5 h-3.5 text-[var(--glass-text-tertiary)] shrink-0 mt-[2px]" />
-                                    <EditableText
-                                      text={item.text}
-                                      onSave={(newVal) => {
-                                        const newScreenplay = JSON.parse(JSON.stringify(screenplay))
-                                        newScreenplay.scenes[sceneIdx].content[itemIdx].text = newVal
-                                        void handleScriptSave(clip.id, JSON.stringify(newScreenplay), true)
-                                      }}
-                                      tScript={tScript}
-                                    />
-                                  </div>
-                                )
+                                return null
                               }
                               if (item.type === 'dialogue') {
+                                const hasVoiceBinding = checkCharacterVoiceBinding(item.character)
                                 return (
-                                  <div key={itemIdx} className="flex flex-wrap items-baseline gap-2">
+                                  <div key={itemIdx} className="flex flex-wrap items-center gap-2">
                                     <span className="inline-flex items-center text-[13px] font-bold text-[var(--glass-tone-info-fg)] bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)]/40 px-2.5 py-0.5 rounded-full shrink-0">
                                       {item.character}
                                     </span>
@@ -280,16 +412,29 @@ export default function ScriptViewScriptPanel({
                                         tScript={tScript}
                                       />
                                     </div>
+                                    <VoiceGenerationButtons
+                                      type="dialogue"
+                                      character={item.character}
+                                      t={tScript}
+                                      hasVoiceBinding={hasVoiceBinding}
+                                      onBindingRequired={() => {
+                                        console.log(`[Voice] 角色 "${item.character}" 未绑定音色，请先在资产库中绑定`)
+                                      }}
+                                    />
                                   </div>
                                 )
                               }
                               if (item.type === 'voiceover') {
                                 return (
-                                  <div key={itemIdx} className="flex flex-wrap items-baseline gap-2">
+                                  <div key={itemIdx} className="flex flex-wrap items-center gap-2">
                                     <span className="inline-flex items-center text-[13px] font-bold text-[var(--glass-tone-info-fg)]/80 bg-[var(--glass-tone-info-bg)]/50 border border-[var(--glass-stroke-focus)]/20 px-2.5 py-0.5 rounded-full shrink-0 italic">
                                       {tScript('screenplay.narration')}
                                     </span>
                                     <p className="text-[15px] text-[var(--glass-text-secondary)] font-medium italic leading-[1.5] flex-1">{item.text}</p>
+                                    <VoiceGenerationButtons
+                                      type="voiceover"
+                                      t={tScript}
+                                    />
                                   </div>
                                 )
                               }

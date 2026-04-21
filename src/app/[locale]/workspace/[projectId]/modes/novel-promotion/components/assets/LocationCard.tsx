@@ -181,7 +181,8 @@ export default function LocationCard({
   const hasPreviousVersion = location.images?.some(img => img.previousImageUrl) || false
 
   const showSelectionMode = displaySlotCount > 1
-  const singleImageAspectClassName = assetType === 'prop' ? 'aspect-[3/2]' : 'aspect-square'
+  // 道具使用 16:9，场景也使用 16:9
+  const singleImageAspectClassName = 'aspect-video' // 16:9
 
   // 选择模式：显示名字在上，三张图片在下
   if (showSelectionMode) {
@@ -338,7 +339,8 @@ export default function LocationCard({
 
   const compactHeaderActions = (
     <>
-      {onCopyFromGlobal && (
+      {/* 从资产中心导入按钮 - 暂时隐藏 */}
+      {/* {onCopyFromGlobal && (
           <button
             onClick={onCopyFromGlobal}
           className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--glass-tone-info-bg)] flex items-center justify-center transition-colors"
@@ -346,7 +348,7 @@ export default function LocationCard({
         >
           <AppIcon name="arrowDownCircle" className="w-3.5 h-3.5 text-[var(--glass-tone-info-fg)]" />
         </button>
-      )}
+      )} */}
         <button
           onClick={onEdit}
         className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--glass-bg-muted)] flex items-center justify-center transition-colors"

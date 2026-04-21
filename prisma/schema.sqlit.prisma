@@ -119,12 +119,12 @@ model NovelPromotionEpisode {
   novelPromotionProjectId String
   episodeNumber           Int
   name                    String
-  description             String?
-  novelText               String?
-  audioUrl                String?
+  description             String?                    @db.Text
+  novelText               String?                    @db.Text
+  audioUrl                String?                    @db.Text
   audioMediaId            String?
   audioMedia              MediaObject?               @relation("NovelPromotionEpisodeAudioMedia", fields: [audioMediaId], references: [id], onDelete: SetNull)
-  srtContent              String?
+  srtContent              String?                    @db.Text
   createdAt               DateTime                   @default(now())
   updatedAt               DateTime                   @default(now()) @updatedAt
   speakerVoices           String?
@@ -257,12 +257,15 @@ model NovelPromotionProject {
   capabilityOverrides String?
   workflowMode    String                    @default("srt")
   lastEpisodeId   String?
-  imageResolution String                    @default("2K")
-  importStatus    String?
-  characters      NovelPromotionCharacter[]
-  episodes        NovelPromotionEpisode[]
-  locations       NovelPromotionLocation[]
-  project         Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  imageResolution     String                    @default("2K")
+  importStatus        String?
+  narratorVoiceId     String?
+  narratorVoiceType   String?
+  narratorVoicePrompt String?
+  characters          NovelPromotionCharacter[]
+  episodes            NovelPromotionEpisode[]
+  locations           NovelPromotionLocation[]
+  project             Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("novel_promotion_projects")
 }

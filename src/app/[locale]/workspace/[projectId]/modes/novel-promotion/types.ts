@@ -33,4 +33,7 @@ export interface NovelPromotionWorkspaceProps {
   onEpisodeCreate?: () => void
   onEpisodeRename?: (episodeId: string, newName: string) => void
   onEpisodeDelete?: (episodeId: string) => void
+  onImportNovel?: () => void
+  savedSearchQuery?: string
+  onSearchQueryChange?: (query: string) => void
 }

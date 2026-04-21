@@ -2,7 +2,7 @@
 import { logError as _ulogError } from '@/lib/logging/core'
 import { useTranslations } from 'next-intl'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { AppIcon } from '@/components/ui/icons'
 
 interface Episode {
@@ -45,6 +45,12 @@ export default function Sidebar({
     const [editingId, setEditingId] = useState<string | null>(null)
     const [editingName, setEditingName] = useState('')
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
+
+    // 搜索功能
+    const [searchInput, setSearchInput] = useState('')
+    const [searchError, setSearchError] = useState<string | null>(null)
+    const searchErrorTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const episodeRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
     // 可拖动位置
     const [position, setPosition] = useState({ y: 200 }) // 初始Y位置
@@ -117,6 +123,90 @@ export default function Sidebar({
         }
     }
 
+    // 搜索/跳转到剧集
+    const handleSearchOrJump = useCallback(() => {
+        const inputValue = searchInput.trim()
+        if (!inputValue) {
+            return
+        }
+
+        // 检查是否是数字
+        const episodeNum = parseInt(inputValue, 10)
+
+        if (!isNaN(episodeNum) && /^\d+$/.test(inputValue)) {
+            // 数字输入：跳转到指定剧集
+            if (episodeNum < 1) {
+                setSearchError(t('sidebar.errorInvalid'))
+                if (searchErrorTimeoutRef.current) {
+                    clearTimeout(searchErrorTimeoutRef.current)
+                }
+                searchErrorTimeoutRef.current = setTimeout(() => setSearchError(null), 2000)
+                return
+            }
+
+            if (episodeNum > episodes.length) {
+                setSearchError(t('sidebar.errorOutOfRange', { max: episodes.length }))
+                if (searchErrorTimeoutRef.current) {
+                    clearTimeout(searchErrorTimeoutRef.current)
+                }
+                searchErrorTimeoutRef.current = setTimeout(() => setSearchError(null), 2000)
+                return
+            }
+
+            // 跳转到目标剧集
+            setSearchError(null)
+            const targetEpisode = episodes.find(ep => ep.episodeNumber === episodeNum)
+            if (targetEpisode) {
+                onEpisodeSelect(targetEpisode.id)
+                setIsExpanded(false)
+                // 滚动到目标剧集
+                const episodeElement = episodeRefs.current.get(targetEpisode.id)
+                if (episodeElement) {
+                    episodeElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }
+            }
+        } else {
+            // 文本输入：搜索剧集名称
+            const searchLower = inputValue.toLowerCase()
+            const matchedEpisode = episodes.find(ep => ep.name.toLowerCase().includes(searchLower))
+
+            if (matchedEpisode) {
+                setSearchError(null)
+                onEpisodeSelect(matchedEpisode.id)
+                setIsExpanded(false)
+                const episodeElement = episodeRefs.current.get(matchedEpisode.id)
+                if (episodeElement) {
+                    episodeElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }
+            } else {
+                setSearchError(t('sidebar.errorNotFound'))
+                if (searchErrorTimeoutRef.current) {
+                    clearTimeout(searchErrorTimeoutRef.current)
+                }
+                searchErrorTimeoutRef.current = setTimeout(() => setSearchError(null), 2000)
+                return
+            }
+        }
+
+        setSearchInput('')
+    }, [searchInput, episodes, onEpisodeSelect, t])
+
+    const handleSearchKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            handleSearchOrJump()
+        }
+    }, [handleSearchOrJump])
+
+    // 清理 timeout
+    useEffect(() => {
+        return () => {
+            if (searchErrorTimeoutRef.current) {
+                clearTimeout(searchErrorTimeoutRef.current)
+            }
+        }
+    }, [])
+
     return (
         <>
             {/* 触发条 - 固定在左侧，可拖动 */}
@@ -164,8 +254,8 @@ export default function Sidebar({
 
                     {/* 侧边面板 */}
                     <div
-                        className="fixed left-12 glass-surface-modal rounded-r-xl z-50 w-64 max-h-[70vh] overflow-hidden flex flex-col"
-                        style={{ top: position.y - 50 }}
+                        className="fixed left-12 glass-surface-modal rounded-r-xl z-50 w-64 overflow-hidden flex flex-col"
+                        style={{ top: position.y - 50, bottom: 100 }}
                     >
                         {/* 标题栏 */}
                         <div className="p-4 border-b border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)]">
@@ -210,7 +300,17 @@ export default function Sidebar({
                                 </div>
                             ) : (
                                 episodes.map((ep) => (
-                                    <div key={ep.id} className="group relative">
+                                    <div
+                                        key={ep.id}
+                                        ref={(el) => {
+                                            if (el) {
+                                                episodeRefs.current.set(ep.id, el)
+                                            } else {
+                                                episodeRefs.current.delete(ep.id)
+                                            }
+                                        }}
+                                        className="group relative"
+                                    >
                                         {editingId === ep.id ? (
                                             // 编辑模式
                                             <div className="flex gap-1">
@@ -349,6 +449,30 @@ export default function Sidebar({
                                     <span>+</span>
                                     <span>{t('sidebar.addEpisode')}</span>
                                 </button>
+                            )}
+                        </div>
+
+                        {/* 搜索/跳转框 - 放在添加剧集按钮下方 */}
+                        <div className="p-3 pt-0">
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    onKeyDown={handleSearchKeyDown}
+                                    placeholder={t('sidebar.searchPlaceholder')}
+                                    className="glass-input-base w-full px-3 py-1.5 text-sm rounded-lg pr-8"
+                                    disabled={episodes.length === 0}
+                                />
+                                <AppIcon
+                                    name="search"
+                                    className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--glass-text-tertiary)]"
+                                />
+                            </div>
+                            {searchError && (
+                                <span className="text-xs text-[var(--glass-tone-danger-fg)] mt-1 block animate-fadeIn">
+                                    {searchError}
+                                </span>
                             )}
                         </div>
                     </div>

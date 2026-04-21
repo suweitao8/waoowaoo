@@ -242,6 +242,10 @@ export const GET = apiHandler(async (
       editModel: true,
       videoModel: true,
       audioModel: true,
+      projectType: true,
+      narratorVoiceId: true,
+      narratorVoiceType: true,
+      narratorVoicePrompt: true,
     }})
 
   const storedOverrides = parseStoredCapabilitySelections(projectData?.capabilityOverrides)
@@ -259,7 +263,11 @@ export const GET = apiHandler(async (
   const cleanedOverrides = sanitizeCapabilityOverrides(storedOverrides, modelContextMap)
 
   return NextResponse.json({
-    capabilityOverrides: cleanedOverrides})
+    capabilityOverrides: cleanedOverrides,
+    narratorVoiceId: projectData?.narratorVoiceId || null,
+    narratorVoiceType: projectData?.narratorVoiceType || null,
+    narratorVoicePrompt: projectData?.narratorVoicePrompt || null,
+  })
 })
 
 // PATCH - 更新小说推文项目配置
@@ -295,7 +303,18 @@ export const PATCH = apiHandler(async (
     'analysisModel', 'characterModel', 'locationModel', 'storyboardModel',
     'editModel', 'videoModel', 'audioModel', 'videoRatio', 'artStyle',
     'ttsRate', 'lipSyncEnabled', 'lipSyncMode', 'capabilityOverrides',
+    'projectType', 'narratorVoiceId', 'narratorVoiceType', 'narratorVoicePrompt',
   ] as const
+
+  // 验证 projectType 值
+  const validProjectTypes = ['animation', 'audiobook'] as const
+  if (body.projectType !== undefined && !validProjectTypes.includes(body.projectType)) {
+    throw new ApiError('INVALID_PARAMS', {
+      code: 'INVALID_PROJECT_TYPE',
+      field: 'projectType',
+      message: 'projectType must be either "animation" or "audiobook"',
+    })
+  }
 
   const updateData: Record<string, unknown> = {}
   for (const field of allowedProjectFields) {

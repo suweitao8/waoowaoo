@@ -37,6 +37,7 @@ export type AiStepExecutionInput = {
   action: string
   meta: AiStepMeta
   temperature?: number
+  maxTokens?: number
   reasoning?: boolean
   reasoningEffort?: 'minimal' | 'low' | 'medium' | 'high'
 }

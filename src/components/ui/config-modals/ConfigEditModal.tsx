@@ -14,7 +14,9 @@ import type {
 import { filterNormalVideoModelOptions } from '@/lib/model-capabilities/video-model-options'
 import { RatioSelector, StyleSelector } from './config-modal-selectors'
 import { ModelCapabilityDropdown } from './ModelCapabilityDropdown'
+import { NarratorVoiceConfigSection } from './NarratorVoiceConfigSection'
 import { AppIcon } from '@/components/ui/icons'
+import type { VoiceDesignMutationPayload, VoiceDesignMutationResult } from '@/components/voice/voice-design-shared'
 
 interface ModelOption {
     value: string
@@ -43,6 +45,7 @@ interface SettingsModalProps {
     availableModels?: Partial<UserModels>
     modelsLoaded?: boolean
     artStyle?: string
+    projectType?: string
     analysisModel?: string
     characterModel?: string
     locationModel?: string
@@ -54,7 +57,11 @@ interface SettingsModalProps {
     videoRatio?: string
     capabilityOverrides?: CapabilitySelections
     ttsRate?: string
+    narratorVoiceId?: string
+    narratorVoiceType?: string
+    narratorVoicePrompt?: string
     onArtStyleChange?: (value: string) => void
+    onProjectTypeChange?: (value: string) => void
     onAnalysisModelChange?: (value: string) => void
     onCharacterModelChange?: (value: string) => void
     onLocationModelChange?: (value: string) => void
@@ -66,6 +73,8 @@ interface SettingsModalProps {
     onVideoRatioChange?: (value: string) => void
     onCapabilityOverridesChange?: (value: CapabilitySelections) => void
     onTTSRateChange?: (value: string) => void
+    onNarratorVoiceChange?: (voiceId: string, voicePrompt: string) => void
+    onDesignNarratorVoice?: (payload: VoiceDesignMutationPayload) => Promise<VoiceDesignMutationResult>
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -128,6 +137,7 @@ export function SettingsModal({
     availableModels,
     modelsLoaded = false,
     artStyle = 'american-comic',
+    projectType = 'audiobook',
     analysisModel,
     characterModel,
     locationModel,
@@ -138,7 +148,11 @@ export function SettingsModal({
     videoRatio = '9:16',
     capabilityOverrides,
     ttsRate,
+    narratorVoiceId,
+    narratorVoiceType,
+    narratorVoicePrompt,
     onArtStyleChange,
+    onProjectTypeChange,
     onAnalysisModelChange,
     onCharacterModelChange,
     onLocationModelChange,
@@ -149,6 +163,8 @@ export function SettingsModal({
     onVideoRatioChange,
     onCapabilityOverridesChange,
     onTTSRateChange,
+    onNarratorVoiceChange,
+    onDesignNarratorVoice,
 }: SettingsModalProps) {
     const t = useTranslations('configModal')
     const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle')
@@ -365,6 +381,34 @@ export function SettingsModal({
                 </div>
                 <p className="text-[12px] text-[var(--glass-text-tertiary)] mb-6">{t('subtitle')}</p>
                 <div className="space-y-5 flex-1 min-h-0 overflow-y-auto app-scrollbar">
+                    {/* 项目类型选择 */}
+                    <div className="glass-surface-soft p-5 sm:p-6 space-y-4">
+                        <h3 className="text-sm font-semibold text-[var(--glass-text-tertiary)]">{t('projectType')}</h3>
+                        <div className="space-y-2">
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    disabled
+                                    className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium glass-btn-secondary opacity-50 cursor-not-allowed"
+                                >
+                                    {t('projectTypeAnimation')}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleChange(onProjectTypeChange)('audiobook')}
+                                    className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                                        projectType === 'audiobook'
+                                            ? 'glass-btn-primary'
+                                            : 'glass-btn-secondary'
+                                    }`}
+                                >
+                                    {t('projectTypeAudiobook')}
+                                </button>
+                            </div>
+                            <p className="text-xs text-[var(--glass-text-tertiary)]">{t('projectTypeHint')}</p>
+                        </div>
+                    </div>
+
                     <div className="glass-surface-soft p-5 sm:p-6 space-y-4">
                         <h3 className="text-sm font-semibold text-[var(--glass-text-tertiary)]">{t('visualSettings')}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -501,6 +545,19 @@ export function SettingsModal({
                             </div>
                         </div>
                     </div>
+
+                    {onDesignNarratorVoice && onNarratorVoiceChange && (
+                        <NarratorVoiceConfigSection
+                            narratorVoiceId={narratorVoiceId || null}
+                            narratorVoiceType={narratorVoiceType || null}
+                            narratorVoicePrompt={narratorVoicePrompt || null}
+                            onUpdateNarratorVoice={(voiceId, voicePrompt) => {
+                                onNarratorVoiceChange?.(voiceId, voicePrompt)
+                                showSaved()
+                            }}
+                            onDesignVoice={onDesignNarratorVoice}
+                        />
+                    )}
 
 
                 </div>

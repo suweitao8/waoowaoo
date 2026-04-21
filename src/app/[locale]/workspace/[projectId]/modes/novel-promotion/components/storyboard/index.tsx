@@ -17,6 +17,7 @@ interface StoryboardStageProps {
   storyboards: NovelPromotionStoryboard[]
   clips: NovelPromotionClip[]
   videoRatio: string
+  projectType?: string | null
   onBack: () => void
   onNext: () => void
   isTransitioning?: boolean
@@ -28,6 +29,7 @@ export default function StoryboardStage({
   storyboards: initialStoryboards,
   clips,
   videoRatio,
+  projectType,
   onBack,
   onNext,
   isTransitioning = false,
@@ -148,6 +150,7 @@ export default function StoryboardStage({
         isNextDisabled={isTransitioning || localStoryboards.length === 0}
         transitioningState={transitioningState}
         onNext={onNext}
+        projectType={projectType}
       >
         <StoryboardToolbar
           totalSegments={sortedStoryboards.length}

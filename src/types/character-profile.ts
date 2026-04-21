@@ -23,8 +23,14 @@ export interface CharacterProfileData {
     /** 社会阶层 */
     social_class: string
 
-    /** 职业 (可选) */
-    occupation?: string
+    /** 身份 (可选，如: 店老板、小妹妹、上班族等) */
+    identity?: string
+
+    /** 身高 (可选) */
+    height?: string
+
+    /** 外貌体型特征 (可选) */
+    body_type?: string
 
     /** 服装华丽度 (1-5) */
     costume_tier: CostumeTier

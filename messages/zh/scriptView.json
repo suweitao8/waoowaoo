@@ -66,5 +66,18 @@
         "missingAssetsTipLink": "中生成所有出场角色和场景的形象",
         "generating": "正在生成画面...",
         "startGenerate": "确认并开始绘制 →"
+    },
+    "jump": {
+        "placeholder": "跳转/搜索章节",
+        "errorOutOfRange": "请输入 1-{max}",
+        "errorInvalid": "请输入有效数字",
+        "errorNotFound": "未找到匹配的章节"
+    },
+    "voice": {
+        "generateDialogue": "生成 {character} 的语音",
+        "generateVoiceover": "生成旁白语音",
+        "preview": "预览语音",
+        "noVoice": "暂无语音",
+        "bindVoiceFirst": "请先为该角色绑定音色"
     }
 }

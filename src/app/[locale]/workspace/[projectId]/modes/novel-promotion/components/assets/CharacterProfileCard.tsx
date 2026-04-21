@@ -137,10 +137,10 @@ export default function CharacterProfileCard({
                         <span className="text-[var(--glass-text-tertiary)] w-[2.5rem] shrink-0 text-xs">{t('characterProfile.summary.class')}</span>
                         <span className="text-[var(--glass-text-primary)]">{profileData.social_class}</span>
                     </div>
-                    {profileData.occupation && (
+                    {profileData.identity && (
                         <div className="flex items-center gap-2 text-sm">
-                            <span className="text-[var(--glass-text-tertiary)] w-[2.5rem] shrink-0 text-xs">{t('characterProfile.summary.occupation')}</span>
-                            <span className="text-[var(--glass-text-primary)]">{profileData.occupation}</span>
+                            <span className="text-[var(--glass-text-tertiary)] w-[2.5rem] shrink-0 text-xs">{t('characterProfile.summary.identity')}</span>
+                            <span className="text-[var(--glass-text-primary)]">{profileData.identity}</span>
                         </div>
                     )}
                     <div className="flex items-center gap-2 text-sm">

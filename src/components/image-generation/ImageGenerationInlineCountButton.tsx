@@ -52,7 +52,10 @@ export default function ImageGenerationInlineCountButton({
     : 'cursor-pointer'
   const resolvedActionClassName = (actionClassName || className).trim()
 
-  if (!showCountControl) {
+  // 当只有一个选项时，自动隐藏数量选择器
+  const shouldShowCountControl = showCountControl && options.length > 1
+
+  if (!shouldShowCountControl) {
     return (
       <button
         type="button"

@@ -14,14 +14,18 @@ interface CapsuleNavItem {
 interface UseWorkspaceStageNavigationParams {
   isAnyOperationRunning: boolean
   stageArtifacts: StageArtifactReadiness
+  projectType: string
   t: (key: string) => string
 }
 
 export function useWorkspaceStageNavigation({
   isAnyOperationRunning,
   stageArtifacts,
+  projectType,
   t,
 }: UseWorkspaceStageNavigationParams): CapsuleNavItem[] {
+  const isAudiobook = projectType === 'audiobook'
+
   const getStageStatus = (stageId: string): 'empty' | 'active' | 'processing' | 'ready' => {
     if (isAnyOperationRunning) return 'processing'
 
@@ -42,18 +46,24 @@ export function useWorkspaceStageNavigation({
     }
   }
 
-  return [
+  const stages: CapsuleNavItem[] = [
     { id: 'config', icon: 'S', label: t('stages.story'), status: getStageStatus('config') },
     { id: 'script', icon: 'A', label: t('stages.script'), status: getStageStatus('assets') },
     { id: 'storyboard', icon: 'B', label: t('stages.storyboard'), status: getStageStatus('storyboard') },
-    { id: 'videos', icon: 'V', label: t('stages.video'), status: getStageStatus('videos') },
-    {
-      id: 'editor',
-      icon: 'E',
-      label: t('stages.editor'),
-      status: 'empty',
-      disabled: true,
-      disabledLabel: t('stages.editorComingSoon'),
-    },
   ]
+
+  // 有声小说项目隐藏"成片"阶段
+  if (!isAudiobook) {
+    stages.push({ id: 'videos', icon: 'V', label: t('stages.video'), status: getStageStatus('videos') })
+  }
+
+  // 剪辑阶段
+  stages.push({
+    id: 'editor',
+    icon: 'E',
+    label: t('stages.editor'),
+    status: getStageStatus('editor'),
+  })
+
+  return stages
 }

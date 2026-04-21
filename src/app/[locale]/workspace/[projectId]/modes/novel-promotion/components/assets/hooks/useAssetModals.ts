@@ -3,13 +3,14 @@
 /**
  * useAssetModals - 资产编辑弹窗状态管理
  * 从 AssetsStage.tsx 提取
- * 
+ *
  * 🔥 V6.5 重构：直接订阅 useProjectAssets，消除 props drilling
  */
 
 import { useState, useCallback } from 'react'
 import { CharacterAppearance } from '@/types/project'
 import { useProjectAssets, type Character, type Location, type Prop } from '@/lib/query/hooks'
+import { CharacterProfileData, parseProfileData } from '@/types/character-profile'
 
 // 编辑弹窗状态类型
 interface EditingAppearance {
@@ -19,12 +20,15 @@ interface EditingAppearance {
     description: string
     descriptionIndex?: number
     introduction?: string | null  // 角色介绍
+    imagePrompt?: string | null   // AI 提示词
+    profileData?: CharacterProfileData | null  // 角色档案数据
 }
 
 interface EditingLocation {
     locationId: string
     locationName: string
     description: string
+    imagePrompt?: string
 }
 
 interface EditingProp {
@@ -113,18 +117,21 @@ export function useAssetModals({
         setEditingLocation({
             locationId,
             locationName: location.name,
-            description: description
+            description: description,
+            imagePrompt: image?.imagePrompt || undefined
         })
     }
 
     // 编辑角色形象
-    const handleEditAppearance = (characterId: string, characterName: string, appearance: CharacterAppearance, introduction?: string | null) => {
+    const handleEditAppearance = (characterId: string, characterName: string, appearance: CharacterAppearance, introduction?: string | null, profileDataJson?: string | null) => {
         setEditingAppearance({
             characterId,
             characterName,
             appearanceId: appearance.id,
             description: appearance.description || '',
-            introduction
+            introduction,
+            imagePrompt: appearance.imagePrompt,
+            profileData: parseProfileData(profileDataJson ?? null)
         })
     }
 
@@ -134,7 +141,8 @@ export function useAssetModals({
         setEditingLocation({
             locationId: location.id,
             locationName: location.name,
-            description: firstImage?.description || ''
+            description: firstImage?.description || '',
+            imagePrompt: firstImage?.imagePrompt || undefined
         })
     }
 

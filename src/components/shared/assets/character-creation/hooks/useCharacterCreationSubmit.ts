@@ -329,6 +329,7 @@ export function useCharacterCreationSubmit({
         await generateProjectCharacterImage.mutateAsync({
           characterId: createdCharacterId,
           appearanceId: createdAppearanceId,
+          artStyle,
           count: characterGenerationCount,
         })
       }

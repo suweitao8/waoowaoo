@@ -7,6 +7,9 @@ import { withInternalLLMStreamCallbacks } from '@/lib/llm-observe/internal-strea
 import { reportTaskProgress } from '@/lib/workers/shared'
 import { assertTaskActive } from '@/lib/workers/utils'
 import { TASK_TYPE, type TaskJobData } from '@/lib/task/types'
+import { submitTask } from '@/lib/task/submitter'
+import { buildDefaultTaskBillingInfo } from '@/lib/billing'
+import { getProjectModelConfig } from '@/lib/config-service'
 import {
   type AnyObj,
   parseVisualResponse,
@@ -175,12 +178,56 @@ async function handleConfirmProfile(
     })
   })
 
+  // 🔥 如果 generateImage 为 true，提交图片生成任务
+  const generateImage = payload.generateImage === true
+  if (generateImage && appearanceRows.length > 0) {
+    // 获取项目模型配置
+    const projectModelConfig = await getProjectModelConfig(job.data.projectId, job.data.userId)
+    const imageModel = projectModelConfig.characterModel
+
+    if (imageModel) {
+      // 获取刚创建的形象记录
+      const createdAppearances = await prisma.characterAppearance.findMany({
+        where: { characterId: character.id },
+        orderBy: { appearanceIndex: 'asc' },
+      })
+
+      // 为每个形象提交图片生成任务
+      for (const appearance of createdAppearances) {
+        await submitTask({
+          userId: job.data.userId,
+          locale: job.data.locale,
+          requestId: job.data.trace?.requestId || undefined,
+          projectId: job.data.projectId,
+          type: TASK_TYPE.IMAGE_CHARACTER,
+          targetType: 'CharacterAppearance',
+          targetId: appearance.id,
+          payload: {
+            type: 'character',
+            id: character.id,
+            appearanceId: appearance.id,
+            appearanceIndex: appearance.appearanceIndex,
+          },
+          dedupeKey: `${TASK_TYPE.IMAGE_CHARACTER}:${appearance.id}:1`,
+          billingInfo: buildDefaultTaskBillingInfo(TASK_TYPE.IMAGE_CHARACTER, {
+            model: imageModel,
+            count: 1,
+          }),
+        })
+      }
+
+      console.log(`[character-profile] 已提交 ${createdAppearances.length} 个图片生成任务`)
+    } else {
+      console.warn('[character-profile] 未配置角色图片模型，跳过图片生成')
+    }
+  }
+
   if (!suppressProgress) {
     await reportTaskProgress(job, 96, {
       stage: 'character_profile_confirm_done',
-      stageLabel: '角色档案确认完成',
+      stageLabel: generateImage ? '角色档案确认完成，正在生成图片' : '角色档案确认完成',
       displayMode: 'detail',
-      meta: { characterId },
+      meta: { characterId, generateImage },
     })
   }
 
@@ -191,6 +238,7 @@ async function handleConfirmProfile(
       profileConfirmed: true,
       appearances,
     },
+    generateImage,
   }
 }
 

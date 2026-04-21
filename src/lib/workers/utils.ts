@@ -249,6 +249,10 @@ export async function resolveImageSourceFromGeneration(
       message: 'image source generation completed',
       provider: params.options?.provider || undefined,
       durationMs: Date.now() - startedAt,
+      details: {
+        imageUrlLength: result.imageUrl.length,
+        imageUrlPrefix: result.imageUrl.substring(0, 100),
+      },
     })
     return result.imageUrl
   }
@@ -644,8 +648,8 @@ export async function withLabelBar(imageSource: string, labelText: string): Prom
 
   const raw = Buffer.from(await response.arrayBuffer())
   const meta = await sharp(raw).metadata()
-  const width = meta.width || 2160
-  const height = meta.height || 2160
+  const width = meta.width || 1920
+  const height = meta.height || 1080
   const fontSize = Math.floor(height * 0.04)
   const pad = Math.floor(fontSize * 0.5)
   const barHeight = fontSize + pad * 2

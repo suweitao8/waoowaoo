@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { signIn } from "next-auth/react"
 import { useTranslations } from 'next-intl'
 import Navbar from "@/components/Navbar"
 import { Link, useRouter } from '@/i18n/navigation'
 import { buildAuthenticatedHomeTarget } from '@/lib/home/default-route'
+import { isSingleUserMode } from '@/lib/single-user-mode'
 
 export default function SignIn() {
   const [username, setUsername] = useState("")
@@ -14,6 +15,22 @@ export default function SignIn() {
   const [error, setError] = useState("")
   const router = useRouter()
   const t = useTranslations('auth')
+
+  // 单用户模式下直接重定向到 workspace
+  useEffect(() => {
+    if (isSingleUserMode()) {
+      router.replace(buildAuthenticatedHomeTarget())
+    }
+  }, [router])
+
+  // 单用户模式下不渲染登录表单
+  if (isSingleUserMode()) {
+    return (
+      <div className="glass-page min-h-screen flex items-center justify-center">
+        <div className="text-[var(--glass-text-secondary)]">Redirecting...</div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -6,6 +6,7 @@ import WorkspaceTopActions from './WorkspaceTopActions'
 import type { NovelPromotionPanel } from '@/types/project'
 import type { CapabilitySelections, ModelCapabilities } from '@/lib/model-config-contract'
 import { resolveEpisodeStageArtifacts } from '@/lib/novel-promotion/stage-readiness'
+import type { VoiceDesignMutationPayload, VoiceDesignMutationResult } from '@/components/voice/voice-design-shared'
 
 interface EpisodeSummary {
   id: string
@@ -41,6 +42,7 @@ interface WorkspaceHeaderShellProps {
   availableModels?: UserModelsPayload
   modelsLoaded: boolean
   artStyle: string | null | undefined
+  projectType: string | null | undefined
   analysisModel: string | null | undefined
   characterModel: string | null | undefined
   locationModel: string | null | undefined
@@ -51,7 +53,11 @@ interface WorkspaceHeaderShellProps {
   capabilityOverrides: CapabilitySelections
   videoRatio: string | null | undefined
   ttsRate: string | null | undefined
+  narratorVoiceId?: string | null
+  narratorVoiceType?: string | null
+  narratorVoicePrompt?: string | null
   onUpdateConfig: (key: string, value: unknown) => Promise<void>
+  onDesignNarratorVoice?: (payload: VoiceDesignMutationPayload) => Promise<VoiceDesignMutationResult>
   globalAssetText: string
   projectName: string
   episodes: EpisodeSummary[]
@@ -60,6 +66,7 @@ interface WorkspaceHeaderShellProps {
   onEpisodeCreate?: () => void
   onEpisodeRename?: (episodeId: string, newName: string) => void
   onEpisodeDelete?: (episodeId: string) => void
+  onImportNovel?: () => void
   capsuleNavItems: Array<{
     id: string
     icon: string
@@ -78,6 +85,8 @@ interface WorkspaceHeaderShellProps {
   assetLibraryLabel: string
   settingsLabel: string
   refreshTitle: string
+  savedSearchQuery?: string
+  onSearchQueryChange?: (query: string) => void
 }
 
 export default function WorkspaceHeaderShell({
@@ -88,6 +97,7 @@ export default function WorkspaceHeaderShell({
   availableModels,
   modelsLoaded,
   artStyle,
+  projectType,
   analysisModel,
   characterModel,
   locationModel,
@@ -98,7 +108,11 @@ export default function WorkspaceHeaderShell({
   capabilityOverrides,
   videoRatio,
   ttsRate,
+  narratorVoiceId,
+  narratorVoiceType,
+  narratorVoicePrompt,
   onUpdateConfig,
+  onDesignNarratorVoice,
   globalAssetText,
   projectName,
   episodes,
@@ -107,6 +121,7 @@ export default function WorkspaceHeaderShell({
   onEpisodeCreate,
   onEpisodeRename,
   onEpisodeDelete,
+  onImportNovel,
   capsuleNavItems,
   currentStage,
   onStageChange,
@@ -118,6 +133,8 @@ export default function WorkspaceHeaderShell({
   assetLibraryLabel,
   settingsLabel,
   refreshTitle,
+  savedSearchQuery,
+  onSearchQueryChange,
 }: WorkspaceHeaderShellProps) {
   return (
     <>
@@ -127,6 +144,7 @@ export default function WorkspaceHeaderShell({
         availableModels={availableModels}
         modelsLoaded={modelsLoaded}
         artStyle={artStyle ?? undefined}
+        projectType={projectType ?? undefined}
         analysisModel={analysisModel ?? undefined}
         characterModel={characterModel ?? undefined}
         locationModel={locationModel ?? undefined}
@@ -137,7 +155,11 @@ export default function WorkspaceHeaderShell({
         videoRatio={videoRatio ?? undefined}
         capabilityOverrides={capabilityOverrides}
         ttsRate={ttsRate ?? undefined}
+        narratorVoiceId={narratorVoiceId ?? undefined}
+        narratorVoiceType={narratorVoiceType ?? undefined}
+        narratorVoicePrompt={narratorVoicePrompt ?? undefined}
         onArtStyleChange={(value) => { onUpdateConfig('artStyle', value) }}
+        onProjectTypeChange={(value) => { onUpdateConfig('projectType', value) }}
         onAnalysisModelChange={(value) => { onUpdateConfig('analysisModel', value) }}
         onCharacterModelChange={(value) => { onUpdateConfig('characterModel', value) }}
         onLocationModelChange={(value) => { onUpdateConfig('locationModel', value) }}
@@ -148,6 +170,12 @@ export default function WorkspaceHeaderShell({
         onVideoRatioChange={(value) => { onUpdateConfig('videoRatio', value) }}
         onCapabilityOverridesChange={(value) => { onUpdateConfig('capabilityOverrides', value) }}
         onTTSRateChange={(value) => { onUpdateConfig('ttsRate', value) }}
+        onNarratorVoiceChange={(voiceId, voicePrompt) => {
+          void onUpdateConfig('narratorVoiceId', voiceId)
+          void onUpdateConfig('narratorVoiceType', 'qwen-designed')
+          void onUpdateConfig('narratorVoicePrompt', voicePrompt)
+        }}
+        onDesignNarratorVoice={onDesignNarratorVoice}
       />
 
       <WorldContextModal
@@ -187,6 +215,9 @@ export default function WorkspaceHeaderShell({
             onAdd={onEpisodeCreate}
             onRename={(id, newName) => onEpisodeRename?.(id, newName)}
             onDelete={onEpisodeDelete}
+            onImportNovel={onImportNovel}
+            savedSearchQuery={savedSearchQuery}
+            onSearchQueryChange={onSearchQueryChange}
           />
         )
       })()}

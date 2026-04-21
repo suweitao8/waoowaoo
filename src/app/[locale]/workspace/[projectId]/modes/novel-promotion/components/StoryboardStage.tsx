@@ -19,6 +19,7 @@ export default function StoryboardStage() {
       storyboards={storyboards}
       clips={clips}
       videoRatio={runtime.videoRatio || '9:16'}
+      projectType={runtime.projectType}
       onBack={() => runtime.onStageChange('script')}
       onNext={async () => runtime.onStageChange('videos')}
       isTransitioning={runtime.isTransitioning}

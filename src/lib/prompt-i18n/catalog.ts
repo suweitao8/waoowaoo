@@ -153,4 +153,16 @@ export const PROMPT_CATALOG: Record<PromptId, PromptCatalogEntry> = {
     pathStem: 'novel-promotion/voice_analysis',
     variableKeys: ['input', 'characters_lib_name', 'characters_introduction', 'storyboard_json'],
   },
+  [PROMPT_IDS.COMFYUI_OPTIMIZE_PROMPT]: {
+    pathStem: 'comfyui/optimize_prompt',
+    variableKeys: ['user_input'],
+  },
+  [PROMPT_IDS.COMFYUI_CHARACTER_PROFILE]: {
+    pathStem: 'novel-promotion/agent_character_profile',
+    variableKeys: ['input', 'characters_lib_info'],
+  },
+  [PROMPT_IDS.COMFYUI_CHARACTER_VISUAL]: {
+    pathStem: 'novel-promotion/agent_character_visual',
+    variableKeys: ['character_profiles'],
+  },
 }

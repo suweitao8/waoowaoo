@@ -162,6 +162,13 @@ export const ART_STYLES = [
     preview: '实',
     promptZh: '真实电影级画面质感，真实现实场景，色彩饱满通透，画面干净精致，真实感',
     promptEn: 'Realistic cinematic look, real-world scene fidelity, rich transparent colors, clean and refined image quality.'
+  },
+  {
+    value: 'xianxia-3d',
+    label: '仙侠3D',
+    preview: '仙',
+    promptZh: 'UE5超写实3D，电影级仙侠动画，真人动捕，极致细节，10万根发丝物理模拟，真实毛孔与皮肤纹理，冷峻克制的东方水墨写意，工笔线条，留白美学，全局光照，体积雾，锐利对焦，8K，无滤镜，纪录片式厚重质感',
+    promptEn: 'UE5 hyper-realistic 3D, cinematic xianxia animation, motion capture, extreme detail, 100k strand hair physics, realistic pores and skin texture, restrained oriental ink wash style, Gongbi linework, negative space aesthetics, global illumination, volumetric fog, sharp focus, 8K, no filter, documentary-style rich texture.'
   }
 ]
 
@@ -188,33 +195,37 @@ export function getArtStylePrompt(
   return locale === 'en' ? style.promptEn : style.promptZh
 }
 
-// 角色形象生成的系统后缀（始终添加到提示词末尾，不显示给用户）- 左侧面部特写+右侧三视图
-export const CHARACTER_PROMPT_SUFFIX = '角色设定图，画面分为左右两个区域：【左侧区域】占约1/3宽度，是角色的正面特写（如果是人类则展示完整正脸，如果是动物/生物则展示最具辨识度的正面形态）；【右侧区域】占约2/3宽度，是角色三视图横向排列（从左到右依次为：正面全身、侧面全身、背面全身），三视图高度一致。纯白色背景，无其他元素。'
+// 角色形象生成的系统后缀（始终添加到提示词末尾，不显示给用户）- 三视图布局
+export const CHARACTER_PROMPT_SUFFIX = '中国风格角色设定图，画面横向排列三个视图：正面全身、侧面全身、背面全身，三视图高度一致、比例相同。人物具有中国面部特征和气质，服饰符合中国传统文化或现代中国风格。中间灰背景（RGB 128,128,128），无其他元素。负面提示词：多余的手指、多余的手、多余的脚、多余的肢体、畸形的手指、变形的手、扭曲的肢体。'
 
-// 道具图片生成的系统后缀（固定白底三视图资产图）
-export const PROP_PROMPT_SUFFIX = '道具设定图，画面分为左右两个区域：【左侧区域】占约1/3宽度，是道具主体的主视图特写；【右侧区域】占约2/3宽度，是同一道具的三视图横向排列（从左到右依次为：正面、侧面、背面），三视图高度一致。纯白色背景，主体居中完整展示，无人物、无手部、无桌面陈设、无环境背景、无其他元素。'
+// 道具图片生成的系统后缀（固定灰底双视图资产图）
+export const PROP_PROMPT_SUFFIX = '中国风格道具设定图，画面横向排列两个视图：前视图、后视图，双视图高度一致、比例相同。道具具有中国传统文化特色或符合中国小说场景，中间灰背景（RGB 128,128,128），主体居中完整展示，无人物、无手部、无桌面陈设、无环境背景、无其他元素。图片比例16:9横版。'
 
 // 场景图片生成的系统后缀（已禁用四视图，直接生成单张场景图）
-export const LOCATION_PROMPT_SUFFIX = ''
+export const LOCATION_PROMPT_SUFFIX = '中国风格场景，环境氛围符合中国传统文化或现代中国背景，建筑、服饰、器物等元素具有中国特色。图片比例16:9横版。'
 
-// 角色资产图生成比例（当前角色设定图实际使用 3:2）
-export const CHARACTER_ASSET_IMAGE_RATIO = '3:2'
+// ========== 图片比例常量 ==========
+// 统一使用 16:9 横版比例
+export const IMAGE_ASPECT_RATIO_16_9 = '16:9'
+
+// 角色资产图生成比例
+export const CHARACTER_ASSET_IMAGE_RATIO = IMAGE_ASPECT_RATIO_16_9
 // 历史保留：旧注释中曾写 16:9，但当前资产图生成统一以 CHARACTER_ASSET_IMAGE_RATIO 为准
 export const CHARACTER_IMAGE_RATIO = CHARACTER_ASSET_IMAGE_RATIO
-// 角色图片尺寸（用于Seedream API）
-export const CHARACTER_IMAGE_SIZE = '3840x2160'  // 16:9 横版
+// 角色图片尺寸（用于Seedream API）- 2K 16:9
+export const CHARACTER_IMAGE_SIZE = '1920x1080'
 // 角色图片尺寸（用于Banana API）
 export const CHARACTER_IMAGE_BANANA_RATIO = CHARACTER_ASSET_IMAGE_RATIO
 
 // 道具图片生成比例（与角色资产图保持一致）
 export const PROP_IMAGE_RATIO = CHARACTER_ASSET_IMAGE_RATIO
 
-// 场景图片生成比例（1:1 正方形单张场景）
-export const LOCATION_IMAGE_RATIO = '1:1'
-// 场景图片尺寸（用于Seedream API）- 4K
-export const LOCATION_IMAGE_SIZE = '4096x4096'  // 1:1 正方形 4K
+// 场景图片生成比例
+export const LOCATION_IMAGE_RATIO = IMAGE_ASPECT_RATIO_16_9
+// 场景图片尺寸（用于Seedream API）- 2K 16:9
+export const LOCATION_IMAGE_SIZE = '1920x1080'
 // 场景图片尺寸（用于Banana API）
-export const LOCATION_IMAGE_BANANA_RATIO = '1:1'
+export const LOCATION_IMAGE_BANANA_RATIO = IMAGE_ASPECT_RATIO_16_9
 
 // 从提示词中移除角色系统后缀（用于显示给用户）
 export function removeCharacterPromptSuffix(prompt: string): string {

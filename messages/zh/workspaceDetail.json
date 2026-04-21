@@ -32,6 +32,10 @@
     "rename": "重命名",
     "newEpisodePlaceholder": "输入剧集名称...",
     "create": "创建",
-    "addEpisode": "添加剧集"
+    "addEpisode": "添加剧集",
+    "searchPlaceholder": "跳转/搜索剧集",
+    "errorInvalid": "请输入有效数字",
+    "errorOutOfRange": "请输入 1-{max}",
+    "errorNotFound": "未找到匹配的剧集"
   }
 }

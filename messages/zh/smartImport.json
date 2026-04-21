@@ -101,6 +101,10 @@
     "title": "上传原始素材",
     "subtitle": "AI 引擎已准备就绪，一键自动分集与格式化",
     "maxWords": "（最大支持 3 万字）",
+    "label": "上传小说文件",
+    "dragDrop": "拖拽文件到此处，或",
+    "browse": "点击选择",
+    "formats": "支持 .txt, .md 格式，最大 5MB",
     "textInput": "输入文本内容",
     "documentUpload": "上传完整文档",
     "placeholder": "在此处粘贴你的小说章节或剧本内容...",
@@ -164,5 +168,18 @@
     "success": "全局分析完成：新增 {characters} 个角色，{locations} 个场景",
     "failed": "全局分析失败",
     "confirmAndAnalyze": "确认并开启全局分析"
-  }
+  },
+  "appendNovel": {
+    "title": "导入小说追加剧集",
+    "chaptersFound": "识别到 {count} 个章节，将作为新剧集追加",
+    "moreChapters": "还有 {count} 个章节...",
+    "confirmImport": "即将在现有 {count} 集之后追加 {start}-{end} 集",
+    "startImport": "开始导入"
+  },
+  "invalidFileType": "不支持的文件类型，请上传 .txt 或 .md 文件",
+  "noChaptersFound": "未能识别章节结构，请确保小说包含章节标题（如：第一章、第1章）",
+  "importingChapter": "正在导入：{title}（{current}/{total}）",
+  "charsCount": "字",
+  "importFailed": "导入失败",
+  "importComplete": "导入完成！"
 }

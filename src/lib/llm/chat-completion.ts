@@ -86,6 +86,7 @@ export async function chatCompletion(
 
   const {
     temperature = 0.7,
+    maxTokens,
     reasoning = true,
     reasoningEffort = 'high',
     maxRetries = 2,
@@ -130,6 +131,7 @@ export async function chatCompletion(
             modelId: resolvedModelId,
             messages,
             temperature,
+            maxTokens,
           })
           : await runOpenAICompatChatCompletion({
             userId,
@@ -137,6 +139,7 @@ export async function chatCompletion(
             modelId: resolvedModelId,
             messages,
             temperature,
+            maxTokens,
           })
         const completionParts = getCompletionParts(completion)
         const compatEngine = selection.llmProtocol === 'responses'
@@ -200,6 +203,7 @@ export async function chatCompletion(
           contents,
           config: {
             temperature,
+            ...(maxTokens ? { maxOutputTokens: maxTokens } : {}),
             ...(systemInstruction ? { systemInstruction } : {}),
             ...(thinkingConfig ? { thinkingConfig } : {}),
           },
@@ -451,6 +455,7 @@ export async function chatCompletion(
         model: resolvedModelId,
         messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
         temperature,
+        max_tokens: maxTokens,
         ...extraParams,
       })
       const normalizedCompletion = completion as OpenAI.Chat.Completions.ChatCompletion

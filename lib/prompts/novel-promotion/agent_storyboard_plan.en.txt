@@ -52,10 +52,13 @@ Planning rules:
 3. Keep panel transitions smooth and logically continuous.
 4. Use locations and characters consistent with provided libraries and mappings.
 5. Prefer concrete, visible actions over abstract wording.
-6. If location context contains available slots, treat them as preferred placement anchors rather than mandatory hard boundaries.
-7. Prefer assigning a `slot` by copying one full placement phrase from `available_slots` verbatim when a character is stably positioned in the scene.
-8. You may omit `slot` when the shot is mainly about movement, entry/exit, path traversal, transition space, temporary space, empty space, imagination, dream, memory, or abstract/non-literal space.
-9. When no `slot` is used, decide placement freely from source text, action flow, and cinematic staging instead of forcing one of the provided slots.
-10. Do not shorten, rewrite, summarize, or replace a provided slot phrase with a short token such as `slot_1`, `left`, or `throne_front`.
-11. Return strict JSON only.
-12. ⚠️ JSON SAFETY: All quotation marks in text (""''「」 etc.) MUST be converted to corner brackets「」in JSON string values. NEVER use raw ASCII double quotes " inside string values.
+6. ⚠️ source_text is REQUIRED for every panel - never null or empty.
+   - If a shot has no dialogue or voiceover (pure visual shot), you MUST generate a voiceover description based on the visual content.
+   - Pure shot example: Visual shows "sunlight spills across the courtyard" → source_text: "(Voiceover) Sunlight spills across the courtyard, peaceful and serene"
+7. If location context contains available slots, treat them as preferred placement anchors rather than mandatory hard boundaries.
+8. Prefer assigning a `slot` by copying one full placement phrase from `available_slots` verbatim when a character is stably positioned in the scene.
+9. You may omit `slot` when the shot is mainly about movement, entry/exit, path traversal, transition space, temporary space, empty space, imagination, dream, memory, or abstract/non-literal space.
+10. When no `slot` is used, decide placement freely from source text, action flow, and cinematic staging instead of forcing one of the provided slots.
+11. Do not shorten, rewrite, summarize, or replace a provided slot phrase with a short token such as `slot_1`, `left`, or `throne_front`.
+12. Return strict JSON only.
+13. ⚠️ JSON SAFETY: All quotation marks in text (""''「」 etc.) MUST be converted to corner brackets「」in JSON string values. NEVER use raw ASCII double quotes " inside string values.

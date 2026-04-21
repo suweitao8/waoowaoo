@@ -183,6 +183,9 @@ interface EpisodeSelectorProps {
     onRename?: (id: string, newName: string) => void
     onDelete?: (id: string) => void
     projectName?: string  // 项目名称，显示在左上角
+    onImportNovel?: () => void  // 导入小说回调
+    savedSearchQuery?: string  // 持久化的搜索关键词
+    onSearchQueryChange?: (query: string) => void  // 搜索关键词变化回调
 }
 
 export function EpisodeSelector({
@@ -192,15 +195,28 @@ export function EpisodeSelector({
     onAdd,
     onRename,
     onDelete,
-    projectName
+    projectName,
+    onImportNovel,
+    savedSearchQuery = '',
+    onSearchQueryChange,
 }: EpisodeSelectorProps) {
     const t = useTranslations('common')
     const [isOpen, setIsOpen] = useState(false)
     const [editingId, setEditingId] = useState<string | null>(null)
     const [editingName, setEditingName] = useState('')
     const [deletingId, setDeletingId] = useState<string | null>(null)
+    // 使用持久化的搜索关键词或本地状态
+    const [localSearchInput, setLocalSearchInput] = useState('')
+    const searchInput = onSearchQueryChange ? savedSearchQuery : localSearchInput
+    const setSearchInput = onSearchQueryChange ? onSearchQueryChange : setLocalSearchInput
     const currentEp = episodes.find(e => e.id === currentId) || episodes[0]
     const menuRef = useRef<HTMLDivElement>(null)
+
+    // 过滤剧集列表
+    const filteredEpisodes = episodes.filter(ep => {
+        if (!searchInput.trim()) return true
+        return ep.title.toLowerCase().includes(searchInput.toLowerCase().trim())
+    })
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -236,146 +252,191 @@ export function EpisodeSelector({
             </button>
 
             {isOpen && (
-                <div className="glass-surface-modal absolute left-0 top-full mt-2 w-72 origin-top-left p-2 animate-fadeIn">
-                    <div className="max-h-[300px] overflow-y-auto app-scrollbar space-y-1">
-                        {episodes.map(ep => {
-                            const statusColor = ep.status?.visual === 'ready'
-                                ? 'bg-[var(--glass-tone-success-fg)]'
-                                : ep.status?.script === 'ready'
-                                    ? 'bg-[var(--glass-accent-from)]'
-                                    : 'bg-[var(--glass-stroke-strong)]'
-
-                            // 编辑模式
-                            if (editingId === ep.id) {
-                                return (
-                                    <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)]">
-                                        <div className={`w-2 h-10 rounded-full ${statusColor}`} />
-                                        <input
-                                            type="text"
-                                            value={editingName}
-                                            onChange={(e) => setEditingName(e.target.value)}
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter' && editingName.trim()) {
-                                                    onRename?.(ep.id, editingName.trim())
-                                                    setEditingId(null)
-                                                } else if (e.key === 'Escape') {
-                                                    setEditingId(null)
-                                                }
-                                            }}
-                                            className="flex-1 px-2 py-1 text-sm border border-[var(--glass-stroke-focus)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--glass-focus-ring-strong)]"
-                                            autoFocus
-                                        />
-                                        <button
-                                            onClick={() => {
-                                                if (editingName.trim()) {
-                                                    onRename?.(ep.id, editingName.trim())
-                                                }
-                                                setEditingId(null)
-                                            }}
-                                            className="w-7 h-7 rounded-lg bg-[var(--glass-accent-from)] text-white hover:bg-[var(--glass-accent-to)] flex items-center justify-center"
-                                        >
-                                            <AppIcon name="check" className="w-4 h-4" />
-                                        </button>
-                                        <button
-                                            onClick={() => setEditingId(null)}
-                                            className="w-7 h-7 rounded-lg bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center"
-                                        >
-                                            <AppIcon name="close" className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                )
-                            }
-
-                            // 删除确认模式
-                            if (deletingId === ep.id) {
-                                return (
-                                    <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--glass-tone-danger-bg)] border border-[var(--glass-tone-danger-fg)]/30">
-                                        <div className="flex-1 text-sm font-medium text-[var(--glass-tone-danger-fg)] truncate">
-                                            {t('deleteEpisode')}：{ep.title}
-                                        </div>
-                                        <button
-                                            onClick={() => {
-                                                onDelete?.(ep.id)
-                                                setDeletingId(null)
-                                                setIsOpen(false)
-                                            }}
-                                            className="px-2 py-1 rounded-lg bg-[var(--glass-tone-danger-fg)] text-white text-xs font-medium hover:opacity-90 transition-opacity"
-                                        >
-                                            {t('deleteEpisodeConfirm')}
-                                        </button>
-                                        <button
-                                            onClick={() => setDeletingId(null)}
-                                            className="w-7 h-7 rounded-lg bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center"
-                                        >
-                                            <AppIcon name="close" className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                )
-                            }
-
-                            return (
-                                <div
-                                    key={ep.id}
-                                    className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${ep.id === currentId
-                                        ? 'bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)]'
-                                        : 'hover:bg-[var(--glass-bg-muted)] border border-transparent'
-                                        }`}
+                <div className="glass-surface-modal absolute left-0 top-full mt-2 w-72 origin-top-left p-2 animate-fadeIn overflow-hidden flex flex-col"
+                    style={{ maxHeight: 'calc(100vh - 180px)' }}
+                >
+                    {/* 搜索框 */}
+                    <div className="mb-2">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                placeholder={t('searchEpisode')}
+                                className="w-full px-3 py-1.5 text-sm rounded-lg border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)] text-[var(--glass-text-primary)] placeholder:text-[var(--glass-text-tertiary)] focus:outline-none focus:border-[var(--glass-stroke-focus)] pr-16"
+                            />
+                            {/* 清空按钮 */}
+                            {searchInput && (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearchInput('')}
+                                    className="absolute right-8 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full hover:bg-[var(--glass-tone-danger-bg)] text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
+                                    title={t('clear')}
                                 >
-                                    <button
-                                        onClick={() => { onSelect(ep.id); setIsOpen(false); }}
-                                        className="flex-1 flex items-center gap-3 text-left"
-                                    >
-                                        <div className={`w-2 h-10 rounded-full ${statusColor}`} />
-                                        <div className="flex-1">
-                                            <div className="font-bold text-[var(--glass-text-primary)] text-sm truncate">{ep.title}</div>
-                                            {ep.summary && (
-                                                <div className="text-xs text-[var(--glass-text-tertiary)] truncate">{ep.summary}</div>
-                                            )}
+                                    <AppIcon name="close" className="w-3.5 h-3.5" />
+                                </button>
+                            )}
+                            <AppIcon
+                                name="search"
+                                className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--glass-text-tertiary)]"
+                            />
+                        </div>
+                    </div>
+                    <div className="flex-1 overflow-y-auto app-scrollbar space-y-1">
+                        {filteredEpisodes.length === 0 ? (
+                            <div className="text-center py-4 text-sm text-[var(--glass-text-tertiary)]">
+                                {t('noResults')}
+                            </div>
+                        ) : (
+                            filteredEpisodes.map(ep => {
+                                const statusColor = ep.status?.visual === 'ready'
+                                    ? 'bg-[var(--glass-tone-success-fg)]'
+                                    : ep.status?.script === 'ready'
+                                        ? 'bg-[var(--glass-accent-from)]'
+                                        : 'bg-[var(--glass-stroke-strong)]'
+
+                                // 编辑模式
+                                if (editingId === ep.id) {
+                                    return (
+                                        <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)]">
+                                            <div className={`w-2 h-10 rounded-full ${statusColor}`} />
+                                            <input
+                                                type="text"
+                                                value={editingName}
+                                                onChange={(e) => setEditingName(e.target.value)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' && editingName.trim()) {
+                                                        onRename?.(ep.id, editingName.trim())
+                                                        setEditingId(null)
+                                                    } else if (e.key === 'Escape') {
+                                                        setEditingId(null)
+                                                    }
+                                                }}
+                                                className="flex-1 px-2 py-1 text-sm border border-[var(--glass-stroke-focus)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--glass-focus-ring-strong)]"
+                                                autoFocus
+                                            />
+                                            <button
+                                                onClick={() => {
+                                                    if (editingName.trim()) {
+                                                        onRename?.(ep.id, editingName.trim())
+                                                    }
+                                                    setEditingId(null)
+                                                }}
+                                                className="w-7 h-7 rounded-lg bg-[var(--glass-accent-from)] text-white hover:bg-[var(--glass-accent-to)] flex items-center justify-center"
+                                            >
+                                                <AppIcon name="check" className="w-4 h-4" />
+                                            </button>
+                                            <button
+                                                onClick={() => setEditingId(null)}
+                                                className="w-7 h-7 rounded-lg bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center"
+                                            >
+                                                <AppIcon name="close" className="w-4 h-4" />
+                                            </button>
                                         </div>
-                                        {ep.id === currentId && (
-                                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)]">
-                                                <AppIcon name="checkDot" className="h-2.5 w-2.5" />
-                                            </span>
+                                    )
+                                }
+
+                                // 删除确认模式
+                                if (deletingId === ep.id) {
+                                    return (
+                                        <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--glass-tone-danger-bg)] border border-[var(--glass-tone-danger-fg)]/30">
+                                            <div className="flex-1 text-sm font-medium text-[var(--glass-tone-danger-fg)] truncate">
+                                                {t('deleteEpisode')}：{ep.title}
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    onDelete?.(ep.id)
+                                                    setDeletingId(null)
+                                                    setIsOpen(false)
+                                                }}
+                                                className="px-2 py-1 rounded-lg bg-[var(--glass-tone-danger-fg)] text-white text-xs font-medium hover:opacity-90 transition-opacity"
+                                            >
+                                                {t('deleteEpisodeConfirm')}
+                                            </button>
+                                            <button
+                                                onClick={() => setDeletingId(null)}
+                                                className="w-7 h-7 rounded-lg bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center"
+                                            >
+                                                <AppIcon name="close" className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    )
+                                }
+
+                                return (
+                                    <div
+                                        key={ep.id}
+                                        className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${ep.id === currentId
+                                            ? 'bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)]'
+                                            : 'hover:bg-[var(--glass-bg-muted)] border border-transparent'
+                                            }`}
+                                    >
+                                        <button
+                                            onClick={() => { onSelect(ep.id); setIsOpen(false); }}
+                                            className="flex-1 flex items-center gap-3 text-left"
+                                        >
+                                            <div className={`w-2 h-10 rounded-full ${statusColor}`} />
+                                            <div className="flex-1">
+                                                <div className="font-bold text-[var(--glass-text-primary)] text-sm truncate">{ep.title}</div>
+                                                {ep.summary && (
+                                                    <div className="text-xs text-[var(--glass-text-tertiary)] truncate">{ep.summary}</div>
+                                                )}
+                                            </div>
+                                            {ep.id === currentId && (
+                                                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)]">
+                                                    <AppIcon name="checkDot" className="h-2.5 w-2.5" />
+                                                </span>
+                                            )}
+                                        </button>
+                                        {onRename && (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setEditingId(ep.id)
+                                                    setEditingName(ep.title)
+                                                }}
+                                                className="w-7 h-7 rounded-lg hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] transition-colors"
+                                                title={t('editEpisodeName')}
+                                            >
+                                                <AppIcon name="edit" className="w-4 h-4" />
+                                            </button>
                                         )}
-                                    </button>
-                                    {onRename && (
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                setEditingId(ep.id)
-                                                setEditingName(ep.title)
-                                            }}
-                                            className="w-7 h-7 rounded-lg hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] transition-colors"
-                                            title={t('editEpisodeName')}
-                                        >
-                                            <AppIcon name="edit" className="w-4 h-4" />
-                                        </button>
-                                    )}
-                                    {onDelete && (
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                setDeletingId(ep.id)
-                                            }}
-                                            className="w-7 h-7 rounded-lg hover:bg-[var(--glass-tone-danger-bg)] flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
-                                            title={t('deleteEpisode')}
-                                        >
-                                            <AppIcon name="trash" className="w-4 h-4" />
-                                        </button>
-                                    )}
-                                </div>
-                            )
-                        })}
+                                        {onDelete && (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setDeletingId(ep.id)
+                                                }}
+                                                className="w-7 h-7 rounded-lg hover:bg-[var(--glass-tone-danger-bg)] flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
+                                                title={t('deleteEpisode')}
+                                            >
+                                                <AppIcon name="trash" className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                    </div>
+                                )
+                            })
+                        )}
                     </div>
                     {onAdd && (
                         <>
                             <div className="h-px bg-[var(--glass-bg-muted)] my-2 mx-2" />
-                            <button
-                                onClick={() => { onAdd(); setIsOpen(false); }}
-                                className="w-full flex items-center justify-center gap-2 p-2 rounded-xl text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-info-fg)] hover:bg-[var(--glass-tone-info-bg)] font-medium text-sm transition-colors"
-                            >
-                                <span className="text-lg">+</span> {t('newEpisode')}
-                            </button>
+                            <div className="flex gap-2 px-1">
+                                <button
+                                    onClick={() => { onAdd(); setIsOpen(false); }}
+                                    className="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-info-fg)] hover:bg-[var(--glass-tone-info-bg)] font-medium text-sm transition-colors"
+                                >
+                                    <span className="text-lg">+</span> {t('newEpisode')}
+                                </button>
+                                {onImportNovel && (
+                                    <button
+                                        onClick={() => { onImportNovel(); setIsOpen(false); }}
+                                        className="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-info-fg)] hover:bg-[var(--glass-tone-info-bg)] font-medium text-sm transition-colors"
+                                    >
+                                        <AppIcon name="upload" className="w-4 h-4" /> {t('importNovel')}
+                                    </button>
+                                )}
+                            </div>
                         </>
                     )}
                 </div>

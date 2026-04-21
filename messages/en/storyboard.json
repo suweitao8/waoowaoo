@@ -98,6 +98,7 @@
         "shotTypeLabel": "Shot Type",
         "cameraMove": "Camera Move",
         "sourceText": "Source Text",
+        "noSourceText": "No source text available",
         "sceneDescription": "Scene Description",
         "videoPrompt": "Video Prompt",
         "videoPromptHint": "Describe subject movement, environment, and camera language",

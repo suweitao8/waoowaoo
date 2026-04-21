@@ -98,6 +98,7 @@
         "shotTypeLabel": "镜头类型",
         "cameraMove": "镜头运动",
         "sourceText": "对应原文",
+        "noSourceText": "暂无原文内容",
         "sceneDescription": "画面描述",
         "videoPrompt": "视频提示词",
         "videoPromptHint": "建议描述主体动作、环境、镜头语言",

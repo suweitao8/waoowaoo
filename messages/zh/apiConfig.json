@@ -181,7 +181,8 @@
       "openai_compatible_step1": "填写任意 OpenAI 协议兼容服务的 Base URL 与 API Key",
       "gemini_compatible_step1": "填写任意 Gemini 协议兼容服务的 Base URL 与 API Key",
       "bailian_step1": "进入阿里云百炼平台，获取 API Key",
-      "siliconflow_step1": "进入硅基流动控制台，创建 API Key"
+      "siliconflow_step1": "进入硅基流动控制台，创建 API Key",
+      "grsai_step1": "进入 Grsai 平台获取 API Key，支持 Nano Banana 系列图像生成模型"
     }
   },
   "assistantOpen": "AI配置助手",

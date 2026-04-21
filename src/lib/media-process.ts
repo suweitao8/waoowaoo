@@ -48,8 +48,17 @@ export async function processMediaResult(options: ProcessMediaOptions): Promise<
       return await downloadAndUploadVideo(source, key, 3, downloadHeaders)
     }
 
-    const response = await fetch(toFetchableUrl(source))
+    // 下载图片并上传
+    const fetchableUrl = toFetchableUrl(source)
+    console.log(`[processMediaResult] downloading image from: ${fetchableUrl.substring(0, 100)}...`)
+    const response = await fetch(fetchableUrl)
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error(`[processMediaResult] download failed: ${response.status} - ${errorText}`)
+      throw new Error(`Failed to download image: ${response.status} - ${errorText}`)
+    }
     const buffer = Buffer.from(await response.arrayBuffer()) as Buffer
+    console.log(`[processMediaResult] downloaded ${buffer.length} bytes, uploading to COS...`)
     return await uploadObject(buffer, key, undefined, contentType)
   }
 

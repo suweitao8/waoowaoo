@@ -49,6 +49,7 @@ export type AssetVariantSummary = {
   index: number
   label: string
   description: string | null
+  imagePrompt?: string | null
   selectionState: {
     selectedRenderIndex: number | null
   }

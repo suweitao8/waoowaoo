@@ -1,6 +1,66 @@
 [
   {
     "modelType": "image",
+    "provider": "grsai",
+    "modelId": "nano-banana-fast",
+    "capabilities": {
+      "image": {
+        "resolutionOptions": [
+          "720p",
+          "1K",
+          "2K",
+          "4K"
+        ]
+      }
+    }
+  },
+  {
+    "modelType": "image",
+    "provider": "grsai",
+    "modelId": "nano-banana",
+    "capabilities": {
+      "image": {
+        "resolutionOptions": [
+          "720p",
+          "1K",
+          "2K",
+          "4K"
+        ]
+      }
+    }
+  },
+  {
+    "modelType": "image",
+    "provider": "grsai",
+    "modelId": "nano-banana-pro",
+    "capabilities": {
+      "image": {
+        "resolutionOptions": [
+          "720p",
+          "1K",
+          "2K",
+          "4K"
+        ]
+      }
+    }
+  },
+  {
+    "modelType": "image",
+    "provider": "grsai",
+    "modelId": "nano-banana-2",
+    "capabilities": {
+      "image": {
+        "resolutionOptions": [
+          "720p",
+          "1K",
+          "2K",
+          "4K"
+        ]
+      }
+    }
+  },
+  {
+    "modelType": "image",
     "provider": "fal",
     "modelId": "banana-2",
     "capabilities": {

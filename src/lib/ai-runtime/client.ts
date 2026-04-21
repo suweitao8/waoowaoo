@@ -54,6 +54,7 @@ export async function executeAiTextStep(input: AiStepExecutionInput): Promise<Ai
       messages: input.messages,
       options: {
         temperature: input.temperature,
+        maxTokens: input.maxTokens,
         reasoning: input.reasoning,
         reasoningEffort: input.reasoningEffort,
         projectId: input.projectId,

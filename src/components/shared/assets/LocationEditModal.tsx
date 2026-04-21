@@ -16,6 +16,7 @@ import {
 } from '@/lib/query/hooks'
 import type { LocationAvailableSlot } from '@/lib/location-available-slots'
 import { AiModifyDescriptionField } from './AiModifyDescriptionField'
+import { apiFetch } from '@/lib/api-fetch'
 
 export interface LocationEditModalProps {
     mode: 'asset-hub' | 'project'
@@ -23,6 +24,7 @@ export interface LocationEditModalProps {
     locationName: string
     description: string
     summary?: string
+    imagePrompt?: string
     imageIndex?: number
     projectId?: string
     descriptionIndex?: number
@@ -40,6 +42,7 @@ export function LocationEditModal({
     locationName,
     description,
     summary,
+    imagePrompt: initialImagePrompt,
     imageIndex,
     projectId,
     descriptionIndex,
@@ -58,10 +61,12 @@ export function LocationEditModal({
 
     const [editingName, setEditingName] = useState(locationName)
     const [editingDescription, setEditingDescription] = useState(description || summary || '')
+    const [editingImagePrompt, setEditingImagePrompt] = useState(initialImagePrompt || '')
     const [availableSlots, setAvailableSlots] = useState<LocationAvailableSlot[]>([])
     const [aiModifyInstruction, setAiModifyInstruction] = useState('')
     const [isAiModifying, setIsAiModifying] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
+    const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
     const aiModifyingState = isAiModifying
         ? resolveTaskPresentationState({
             phase: 'processing',
@@ -84,6 +89,14 @@ export function LocationEditModal({
             intent: 'modify',
             resource: 'image',
             hasOutput: true,
+        })
+        : null
+    const generatingPromptState = isGeneratingPrompt
+        ? resolveTaskPresentationState({
+            phase: 'processing',
+            intent: 'process',
+            resource: 'text',
+            hasOutput: false,
         })
         : null
 
@@ -127,6 +140,66 @@ export function LocationEditModal({
             description: editingDescription,
             availableSlots,
         })
+    }
+
+    const handleGenerateImagePrompt = async () => {
+        if (!editingName.trim() && !editingDescription.trim()) return
+
+        try {
+            setIsGeneratingPrompt(true)
+
+            if (mode === 'asset-hub') {
+                const response = await apiFetch('/api/asset-hub/generate-location-prompt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        locationId,
+                        locationName: editingName,
+                        locationDescription: editingDescription,
+                        imageIndex: resolvedImageIndex,
+                    }),
+                })
+
+                const data = await response.json()
+
+                if (!response.ok || !data.success) {
+                    const errorMsg = data?.error?.message || data?.message || 'Failed to generate prompt'
+                    throw new Error(errorMsg)
+                }
+
+                if (data.imagePrompt) {
+                    setEditingImagePrompt(data.imagePrompt)
+                }
+            } else {
+                const response = await apiFetch(`/api/novel-promotion/${projectId}/generate-location-prompt`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        locationId,
+                        locationName: editingName,
+                        locationDescription: editingDescription,
+                        imageIndex: resolvedImageIndex,
+                    }),
+                })
+
+                const data = await response.json()
+
+                if (!response.ok || !data.success) {
+                    const errorMsg = data?.error?.message || data?.message || 'Failed to generate prompt'
+                    throw new Error(errorMsg)
+                }
+
+                if (data.imagePrompt) {
+                    setEditingImagePrompt(data.imagePrompt)
+                }
+            }
+        } catch (error: unknown) {
+            if (shouldShowError(error)) {
+                alert(`${t('modal.generatePromptFailed')}: ${getErrorMessage(error, t('errors.failed'))}`)
+            }
+        } finally {
+            setIsGeneratingPrompt(false)
+        }
     }
 
     const handleAiModify = async () => {
@@ -281,6 +354,39 @@ export function LocationEditModal({
                         actionLabel={t('modal.modifyDescription')}
                         cancelLabel={t('common.cancel')}
                     />
+
+                    {/* AI 提示词输入框 */}
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                            <label className="glass-field-label block">
+                                {t('location.imagePrompt')}
+                            </label>
+                            <button
+                                onClick={handleGenerateImagePrompt}
+                                disabled={isGeneratingPrompt || (!editingName.trim() && !editingDescription.trim())}
+                                className="glass-btn-base glass-btn-tone-info px-3 py-1.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-1.5"
+                            >
+                                {isGeneratingPrompt ? (
+                                    <TaskStatusInline state={generatingPromptState} className="text-white [&>span]:text-white [&_svg]:text-white text-xs" />
+                                ) : (
+                                    <>
+                                        <AppIcon name="sparkles" className="w-4 h-4" />
+                                        {t('modal.generatePrompt')}
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                        <textarea
+                            value={editingImagePrompt}
+                            onChange={(e) => setEditingImagePrompt(e.target.value)}
+                            className="glass-textarea-base w-full px-3 py-2 min-h-[100px]"
+                            placeholder={t('modal.imagePromptPlaceholder')}
+                            rows={4}
+                        />
+                        <p className="text-xs text-[var(--glass-text-tertiary)]">
+                            {t('modal.imagePromptHint')}
+                        </p>
+                    </div>
                 </div>
 
                 <div className="flex gap-3 justify-end p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] rounded-b-lg flex-shrink-0">

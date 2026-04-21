@@ -46,6 +46,10 @@ export function useWorkspaceProjectSnapshot({
       capabilityOverrides,
       ttsRate: projectData?.ttsRate,
       artStyle: projectData?.artStyle,
+      projectType: projectData?.projectType || 'animation',
+      narratorVoiceId: projectData?.narratorVoiceId,
+      narratorVoiceType: projectData?.narratorVoiceType,
+      narratorVoicePrompt: projectData?.narratorVoicePrompt,
     }
   }, [episode?.novelText, episode?.storyboards, project.novelPromotionData, urlStage])
 }

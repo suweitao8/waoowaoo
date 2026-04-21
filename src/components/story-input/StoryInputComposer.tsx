@@ -1,14 +1,30 @@
 'use client'
 
-import { useCallback, useEffect, useRef, type CompositionEvent, type ReactNode } from 'react'
-import { RatioSelector, StylePresetSelector, StyleSelector } from '@/components/selectors/RatioStyleSelectors'
-import { resolveTextareaTargetHeight } from '@/lib/ui/textarea-height'
-
-interface StoryInputComposerOption {
-  value: string
-  label: string
-  recommended?: boolean
-}
+import { useCallback, useRef, useMemo, type ReactNode } from 'react'
+import {
+  MDXEditor,
+  headingsPlugin,
+  listsPlugin,
+  quotePlugin,
+  thematicBreakPlugin,
+  markdownShortcutPlugin,
+  linkPlugin,
+  tablePlugin,
+  codeBlockPlugin,
+  codeMirrorPlugin,
+  toolbarPlugin,
+  BoldItalicUnderlineToggles,
+  BlockTypeSelect,
+  CreateLink,
+  InsertTable,
+  ListsToggle,
+  UndoRedo,
+  Separator,
+  type MDXEditorMethods,
+} from '@mdxeditor/editor'
+import '@mdxeditor/editor/style.css'
+import '@/styles/mdx-editor.css'
+import { StylePresetSelector } from '@/components/selectors/RatioStyleSelectors'
 
 interface StoryInputComposerStylePresetOption {
   value: string
@@ -22,148 +38,157 @@ interface StoryInputComposerProps {
   placeholder: string
   minRows: number
   disabled?: boolean
+  /** @deprecated 不再使用，保留仅为 API 兼容 */
   maxHeightViewportRatio?: number
   topRight?: ReactNode
   footer?: ReactNode
   secondaryActions?: ReactNode
   primaryAction: ReactNode
-  videoRatio: string
-  onVideoRatioChange: (value: string) => void
-  ratioOptions: StoryInputComposerOption[]
-  getRatioUsage?: (ratio: string) => string
-  artStyle: string
-  onArtStyleChange: (value: string) => void
-  styleOptions: StoryInputComposerOption[]
+  /** 左侧标题显示（如剧集名称） */
+  leftTitle?: ReactNode
   stylePresetValue: string
   onStylePresetChange: (value: string) => void
   stylePresetOptions: readonly StoryInputComposerStylePresetOption[]
+  /** @deprecated 不再使用，保留仅为 API 兼容 */
   onCompositionStart?: () => void
-  onCompositionEnd?: (event: CompositionEvent<HTMLTextAreaElement>) => void
+  /** @deprecated 不再使用，保留仅为 API 兼容 */
+  onCompositionEnd?: (event: React.CompositionEvent<HTMLTextAreaElement>) => void
+  /** @deprecated 不再使用，保留仅为 API 兼容 */
   textareaClassName?: string
 }
 
+/**
+ * 故事输入编辑器
+ * 基于 MDXEditor，支持完整的 Markdown 编辑功能
+ */
 export default function StoryInputComposer({
   value,
   onValueChange,
   placeholder,
   minRows,
   disabled = false,
-  maxHeightViewportRatio = 0.5,
   topRight,
   footer,
   secondaryActions,
   primaryAction,
-  videoRatio,
-  onVideoRatioChange,
-  ratioOptions,
-  getRatioUsage,
-  artStyle,
-  onArtStyleChange,
-  styleOptions,
+  leftTitle,
   stylePresetValue,
   onStylePresetChange,
   stylePresetOptions,
-  onCompositionStart,
-  onCompositionEnd,
-  textareaClassName,
 }: StoryInputComposerProps) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const textareaMinHeightRef = useRef<number | null>(null)
+  const editorRef = useRef<MDXEditorMethods>(null)
 
-  const autoResizeTextarea = useCallback(() => {
-    const el = textareaRef.current
-    if (!el || typeof window === 'undefined') return
+  // 计算最小高度
+  const minHeight = useMemo(() => {
+    // 每行约 24px，加上工具栏和 padding
+    // 增大基础高度，提供更宽敞的编辑空间
+    return Math.max(minRows * 24 + 100, 400)
+  }, [minRows])
 
-    const maxHeight = window.innerHeight * maxHeightViewportRatio
-    const oldHeight = el.offsetHeight
-    const oldScrollTop = el.scrollTop
+  const plugins = useMemo(() => [
+    // 基础 Markdown 语法支持
+    headingsPlugin(),
+    listsPlugin(),
+    quotePlugin(),
+    thematicBreakPlugin(),
+    markdownShortcutPlugin(),
+    // 链接
+    linkPlugin(),
+    // 表格
+    tablePlugin(),
+    // 代码块
+    codeBlockPlugin({ defaultCodeBlockLanguage: 'text' }),
+    codeMirrorPlugin({
+      codeBlockLanguages: {
+        text: 'Plain Text',
+        js: 'JavaScript',
+        ts: 'TypeScript',
+        python: 'Python',
+        bash: 'Bash',
+      },
+    }),
+    // 工具栏
+    toolbarPlugin({
+      toolbarContents: () => (
+        <>
+          <UndoRedo />
+          <Separator />
+          <BlockTypeSelect />
+          <Separator />
+          <BoldItalicUnderlineToggles />
+          <Separator />
+          <ListsToggle />
+          <Separator />
+          <CreateLink />
+          <InsertTable />
+        </>
+      ),
+    }),
+  ], [])
 
-    if (textareaMinHeightRef.current === null && oldHeight > 0) {
-      textareaMinHeightRef.current = oldHeight
+  const handleChange = useCallback((markdown: string) => {
+    if (!disabled) {
+      onValueChange(markdown)
     }
-
-    const minHeight = textareaMinHeightRef.current ?? oldHeight
-
-    el.style.transition = 'none'
-    el.style.height = 'auto'
-    const scrollHeight = el.scrollHeight
-    const targetHeight = resolveTextareaTargetHeight({
-      minHeight,
-      maxHeight,
-      scrollHeight,
-    })
-    el.style.height = `${oldHeight}px`
-    el.scrollTop = oldScrollTop
-
-    requestAnimationFrame(() => {
-      el.scrollTop = oldScrollTop
-      el.style.transition = 'height 200ms ease-out'
-      el.style.height = `${targetHeight}px`
-      el.style.overflowY = scrollHeight > maxHeight ? 'auto' : 'hidden'
-    })
-  }, [maxHeightViewportRatio])
-
-  useEffect(() => {
-    autoResizeTextarea()
-  }, [value, autoResizeTextarea])
+  }, [disabled, onValueChange])
 
   return (
     <div className="relative w-full glass-surface-elevated rounded-2xl">
-      <div className="p-6 pb-4">
+      <div className="p-4">
+        {/* 顶部工具栏：左侧标题 + 风格选择 + 操作按钮 */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-3 border-b border-[var(--glass-stroke-base)]">
+          {/* 左侧标题（剧集名称） */}
+          {leftTitle && (
+            <div className="flex-shrink-0">
+              {leftTitle}
+            </div>
+          )}
+          <div className="flex min-w-max flex-1 items-center gap-2">
+            {stylePresetOptions.length > 0 ? (
+              <div className="w-[152px] flex-shrink-0">
+                <StylePresetSelector
+                  value={stylePresetValue}
+                  onChange={onStylePresetChange}
+                  options={stylePresetOptions}
+                />
+              </div>
+            ) : null}
+          </div>
+          <div className="ml-auto flex min-w-max items-center gap-2">
+            {secondaryActions}
+            {primaryAction}
+          </div>
+        </div>
+
         {topRight && (
           <div className="mb-3 flex items-center justify-end">
             {topRight}
           </div>
         )}
 
-        <textarea
-          ref={textareaRef}
-          value={value}
-          onChange={(event) => onValueChange(event.target.value)}
-          onCompositionStart={onCompositionStart}
-          onCompositionEnd={onCompositionEnd}
-          placeholder={placeholder}
-          rows={minRows}
-          disabled={disabled}
-          className={`w-full resize-none border-none bg-transparent text-base text-[var(--glass-text-primary)] outline-none placeholder:text-[var(--glass-text-tertiary)] app-scrollbar ${textareaClassName ?? 'p-5 pb-3'}`}
-        />
-      </div>
-
-      <div className="flex items-center gap-2 overflow-x-auto px-5 pb-4">
-        <div className="flex min-w-max flex-1 items-center gap-2">
-          <div className="w-[118px] flex-shrink-0">
-            <RatioSelector
-              value={videoRatio}
-              onChange={onVideoRatioChange}
-              options={ratioOptions}
-              getUsage={getRatioUsage}
-            />
-          </div>
-          <div className="w-[132px] flex-shrink-0">
-            <StyleSelector
-              value={artStyle}
-              onChange={onArtStyleChange}
-              options={styleOptions}
-            />
-          </div>
-          {stylePresetOptions.length > 0 ? (
-            <div className="w-[152px] flex-shrink-0">
-              <StylePresetSelector
-                value={stylePresetValue}
-                onChange={onStylePresetChange}
-                options={stylePresetOptions}
-              />
-            </div>
-          ) : null}
-        </div>
-        <div className="ml-auto flex min-w-max items-center gap-2">
-          {secondaryActions}
-          {primaryAction}
+        {/* Markdown 编辑器 */}
+        <div
+          className="story-editor-container"
+          style={{
+            minHeight,
+            opacity: disabled ? 0.6 : 1,
+            pointerEvents: disabled ? 'none' : 'auto',
+          }}
+        >
+          <MDXEditor
+            ref={editorRef}
+            markdown={value}
+            onChange={handleChange}
+            plugins={plugins}
+            placeholder={placeholder}
+            contentEditableClassName="story-editor-content"
+            className="story-editor-root"
+          />
         </div>
       </div>
 
       {footer && (
-        <div className="px-6 pb-4">
+        <div className="px-4 pb-4">
           {footer}
         </div>
       )}

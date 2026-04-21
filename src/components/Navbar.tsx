@@ -4,12 +4,12 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import LanguageSwitcher from './LanguageSwitcher'
 import { AppIcon } from '@/components/ui/icons'
 import UpdateNoticeModal from './UpdateNoticeModal'
 import { useGithubReleaseUpdate } from '@/hooks/common/useGithubReleaseUpdate'
 import { Link } from '@/i18n/navigation'
 import { buildAuthenticatedHomeTarget } from '@/lib/home/default-route'
+import { isSingleUserMode } from '@/lib/single-user-mode'
 
 
 export default function Navbar() {
@@ -17,10 +17,14 @@ export default function Navbar() {
   const t = useTranslations('nav')
   const tc = useTranslations('common')
   const { currentVersion, update, shouldPulse, showModal, openModal, dismissCurrentUpdate, checkNow } = useGithubReleaseUpdate()
-  const [checkMsg, setCheckMsg] = useState<string | null>(null)
-  const [checkMsgFading, setCheckMsgFading] = useState(false)
+
+  // 手动检查更新相关状态
   const [manualChecking, setManualChecking] = useState(false)
-  const downloadLogsHref = '/api/admin/download-logs'
+  const [checkMsg, setCheckMsg] = useState<'upToDate' | null>(null)
+  const [checkMsgFading, setCheckMsgFading] = useState(false)
+
+  // 单用户模式下，显示已登录用户的导航
+  const showAuthenticatedNav = session || isSingleUserMode()
 
   const handleCheckUpdate = async () => {
     setCheckMsg(null)
@@ -39,8 +43,9 @@ export default function Navbar() {
   return (
     <>
       <nav className="glass-nav sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
+            {/* 左侧：Logo + 版本信息 */}
             <div className="flex items-center gap-2">
               <Link href={session ? buildAuthenticatedHomeTarget() : { pathname: '/' }} className="group">
                 <Image
@@ -93,6 +98,8 @@ export default function Navbar() {
                 </span>
               )}
             </div>
+
+            {/* 右侧：导航链接 */}
             <div className="flex items-center space-x-6">
               {status === 'loading' ? (
                 /* Session 加载中骨架屏 */
@@ -101,7 +108,7 @@ export default function Navbar() {
                   <div className="h-4 w-16 rounded-full bg-[var(--glass-bg-muted)] animate-pulse" />
                   <div className="h-8 w-20 rounded-lg bg-[var(--glass-bg-muted)] animate-pulse" />
                 </div>
-              ) : session ? (
+              ) : showAuthenticatedNav ? (
                 <>
                   <Link
                     href={{ pathname: '/workspace' }}
@@ -110,6 +117,22 @@ export default function Navbar() {
                     <AppIcon name="monitor" className="w-4 h-4" />
                     {t('workspace')}
                   </Link>
+                  {/* ComfyUI 暂时隐藏 */}
+                  {/* <Link
+                    href={{ pathname: '/comfyui' }}
+                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                  >
+                    <AppIcon name="image" className="w-4 h-4" />
+                    {t('comfyui')}
+                  </Link> */}
+                  {/* Nano Test 暂时隐藏 */}
+                  {/* <Link
+                    href={{ pathname: '/nano-test' }}
+                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                  >
+                    <AppIcon name="sparklesAlt" className="w-4 h-4" />
+                    Nano Test
+                  </Link> */}
                   <Link
                     href={{ pathname: '/workspace/asset-hub' }}
                     className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
@@ -125,16 +148,6 @@ export default function Navbar() {
                     <AppIcon name="userRoundCog" className="w-5 h-5" />
                     {t('profile')}
                   </Link>
-                  <LanguageSwitcher />
-                  <a
-                    href={downloadLogsHref}
-                    download
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
-                    title={t('downloadLogs')}
-                  >
-                    <AppIcon name="download" className="w-4 h-4" />
-                    {t('downloadLogs')}
-                  </a>
                 </>
 
               ) : (
@@ -151,7 +164,6 @@ export default function Navbar() {
                   >
                     {t('signup')}
                   </Link>
-                  <LanguageSwitcher />
                 </>
               )}
             </div>

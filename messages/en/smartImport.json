@@ -101,6 +101,10 @@
     "title": "Upload Raw Material",
     "subtitle": "AI engine is ready, automatic episode splitting and formatting",
     "maxWords": "(Max 30,000 words)",
+    "label": "Upload Novel File",
+    "dragDrop": "Drag and drop file here, or",
+    "browse": "click to select",
+    "formats": "Supports .txt, .md formats, max 5MB",
     "textInput": "Enter Text Content",
     "documentUpload": "Upload Full Document",
     "placeholder": "Paste your novel chapters or script content here...",
@@ -164,5 +168,18 @@
     "success": "Analysis complete: {characters} new characters, {locations} new locations",
     "failed": "Global analysis failed",
     "confirmAndAnalyze": "Confirm & Analyze Assets"
-  }
+  },
+  "appendNovel": {
+    "title": "Import Novel to Append Episodes",
+    "chaptersFound": "Detected {count} chapters to append as new episodes",
+    "moreChapters": "{count} more chapters...",
+    "confirmImport": "Will append episodes {start}-{end} after existing {count} episodes",
+    "startImport": "Start Import"
+  },
+  "invalidFileType": "Unsupported file type, please upload .txt or .md file",
+  "noChaptersFound": "Could not detect chapter structure, please ensure novel has chapter titles (e.g., Chapter 1, 第一章)",
+  "importingChapter": "Importing: {title} ({current}/{total})",
+  "charsCount": " chars",
+  "importFailed": "Import failed",
+  "importComplete": "Import complete!"
 }

@@ -27,6 +27,9 @@ function NovelPromotionWorkspaceContent(props: NovelPromotionWorkspaceProps) {
     onEpisodeCreate,
     onEpisodeRename,
     onEpisodeDelete,
+    onImportNovel,
+    savedSearchQuery,
+    onSearchQueryChange,
   } = props
 
   const storyToScriptStream = vm.execution.storyToScriptStream
@@ -84,6 +87,7 @@ function NovelPromotionWorkspaceContent(props: NovelPromotionWorkspaceProps) {
         availableModels={vm.ui.userModelsForSettings || undefined}
         modelsLoaded={vm.ui.userModelsLoaded}
         artStyle={vm.project.artStyle}
+        projectType={vm.project.projectType}
         analysisModel={vm.project.analysisModel}
         characterModel={vm.project.characterModel}
         locationModel={vm.project.locationModel}
@@ -94,7 +98,30 @@ function NovelPromotionWorkspaceContent(props: NovelPromotionWorkspaceProps) {
         capabilityOverrides={vm.project.capabilityOverrides}
         videoRatio={vm.project.videoRatio}
         ttsRate={vm.project.ttsRate !== undefined && vm.project.ttsRate !== null ? String(vm.project.ttsRate) : undefined}
+        narratorVoiceId={vm.project.narratorVoiceId}
+        narratorVoiceType={vm.project.narratorVoiceType}
+        narratorVoicePrompt={vm.project.narratorVoicePrompt}
         onUpdateConfig={vm.actions.handleUpdateConfig}
+        onDesignNarratorVoice={async (payload) => {
+          const response = await fetch('/api/asset-hub/voice-design', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              voicePrompt: payload.voicePrompt,
+              previewText: payload.previewText,
+              preferredName: payload.preferredName,
+              language: payload.language,
+            }),
+          })
+          const data = await response.json()
+          if (!response.ok) {
+            throw new Error(data.error || 'Voice design failed')
+          }
+          return {
+            voiceId: data.voiceId,
+            audioBase64: data.audioBase64,
+          }
+        }}
         globalAssetText={vm.project.globalAssetText}
         projectName={project.name}
         episodes={episodes}
@@ -103,6 +130,7 @@ function NovelPromotionWorkspaceContent(props: NovelPromotionWorkspaceProps) {
         onEpisodeCreate={onEpisodeCreate}
         onEpisodeRename={onEpisodeRename}
         onEpisodeDelete={onEpisodeDelete}
+        onImportNovel={onImportNovel}
         capsuleNavItems={vm.stageNav.capsuleNavItems}
         currentStage={vm.stageNav.currentStage}
         onStageChange={vm.stageNav.handleStageChange}
@@ -114,6 +142,8 @@ function NovelPromotionWorkspaceContent(props: NovelPromotionWorkspaceProps) {
         assetLibraryLabel={vm.i18n.t('buttons.assetLibrary')}
         settingsLabel={vm.i18n.t('buttons.settings')}
         refreshTitle={vm.i18n.t('buttons.refreshData')}
+        savedSearchQuery={savedSearchQuery}
+        onSearchQueryChange={onSearchQueryChange}
       />
 
       <div className="pt-24">

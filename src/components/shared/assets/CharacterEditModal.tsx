@@ -16,12 +16,16 @@ import {
     useUpdateProjectCharacterName,
 } from '@/lib/query/hooks'
 import { AiModifyDescriptionField } from './AiModifyDescriptionField'
+import { apiFetch } from '@/lib/api-fetch'
+import { CharacterProfileData } from '@/types/character-profile'
+import { CharacterPropertyEditor } from './CharacterPropertyEditor'
 
 export interface CharacterEditModalProps {
     mode: 'asset-hub' | 'project'
     characterId: string
     characterName: string
     description: string
+    imagePrompt?: string | null
     appearanceIndex?: number
     changeReason?: string
     projectId?: string
@@ -29,11 +33,13 @@ export interface CharacterEditModalProps {
     descriptionIndex?: number
     isTaskRunning?: boolean
     introduction?: string | null
+    profileData?: CharacterProfileData | null
     onClose: () => void
     onSave: (characterId: string, appearanceId: string) => void
     onUpdate?: (newDescription: string) => void
     onIntroductionUpdate?: (newIntroduction: string) => void
     onNameUpdate?: (newName: string) => void
+    onProfileDataUpdate?: (profileData: CharacterProfileData) => void
     onRefresh?: () => void
 }
 
@@ -42,6 +48,7 @@ export function CharacterEditModal({
     characterId,
     characterName,
     description,
+    imagePrompt: initialImagePrompt,
     appearanceIndex,
     changeReason,
     projectId,
@@ -49,11 +56,13 @@ export function CharacterEditModal({
     descriptionIndex,
     isTaskRunning = false,
     introduction,
+    profileData,
     onClose,
     onSave,
     onUpdate,
     onIntroductionUpdate,
     onNameUpdate,
+    onProfileDataUpdate,
     onRefresh,
 }: CharacterEditModalProps) {
     const t = useTranslations('assets')
@@ -65,9 +74,14 @@ export function CharacterEditModal({
     const [editingName, setEditingName] = useState(characterName)
     const [editingDescription, setEditingDescription] = useState(description)
     const [editingIntroduction, setEditingIntroduction] = useState(introduction || '')
+    const [editingImagePrompt, setEditingImagePrompt] = useState(initialImagePrompt || '')
     const [aiModifyInstruction, setAiModifyInstruction] = useState('')
     const [isAiModifying, setIsAiModifying] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
+    const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false)
+
+    // 使用统一的基本属性状态管理
+    const [currentProfileData, setCurrentProfileData] = useState<CharacterProfileData | null>(profileData || null)
     const aiModifyingState = isAiModifying
         ? resolveTaskPresentationState({
             phase: 'processing',
@@ -92,6 +106,14 @@ export function CharacterEditModal({
             hasOutput: true,
         })
         : null
+    const generatingPromptState = isGeneratingPrompt
+        ? resolveTaskPresentationState({
+            phase: 'processing',
+            intent: 'process',
+            resource: 'text',
+            hasOutput: false,
+        })
+        : null
 
     const updateAssetHubName = useUpdateCharacterName()
     const updateProjectName = useUpdateProjectCharacterName(projectId ?? '')
@@ -104,6 +126,11 @@ export function CharacterEditModal({
     const getErrorMessage = (error: unknown, fallback: string) => {
         if (error instanceof Error && error.message) return error.message
         return fallback
+    }
+
+    // 处理基本属性变更
+    const handleProfileDataChange = (newProfileData: CharacterProfileData) => {
+        setCurrentProfileData(newProfileData)
     }
 
     const persistNameIfNeeded = async () => {
@@ -149,6 +176,64 @@ export function CharacterEditModal({
             introduction: nextIntro,
         })
         onIntroductionUpdate?.(nextIntro)
+    }
+
+    const handleGenerateImagePrompt = async () => {
+        if (!editingName.trim() && !editingDescription.trim()) return
+
+        try {
+            setIsGeneratingPrompt(true)
+
+            if (mode === 'asset-hub') {
+                const response = await apiFetch('/api/asset-hub/generate-character-prompt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        characterId,
+                        characterName: editingName,
+                        characterDescription: editingDescription,
+                        appearanceIndex: appearanceIndex ?? 0,
+                    }),
+                })
+
+                const data = await response.json()
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data?.error?.message || data?.message || 'Failed to generate prompt')
+                }
+
+                if (data.imagePrompt) {
+                    setEditingImagePrompt(data.imagePrompt)
+                }
+            } else {
+                const response = await apiFetch(`/api/novel-promotion/${projectId}/generate-character-prompt`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        characterId,
+                        characterName: editingName,
+                        characterDescription: editingDescription,
+                        appearanceId,
+                    }),
+                })
+
+                const data = await response.json()
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data?.error?.message || data?.message || 'Failed to generate prompt')
+                }
+
+                if (data.imagePrompt) {
+                    setEditingImagePrompt(data.imagePrompt)
+                }
+            }
+        } catch (error: unknown) {
+            if (shouldShowError(error)) {
+                alert(`${t('modal.generatePromptFailed')}: ${getErrorMessage(error, t('errors.failed'))}`)
+            }
+        } finally {
+            setIsGeneratingPrompt(false)
+        }
     }
 
     const handleAiModify = async () => {
@@ -215,6 +300,11 @@ export function CharacterEditModal({
             await persistDescription()
             await persistIntroductionIfNeeded()
 
+            // 保存基本属性
+            if (currentProfileData && onProfileDataUpdate) {
+                onProfileDataUpdate(currentProfileData)
+            }
+
             onUpdate?.(editingDescription)
             onRefresh?.()
             onClose()
@@ -237,6 +327,11 @@ export function CharacterEditModal({
                 await persistNameIfNeeded()
                 await persistDescription()
                 await persistIntroductionIfNeeded()
+
+                // 保存基本属性
+                if (currentProfileData && onProfileDataUpdate) {
+                    onProfileDataUpdate(currentProfileData)
+                }
 
                 onUpdate?.(savedDescription)
                 onRefresh?.()
@@ -309,6 +404,17 @@ export function CharacterEditModal({
                         </div>
                     )}
 
+                    {/* 基本属性区域 */}
+                    {mode === 'project' && (
+                        <CharacterPropertyEditor
+                            profileData={currentProfileData}
+                            onChange={handleProfileDataChange}
+                            collapsible={true}
+                            defaultExpanded={true}
+                            showAllProperties={true}
+                        />
+                    )}
+
                     {mode === 'asset-hub' && changeReason && (
                         <div className="text-sm text-[var(--glass-text-secondary)]">
                             {t('character.appearance')}:
@@ -333,6 +439,39 @@ export function CharacterEditModal({
                         actionLabel={t('modal.modifyDescription')}
                         cancelLabel={t('common.cancel')}
                     />
+
+                    {/* AI 提示词输入框 */}
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                            <label className="glass-field-label block">
+                                {t('character.imagePrompt')}
+                            </label>
+                            <button
+                                onClick={handleGenerateImagePrompt}
+                                disabled={isGeneratingPrompt || (!editingName.trim() && !editingDescription.trim())}
+                                className="glass-btn-base glass-btn-tone-info px-3 py-1.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-1.5"
+                            >
+                                {isGeneratingPrompt ? (
+                                    <TaskStatusInline state={generatingPromptState} className="text-white [&>span]:text-white [&_svg]:text-white text-xs" />
+                                ) : (
+                                    <>
+                                        <AppIcon name="sparkles" className="w-4 h-4" />
+                                        {t('modal.generatePrompt')}
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                        <textarea
+                            value={editingImagePrompt}
+                            onChange={(e) => setEditingImagePrompt(e.target.value)}
+                            className="glass-textarea-base w-full px-3 py-2 min-h-[100px]"
+                            placeholder={t('modal.imagePromptPlaceholder')}
+                            rows={4}
+                        />
+                        <p className="text-xs text-[var(--glass-text-tertiary)]">
+                            {t('modal.imagePromptHint')}
+                        </p>
+                    </div>
                 </div>
 
                 <div className="flex gap-3 justify-end p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] rounded-b-lg flex-shrink-0">

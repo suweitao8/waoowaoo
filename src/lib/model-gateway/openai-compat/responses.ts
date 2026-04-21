@@ -110,6 +110,7 @@ export async function runOpenAICompatResponsesCompletion(input: OpenAICompatChat
         content: [{ type: 'input_text', text: message.content }],
       })),
       temperature: input.temperature,
+      max_output_tokens: input.maxTokens,
     }),
   })
 

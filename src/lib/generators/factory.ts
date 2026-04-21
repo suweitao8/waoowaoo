@@ -15,6 +15,7 @@ import {
     GoogleGeminiBatchImageGenerator,
     GeminiCompatibleImageGenerator,
     OpenAICompatibleImageGenerator,
+    GrsaiNanoImageGenerator,
 } from './image'
 import { GoogleVeoVideoGenerator } from './video/google'
 import { OpenAICompatibleVideoGenerator } from './video'
@@ -67,6 +68,9 @@ export function createImageGenerator(provider: string, modelId?: string): ImageG
             return new BailianImageGenerator()
         case 'siliconflow':
             return new SiliconFlowImageGenerator()
+        case 'grsai':
+            // Grsai 使用专用的 Nano Banana API
+            return new GrsaiNanoImageGenerator(actualModelId, provider)
         default:
             throw new Error(`Unknown image generator provider: ${provider}`)
     }

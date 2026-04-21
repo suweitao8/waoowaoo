@@ -32,6 +32,7 @@ type LocationBackedImageRow = {
   id: string
   imageIndex: number
   description: string | null
+  imagePrompt: string | null
   availableSlots: string | null
   imageUrl: string | null
   imageMediaId: string | null
@@ -93,6 +94,7 @@ async function readProjectLocationBackedImages(locationIds: string[]): Promise<M
       id,
       imageIndex,
       description,
+      imagePrompt,
       availableSlots,
       imageUrl,
       imageMediaId,
@@ -117,6 +119,7 @@ async function readGlobalLocationBackedImages(locationIds: string[]): Promise<Ma
       id,
       imageIndex,
       description,
+      imagePrompt,
       availableSlots,
       imageUrl,
       imageMediaId,

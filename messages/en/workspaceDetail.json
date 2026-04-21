@@ -32,6 +32,10 @@
     "rename": "Rename",
     "newEpisodePlaceholder": "Enter episode name...",
     "create": "Create",
-    "addEpisode": "Add Episode"
+    "addEpisode": "Add Episode",
+    "searchPlaceholder": "Jump/ search episodes",
+    "errorInvalid": "Please enter a valid number",
+    "errorOutOfRange": "Please enter 1-{max}",
+    "errorNotFound": "No matching episode found"
   }
 }

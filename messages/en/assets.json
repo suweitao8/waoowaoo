@@ -50,6 +50,7 @@
         "noSpeaker": "Not Set",
         "primary": "Primary",
         "secondary": "Secondary",
+        "imagePrompt": "AI Prompt",
         "generateFromPrimary": "Generate from Primary",
         "selectPrimaryFirst": "Select primary first",
         "editing": "Editing...",
@@ -70,6 +71,7 @@
         "summary": "Summary",
         "summaryPlaceholder": "Usage/associations, e.g.: John's master bedroom",
         "description": "Location Description",
+        "imagePrompt": "AI Prompt",
         "generateImage": "Generate Image",
         "regenerateImage": "Regenerate",
         "updateFailed": "Update description failed",
@@ -191,7 +193,26 @@
         "introduction": "Character Introduction",
         "introductionPlaceholder": "e.g.: The protagonist; 'I' refers to her. Others call her 'Snow' or 'Sister Snow'...",
         "introductionTip": "Describe the character's role in the story, narrative perspective (who 'I' refers to), how others address them",
-        "saveIntroduction": "Save Introduction"
+        "saveIntroduction": "Save Introduction",
+        "generatePrompt": "Generate Prompt",
+        "generatePromptFailed": "Failed to generate prompt",
+        "imagePromptPlaceholder": "AI-generated text-to-image prompt will appear here, you can also edit manually...",
+        "imagePromptHint": "This prompt will be used to generate location images, edit manually or click button to auto-generate"
+    },
+    "basicAttributes": {
+        "title": "Basic Attributes",
+        "gender": "Gender",
+        "genderPlaceholder": "e.g., Female",
+        "age": "Age",
+        "agePlaceholder": "e.g., Around 25",
+        "identity": "Identity",
+        "identityPlaceholder": "e.g., Shop owner, Little sister",
+        "height": "Height",
+        "heightPlaceholder": "e.g., 168cm",
+        "bodyType": "Body Type",
+        "bodyTypePlaceholder": "e.g., Tall and slender, elegant posture",
+        "personality": "Personality",
+        "personalityPlaceholder": "Enter personality tag"
     },
     "toolbar": {
         "filter": "Filter",
@@ -329,7 +350,7 @@
             "age": "Age:",
             "era": "Era:",
             "class": "Class:",
-            "occupation": "Occupation:",
+            "identity": "Identity:",
             "personality": "Personality:",
             "costume": "Costume:",
             "identifier": "Identifier:"
@@ -362,5 +383,32 @@
         "referenceImages": "Reference Images",
         "referenceImagesHint": "(optional, paste supported)",
         "startEditing": "Start Editing"
+    },
+    "unifiedPanel": {
+        "editTitle": "Edit Character - {name}",
+        "sections": {
+            "basic": "Basic Info",
+            "positioning": "Character Positioning",
+            "visual": "Visual Settings",
+            "prompts": "AI Prompts"
+        },
+        "fields": {
+            "era": "Era/Period",
+            "socialClass": "Social Class",
+            "voicePrompt": "Voice Prompt"
+        },
+        "placeholders": {
+            "era": "e.g., Modern urban, Ancient court, Republican era",
+            "socialClass": "e.g., Wealthy family, Middle class, Commoner",
+            "voicePrompt": "AI-generated voice prompt will appear here, you can also edit manually..."
+        },
+        "generating": "Generating...",
+        "imagePromptHint": "This prompt will be used to generate character images, you can edit manually",
+        "voicePromptHint": "This prompt will be used to generate character voice, you can edit manually",
+        "regenerateWarning": {
+            "title": "Confirm Regeneration",
+            "message": "Changing properties requires regenerating image and voice. Continue?",
+            "confirm": "Confirm Regenerate"
+        }
     }
 }

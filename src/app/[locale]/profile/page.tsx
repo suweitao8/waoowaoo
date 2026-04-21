@@ -1,35 +1,38 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import Navbar from '@/components/Navbar'
 import ApiConfigTab from './components/ApiConfigTab'
+import GeneralSettingsTab from './components/GeneralSettingsTab'
 import { AppIcon } from '@/components/ui/icons'
 import { useRouter } from '@/i18n/navigation'
+import { isSingleUserMode } from '@/lib/single-user-mode'
+
+type ActiveSection = 'apiConfig' | 'generalSettings'
 
 export default function ProfilePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const t = useTranslations('profile')
   const tc = useTranslations('common')
-
-  // 主要分区：扣费记录 / API配置
-  const [activeSection, setActiveSection] = useState<'billing' | 'apiConfig'>('apiConfig')
+  const [activeSection, setActiveSection] = useState<ActiveSection>('apiConfig')
 
   useEffect(() => {
+    // 单用户模式下不需要检查登录状态
+    if (isSingleUserMode()) return
     if (status === 'loading') return
     if (!session) { router.push({ pathname: '/auth/signin' }); return }
   }, [router, session, status])
 
-  if (status === 'loading' || !session) {
+  // 单用户模式下直接显示内容
+  if (!isSingleUserMode() && (status === 'loading' || !session)) {
     return (
       <div className="glass-page flex min-h-screen items-center justify-center">
         <div className="text-[var(--glass-text-secondary)]">{tc('loading')}</div>
       </div>
     )
   }
-
-  const noBillingText = t('openSourceNoBilling')
 
   return (
     <div className="glass-page min-h-screen">
@@ -41,20 +44,6 @@ export default function ProfilePage() {
           {/* 左侧侧边栏 */}
           <div className="w-64 flex-shrink-0">
             <div className="glass-surface-elevated h-full flex flex-col p-5">
-
-              {/* 用户信息 */}
-              <div className="mb-6">
-                <div className="mb-4">
-                  <h2 className="font-semibold text-[var(--glass-text-primary)]">{session.user?.name || t('user')}</h2>
-                  <p className="text-xs text-[var(--glass-text-tertiary)]">{t('personalAccount')}</p>
-                </div>
-
-                {/* 余额卡片 */}
-                <div className="glass-surface-soft rounded-2xl border border-[var(--glass-stroke-base)] p-4">
-                  <div className="text-xs font-medium text-[var(--glass-text-secondary)]">{t('availableBalance')}</div>
-                  <div className="mt-2 text-base font-semibold text-[var(--glass-text-primary)]">{noBillingText}</div>
-                </div>
-              </div>
 
               {/* 导航菜单 */}
               <nav className="flex-1 space-y-2">
@@ -68,40 +57,29 @@ export default function ProfilePage() {
                   <AppIcon name="settingsHexAlt" className="w-5 h-5" />
                   <span className="font-medium">{t('apiConfig')}</span>
                 </button>
-
                 <button
-                  onClick={() => setActiveSection('billing')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${activeSection === 'billing'
+                  onClick={() => setActiveSection('generalSettings')}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${activeSection === 'generalSettings'
                     ? 'glass-btn-base glass-btn-tone-info'
                     : 'text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-muted)]'
                     }`}
                 >
-                  <AppIcon name="receipt" className="w-5 h-5" />
-                  <span className="font-medium">{t('billingRecords')}</span>
+                  <AppIcon name="settingsHex" className="w-5 h-5" />
+                  <span className="font-medium">{t('generalSettings')}</span>
                 </button>
               </nav>
-              {/* 退出登录 */}
-              <button
-                onClick={() => signOut({ callbackUrl: '/' })}
-                className="glass-btn-base glass-btn-tone-danger mt-auto flex items-center gap-2 px-4 py-3 text-sm rounded-xl transition-all cursor-pointer"
-              >
-                <AppIcon name="logout" className="w-4 h-4" />
-                {t('logout')}
-              </button>
+
+              {/* 单用户模式下隐藏退出按钮 */}
             </div>
           </div>
 
           {/* 右侧内容区 */}
           <div className="flex-1 min-w-0">
             <div className="glass-surface-elevated h-full flex flex-col">
-
               {activeSection === 'apiConfig' ? (
                 <ApiConfigTab />
               ) : (
-                <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-                  <AppIcon name="receipt" className="mb-4 h-12 w-12 text-[var(--glass-text-tertiary)]" />
-                  <p className="text-base font-semibold text-[var(--glass-text-primary)]">{noBillingText}</p>
-                </div>
+                <GeneralSettingsTab />
               )}
             </div>
           </div>

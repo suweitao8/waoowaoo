@@ -158,6 +158,17 @@ export async function handleLocationImageTask(job: Job<TaskJobData>) {
       : addLocationPromptSuffix(promptCore)
     const prompt = artStyle ? `${promptWithSuffix}，${artStyle}` : promptWithSuffix
     const aspectRatio = assetType === 'prop' ? PROP_IMAGE_RATIO : LOCATION_IMAGE_RATIO
+
+    // 调试日志：打印图片生成参数
+    console.log(`[location-image-task] Generating image for location "${name}":`, {
+      assetType,
+      aspectRatio,
+      PROP_IMAGE_RATIO,
+      LOCATION_IMAGE_RATIO,
+      modelId,
+      promptLength: prompt.length,
+    })
+
     await reportTaskProgress(job, 20 + Math.floor((i / Math.max(locationImages.length, 1)) * 55), {
       stage: 'generate_location_image',
       imageId: item.id,

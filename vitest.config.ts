@@ -12,8 +12,12 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
+  esbuild: {
+    jsx: 'automatic',
+    jsxImportSource: 'react',
+  },
   test: {
-    environment: 'node',
+    environment: 'jsdom',
     css: false,
     pool: 'forks',
     poolOptions: {
@@ -22,9 +26,9 @@ export default defineConfig({
         maxForks: 1,
       },
     },
-    setupFiles: ['./tests/setup/env.ts'],
+    setupFiles: ['./tests/setup/env.ts', './tests/setup/jsdom.ts'],
     globalSetup: ['./tests/setup/global-setup.ts'],
-    include: ['**/*.test.ts'],
+    include: ['**/*.test.ts', '**/*.test.tsx'],
     testTimeout: 30_000,
     hookTimeout: 60_000,
     deps: {

@@ -49,18 +49,6 @@ vi.mock('@/components/task/TaskStatusInline', () => ({
   default: () => createElement('span', null, 'TaskStatusInline'),
 }))
 
-vi.mock('@/components/home/AiWriteModal', () => ({
-  default: () => createElement('div', null, 'AiWriteModal'),
-}))
-
-vi.mock('@/lib/api-fetch', () => ({
-  apiFetch: vi.fn(),
-}))
-
-vi.mock('@/lib/home/ai-story-expand', () => ({
-  expandHomeStory: vi.fn(),
-}))
-
 vi.mock('@/components/ui/icons', () => ({
   AppIcon: ({ name, ...props }: { name: string } & Record<string, unknown>) =>
     createElement('span', { ...props, 'data-icon': name }),
@@ -73,7 +61,6 @@ describe('NovelInputStage', () => {
     const html = renderToStaticMarkup(
       createElement(NovelInputStage, {
         novelText: '',
-        episodeName: '剧集 1',
         onNovelTextChange: () => undefined,
         onNext: () => undefined,
       }),
@@ -83,9 +70,5 @@ describe('NovelInputStage', () => {
     expect(html).toContain('data-min-rows="8"')
     expect(html).toContain('data-max-height-ratio="0.5"')
     expect(html).toContain('data-textarea-class="px-0 pt-0 pb-3 align-top"')
-    expect(html).toContain('aiWrite.trigger')
-    expect(html).toContain('AiWriteModal')
-    expect(html).not.toContain('storyInput.wordCount 0')
-    expect(html).not.toContain('storyInput.currentConfigSummary')
   })
 })

@@ -100,7 +100,8 @@ export function LocationCard({ location, assetType = 'location', onImageClick, o
   })
   const displaySlotCount = displaySelectionImages.length
   const hasMultipleImages = generatedImageCount > 1
-  const singleImageAspectClassName = assetType === 'prop' ? 'aspect-[3/2]' : 'aspect-square'
+  // 道具和场景都使用 16:9
+  const singleImageAspectClassName = 'aspect-video' // 16:9
   const displayTaskPresentation = isTaskRunning
     ? resolveTaskPresentationState({
       phase: 'processing',

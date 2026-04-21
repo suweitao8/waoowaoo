@@ -16,6 +16,7 @@ interface UseWorkspaceStageRuntimeParams {
   videoRatio: string | undefined
   artStyle: string | undefined
   videoModel: string | undefined
+  projectType: string | undefined
   capabilityOverrides: CapabilitySelections
   userVideoModels: Array<{
     value: string
@@ -66,6 +67,7 @@ export function useWorkspaceStageRuntime({
   videoRatio,
   artStyle,
   videoModel,
+  projectType,
   capabilityOverrides,
   userVideoModels,
   handleUpdateEpisode,
@@ -96,6 +98,7 @@ export function useWorkspaceStageRuntime({
     videoRatio,
     artStyle,
     videoModel,
+    projectType,
     capabilityOverrides,
     userVideoModels: resolvedUserVideoModels,
     onNovelTextChange: (value) => handleUpdateEpisode('novelText', value),
@@ -133,6 +136,7 @@ export function useWorkspaceStageRuntime({
     isSubmittingTTS,
     isTransitioning,
     openAssetLibrary,
+    projectType,
     runScriptToStoryboardFlow,
     runStoryToScriptFlow,
     runWithRebuildConfirm,

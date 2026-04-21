@@ -1,6 +1,6 @@
 /**
  * 图片生成器统一导出
- * 
+ *
  * 🔥 FAL 和 Ark 已迁移到根目录的合并文件
  * - FAL: ../fal.ts
  * - Ark: ../ark.ts
@@ -10,6 +10,7 @@
 export { GoogleGeminiImageGenerator, GoogleImagenGenerator, GoogleGeminiBatchImageGenerator } from './google'
 export { GeminiCompatibleImageGenerator } from './gemini-compatible'
 export { OpenAICompatibleImageGenerator } from './openai-compatible'
+export { GrsaiNanoImageGenerator } from './grsai-nano'
 
 
 // 向后兼容：从合并文件重新导出

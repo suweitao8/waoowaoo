@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTranslations } from 'next-intl'
 import Navbar from "@/components/Navbar"
 import PasswordStrengthIndicator from "@/components/auth/PasswordStrengthIndicator"
 import { apiFetch } from '@/lib/api-fetch'
 import { Link, useRouter } from '@/i18n/navigation'
+import { isSingleUserMode } from '@/lib/single-user-mode'
+import { buildAuthenticatedHomeTarget } from '@/lib/home/default-route'
 
 export default function SignUp() {
   const [name, setName] = useState("")
@@ -16,6 +18,22 @@ export default function SignUp() {
   const [success, setSuccess] = useState("")
   const router = useRouter()
   const t = useTranslations('auth')
+
+  // 单用户模式下直接重定向到 workspace
+  useEffect(() => {
+    if (isSingleUserMode()) {
+      router.replace(buildAuthenticatedHomeTarget())
+    }
+  }, [router])
+
+  // 单用户模式下不渲染注册表单
+  if (isSingleUserMode()) {
+    return (
+      <div className="glass-page min-h-screen flex items-center justify-center">
+        <div className="text-[var(--glass-text-secondary)]">Redirecting...</div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

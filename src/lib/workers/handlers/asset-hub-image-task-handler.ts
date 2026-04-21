@@ -63,6 +63,15 @@ export async function handleAssetHubImageTask(job: Job<TaskJobData>) {
   const payload = (job.data.payload || {}) as AnyObj
   const userId = job.data.userId
   const userModels = await getUserModels(userId)
+
+  // 调试日志
+  console.log('[asset-hub-image] userModels:', JSON.stringify({
+    characterModel: userModels.characterModel,
+    locationModel: userModels.locationModel,
+    storyboardModel: userModels.storyboardModel,
+    editModel: userModels.editModel,
+  }))
+
   const artStyle = getArtStylePrompt(
     typeof payload.artStyle === 'string' ? payload.artStyle : undefined,
     job.data.locale,
@@ -156,6 +165,12 @@ export async function handleAssetHubImageTask(job: Job<TaskJobData>) {
         : addLocationPromptSuffix(promptCore)
       const prompt = artStyle ? `${promptWithSuffix}，${artStyle}` : promptWithSuffix
       const aspectRatio = payload.type === 'prop' ? PROP_IMAGE_RATIO : LOCATION_IMAGE_RATIO
+
+      // 调试日志：查看实际传递的提示词
+      console.log(`[asset-hub-image] type: ${payload.type}, promptCore: ${promptCore.substring(0, 100)}...`)
+      console.log(`[asset-hub-image] promptWithSuffix: ${promptWithSuffix.substring(0, 150)}...`)
+      console.log(`[asset-hub-image] final prompt: ${prompt.substring(0, 200)}...`)
+      console.log(`[asset-hub-image] aspectRatio: ${aspectRatio}`)
 
       const imageKey = await generateCleanImageToStorage({
         job,

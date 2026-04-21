@@ -29,6 +29,11 @@ export const PROMPT_IDS = {
   NP_SINGLE_PANEL_IMAGE: 'np_single_panel_image',
   NP_STORYBOARD_EDIT: 'np_storyboard_edit',
   NP_VOICE_ANALYSIS: 'np_voice_analysis',
+  // ComfyUI
+  COMFYUI_OPTIMIZE_PROMPT: 'comfyui_optimize_prompt',
+  // ComfyUI Character Generation
+  COMFYUI_CHARACTER_PROFILE: 'comfyui_character_profile',
+  COMFYUI_CHARACTER_VISUAL: 'comfyui_character_visual',
 } as const
 
 export type PromptId = (typeof PROMPT_IDS)[keyof typeof PROMPT_IDS]

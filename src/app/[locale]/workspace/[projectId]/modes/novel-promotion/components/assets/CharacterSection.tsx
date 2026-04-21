@@ -288,14 +288,14 @@ export default function CharacterSection({
                                     </span>
                                 </div>
                                 <div className="flex flex-col items-end gap-1.5">
-                                    {/* 从资产中心导入按钮 */}
-                                    <button
+                                    {/* 从资产中心导入按钮 - 暂时隐藏 */}
+                                    {/* <button
                                         onClick={() => onCopyFromGlobal(character.id)}
                                         className="text-xs text-[var(--glass-tone-info-fg)] hover:text-[var(--glass-tone-info-fg)] flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[var(--glass-tone-info-bg)] transition-colors"
                                     >
                                         <AppIcon name="arrowDownCircle" className="w-4 h-4" />
                                         {t("character.copyFromGlobal")}
-                                    </button>
+                                    </button> */}
                                     <button
                                         onClick={() => onDeleteCharacter(character.id)}
                                         className="text-xs text-[var(--glass-tone-danger-fg)] hover:text-[var(--glass-tone-danger-fg)] flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[var(--glass-tone-danger-bg)] transition-colors"

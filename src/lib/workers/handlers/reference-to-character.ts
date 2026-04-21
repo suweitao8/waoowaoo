@@ -94,8 +94,8 @@ async function generateReferenceImage(params: {
     const processed = labelText
       ? await (async () => {
         const meta = await sharp(buffer).metadata()
-        const width = meta.width || 2160
-        const height = meta.height || 2160
+        const width = meta.width || 1920
+        const height = meta.height || 1080
         const fontSize = Math.floor(height * 0.04)
         const pad = Math.floor(fontSize * 0.5)
         const barHeight = fontSize + pad * 2
@@ -161,6 +161,17 @@ export async function handleReferenceToCharacterTask(job: Job<TaskJobData>) {
   const userConfig = await getUserModelConfig(job.data.userId)
   const imageModel = readString(userConfig.characterModel)
   const analysisModel = readString(userConfig.analysisModel)
+
+  // 调试日志
+  console.log('[reference-to-character] userConfig:', JSON.stringify({
+    characterModel: userConfig.characterModel,
+    locationModel: userConfig.locationModel,
+    storyboardModel: userConfig.storyboardModel,
+    editModel: userConfig.editModel,
+    imageModel,
+    analysisModel,
+  }))
+
   if (!imageModel && !extractOnly) {
     throw new Error('请先在设置页面配置角色图片模型')
   }

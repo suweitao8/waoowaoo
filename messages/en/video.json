@@ -138,6 +138,15 @@
     "thenTransitionTo": "then transition to"
   },
   "editor": {
+    "loading": "Loading editor...",
+    "retry": "Retry",
+    "error": {
+      "loadFailed": "Failed to load editor project"
+    },
+    "empty": {
+      "title": "No videos to edit",
+      "description": "Please generate video clips in the Video stage first"
+    },
     "alert": {
       "saveSuccess": "Saved successfully",
       "saveFailed": "Save failed",

@@ -1,0 +1,3 @@
+Optimize: {user_input}
+
+Directly output Chinese prompt with: ultimate quality, hyper-realistic, lighting, composition, detail texture, real texture. No explanation.

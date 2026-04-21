@@ -66,5 +66,18 @@
         "missingAssetsTipLink": "first",
         "generating": "Generating...",
         "startGenerate": "Confirm and Start Drawing →"
+    },
+    "jump": {
+        "placeholder": "Jump to # or search",
+        "errorOutOfRange": "Please enter 1-{max}",
+        "errorInvalid": "Please enter a valid number",
+        "errorNotFound": "No matching chapter found"
+    },
+    "voice": {
+        "generateDialogue": "Generate voice for {character}",
+        "generateVoiceover": "Generate narration voice",
+        "preview": "Preview voice",
+        "noVoice": "No voice yet",
+        "bindVoiceFirst": "Please bind a voice for this character first"
     }
 }

@@ -29,6 +29,46 @@ export interface EpisodeMarkerResult {
     previewSplits: PreviewSplit[]
 }
 
+/**
+ * 预处理小说文本，清理常见格式问题
+ * - 移除"第X卷"标记（卷标题）
+ * - 移除分隔线（如 ------------）
+ * - 移除文件名标识（如 "1-10"、"第1-100章" 等）
+ * - 清理多余空行
+ * - 尝试修复编码问题
+ */
+export function preprocessNovelText(content: string): string {
+    if (!content || content.length < 100) {
+        return content
+    }
+
+    let processed = content
+
+    // 1. 移除文件名标识行（常见于复制的内容开头）
+    // 匹配：凡人修仙传1-10、斗破苍穹第1-100章、小说名+数字范围 等
+    processed = processed.replace(/^[^\n]*[\u4e00-\u9fa5]+\s*\d+\s*[-~至到]\s*\d+\s*[章回集部卷]?\s*$/gm, '')
+    processed = processed.replace(/^[^\n]*[\u4e00-\u9fa5]+\s*第?\s*\d+\s*[-~至到]\s*\d+\s*[章回集部卷]?\s*$/gm, '')
+
+    // 2. 移除"第X卷"标记（整行）
+    // 匹配：第一卷、第二卷、第1卷、第壹卷 等
+    processed = processed.replace(/^第[一二三四五六七八九十百千\d零壹贰叁肆伍陆柒捌玖拾]+卷[^\n]*$/gm, '')
+
+    // 3. 移除常见分隔线
+    // 匹配：------------、===========、*********** 等
+    processed = processed.replace(/^[──\-_=*~]{3,}$/gm, '')
+
+    // 4. 移除多余的连续空行（保留最多一个空行）
+    processed = processed.replace(/\n{3,}/g, '\n\n')
+
+    // 5. 移除行首行尾的空白（保留段落缩进）
+    processed = processed.replace(/[ \t]+$/gm, '')  // 行尾空白
+
+    // 6. 清理文档开头和结尾的空白
+    processed = processed.trim()
+
+    return processed
+}
+
 // 中文数字映射
 const CHINESE_NUMBERS: Record<string, number> = {
     '零': 0, '〇': 0,
@@ -199,13 +239,16 @@ export function detectEpisodeMarkers(content: string): EpisodeMarkerResult {
         return result
     }
 
+    // 🔥 预处理文本：移除卷标记、分隔线等干扰内容
+    const processedContent = preprocessNovelText(content)
+
     // 尝试每种模式
     for (const pattern of DETECTION_PATTERNS) {
         const regex = new RegExp(pattern.regex.source, pattern.regex.flags)
         const matches: EpisodeMarkerMatch[] = []
         let match: RegExpExecArray | null
 
-        while ((match = regex.exec(content)) !== null) {
+        while ((match = regex.exec(processedContent)) !== null) {
             const episodeNumber = pattern.extractNumber(match)
 
             // 场景编号特殊处理：同一集只记录第一次出现
@@ -253,7 +296,7 @@ export function detectEpisodeMarkers(content: string): EpisodeMarkerResult {
         result.confidence = 'low'
     }
 
-    // 生成预览分割
+    // 生成预览分割（使用预处理后的内容）
     const previewSplits: PreviewSplit[] = []
 
     // 🔥 检查第一个标记是否不是第1集，如果是且前面有内容，自动补充缺失的集
@@ -263,7 +306,7 @@ export function detectEpisodeMarkers(content: string): EpisodeMarkerResult {
         for (let i = 1; i < firstMatch.episodeNumber; i++) {
             // 只有第1集使用所有前面的内容
             if (i === 1) {
-                const episodeContent = content.slice(0, firstMatch.index)
+                const episodeContent = processedContent.slice(0, firstMatch.index)
                 const preview = episodeContent.slice(0, 50).trim().slice(0, 20)
                 previewSplits.push({
                     number: i,
@@ -283,9 +326,9 @@ export function detectEpisodeMarkers(content: string): EpisodeMarkerResult {
         const startIndex = idx === 0 && previewSplits.length === 0 ? 0 : match.index
         const endIndex = idx < result.matches.length - 1
             ? result.matches[idx + 1].index
-            : content.length
+            : processedContent.length
 
-        const episodeContent = content.slice(startIndex, endIndex)
+        const episodeContent = processedContent.slice(startIndex, endIndex)
         const wordCount = countWords(episodeContent)
 
         // 标题固定使用"第 X 集"格式
@@ -316,6 +359,8 @@ export function detectEpisodeMarkers(content: string): EpisodeMarkerResult {
 
 /**
  * 根据检测结果分割内容
+ * @param content - 原始内容（会被预处理）
+ * @param markerResult - 检测结果
  */
 export function splitByMarkers(content: string, markerResult: EpisodeMarkerResult): Array<{
     number: number
@@ -328,8 +373,11 @@ export function splitByMarkers(content: string, markerResult: EpisodeMarkerResul
         return []
     }
 
+    // 🔥 使用预处理后的内容进行分割
+    const processedContent = preprocessNovelText(content)
+
     return markerResult.previewSplits.map(split => {
-        const episodeContent = content.slice(split.startIndex, split.endIndex).trim()
+        const episodeContent = processedContent.slice(split.startIndex, split.endIndex).trim()
 
         return {
             number: split.number,

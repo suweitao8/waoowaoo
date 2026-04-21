@@ -11,6 +11,7 @@ interface StoryboardStageShellProps {
   isNextDisabled: boolean
   transitioningState: TaskPresentationState | null
   onNext: () => void
+  projectType?: string | null
 }
 
 export default function StoryboardStageShell({
@@ -19,23 +20,28 @@ export default function StoryboardStageShell({
   isNextDisabled,
   transitioningState,
   onNext,
+  projectType,
 }: StoryboardStageShellProps) {
   const t = useTranslations('storyboard')
+  const isAudiobook = projectType === 'audiobook'
 
   return (
     <div className="space-y-6 pb-20">
       {children}
-      <button
-        onClick={onNext}
-        disabled={isNextDisabled}
-        className="glass-btn-base glass-btn-primary fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-2xl px-6 py-3 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isTransitioning ? (
-          <TaskStatusInline state={transitioningState} className="text-white [&>span]:text-white [&_svg]:text-white" />
-        ) : (
-          t('header.generateVideo')
-        )}
-      </button>
+      {/* 有声小说项目隐藏视频生成按钮 */}
+      {!isAudiobook && (
+        <button
+          onClick={onNext}
+          disabled={isNextDisabled}
+          className="glass-btn-base glass-btn-primary fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-2xl px-6 py-3 text-white shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isTransitioning ? (
+            <TaskStatusInline state={transitioningState} className="text-white [&>span]:text-white [&_svg]:text-white" />
+          ) : (
+            t('header.generateVideo')
+          )}
+        </button>
+      )}
     </div>
   )
 }
