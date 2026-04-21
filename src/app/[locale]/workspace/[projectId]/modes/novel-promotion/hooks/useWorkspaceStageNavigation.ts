@@ -37,10 +37,15 @@ export function useWorkspaceStageNavigation({
       case 'storyboard':
         return stageArtifacts.hasStoryboard ? 'ready' : 'empty'
       case 'videos':
-      case 'editor':
         return stageArtifacts.hasVideo ? 'ready' : 'empty'
       case 'voice':
         return stageArtifacts.hasVoice ? 'ready' : 'empty'
+      case 'editor':
+        // 有声书模式检查配音和分镜，动画模式检查视频
+        if (isAudiobook) {
+          return (stageArtifacts.hasVoice && stageArtifacts.hasStoryboard) ? 'ready' : 'empty'
+        }
+        return stageArtifacts.hasVideo ? 'ready' : 'empty'
       default:
         return 'empty'
     }
