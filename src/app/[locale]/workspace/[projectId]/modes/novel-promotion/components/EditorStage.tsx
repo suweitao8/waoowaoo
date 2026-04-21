@@ -3,33 +3,12 @@
 import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { useWorkspaceProvider } from '../WorkspaceProvider'
+import { useEpisodeData } from '@/lib/query/hooks/useProjectData'
+import { useVoiceLines } from '@/lib/query/hooks/useVoiceLines'
 import { VideoEditorStage } from '@/features/video-editor'
-import { useEditorActions, createProjectFromPanels } from '@/features/video-editor/hooks/useEditorActions'
 import { apiFetch } from '@/lib/api-fetch'
 import { AppIcon } from '@/components/ui/icons'
 import type { VideoEditorProject } from '@/features/video-editor/types/editor.types'
-
-interface ClipData {
-  id: string
-  videoUrl?: string | null
-  duration?: number
-}
-
-interface PanelData {
-  id: string
-  shots?: Array<{
-    id: string
-    videos?: ClipData[]
-  }>
-}
-
-interface EpisodeData {
-  id: string
-  name: string
-  storyboards?: Array<{
-    panels?: PanelData[]
-  }>
-}
 
 /**
  * 剪辑阶段
@@ -37,7 +16,9 @@ interface EpisodeData {
  */
 export default function EditorStage() {
   const t = useTranslations('video')
-  const { projectId, episodeId, episode } = useWorkspaceProvider()
+  const { projectId, episodeId } = useWorkspaceProvider()
+  const { data: episode } = useEpisodeData(projectId, episodeId || null)
+  const { data: voiceLinesData } = useVoiceLines(episodeId || null)
   const [project, setProject] = useState<VideoEditorProject | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -65,42 +46,29 @@ export default function EditorStage() {
           }
         }
 
-        // 没有已保存的项目，从剧集数据创建
-        const typedEpisode = episode as EpisodeData
-        const panels: PanelData[] = []
-        typedEpisode.storyboards?.forEach(sb => {
-          sb.panels?.forEach(panel => panels.push(panel))
-        })
-
-        // 收集所有视频片段
-        const clips: ClipData[] = []
-        panels.forEach(panel => {
-          panel.shots?.forEach(shot => {
-            shot.videos?.forEach(video => {
-              if (video.videoUrl) {
-                clips.push({
-                  id: video.id,
-                  videoUrl: video.videoUrl,
-                  duration: video.duration || 150, // 默认5秒 (150帧 @ 30fps)
-                })
-              }
-            })
-          })
-        })
-
-        if (clips.length > 0) {
-          const newProject = createProjectFromPanels(
-            clips.map(c => ({
-              id: c.id,
-              videoUrl: c.videoUrl!,
-              durationInFrames: c.duration || 150,
-            }))
+        // 没有已保存的项目，尝试构建有声书项目
+        if (voiceLinesData?.lines && voiceLinesData.lines.length > 0) {
+          const buildRes = await apiFetch(
+            `/api/novel-promotion/${projectId}/episodes/${episodeId}/build-audiobook`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ fps: 12, width: 1920, height: 1080 }),
+            }
           )
-          setProject(newProject)
-        } else {
-          // 没有视频素材，创建空项目
-          setProject(null)
+
+          if (buildRes.ok) {
+            const buildData = await buildRes.json()
+            if (buildData.editorProject) {
+              setProject(buildData.editorProject)
+              setLoading(false)
+              return
+            }
+          }
         }
+
+        // 没有配音数据，创建空项目
+        setProject(null)
       } catch (err) {
         console.error('Failed to load editor project:', err)
         setError(t('editor.error.loadFailed'))
@@ -110,7 +78,7 @@ export default function EditorStage() {
     }
 
     loadProject()
-  }, [projectId, episodeId, episode, t])
+  }, [projectId, episodeId, episode, voiceLinesData, t])
 
   if (loading) {
     return (
@@ -127,7 +95,7 @@ export default function EditorStage() {
     return (
       <div className="flex items-center justify-center h-[60vh]">
         <div className="text-center glass-surface-soft p-8 rounded-xl">
-          <AppIcon name="alertCircle" className="w-12 h-12 text-[var(--glass-tone-danger-fg)] mx-auto mb-4" />
+          <AppIcon name="alert" className="w-12 h-12 text-[var(--glass-tone-danger-fg)] mx-auto mb-4" />
           <p className="text-[var(--glass-text-primary)] mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
