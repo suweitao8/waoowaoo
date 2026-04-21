@@ -111,6 +111,13 @@ export default function Navbar() {
               ) : showAuthenticatedNav ? (
                 <>
                   <Link
+                    href={{ pathname: '/novel' }}
+                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                  >
+                    <AppIcon name="edit" className="w-4 h-4" />
+                    {t('novelWriting')}
+                  </Link>
+                  <Link
                     href={{ pathname: '/workspace' }}
                     className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
                   >
