@@ -40,6 +40,7 @@ interface VoiceDesignGeneratorSectionProps {
   onPlayVoice: (index: number) => void
   onGenerate: () => void
   footer?: ReactNode
+  showPresets?: boolean
 }
 
 export default function VoiceDesignGeneratorSection({
@@ -59,36 +60,39 @@ export default function VoiceDesignGeneratorSection({
   onPlayVoice,
   onGenerate,
   footer = null,
+  showPresets = true,
 }: VoiceDesignGeneratorSectionProps) {
   const tv = useTranslations('voice.voiceDesign')
   const normalizedSchemeCount = normalizeVoiceSchemeCount(schemeCount)
 
   return (
     <>
-      <div>
-        <div className="text-sm text-[var(--glass-text-secondary)] mb-2">{tv('selectStyle')}</div>
-        <div className="flex flex-wrap gap-1.5">
-          {VOICE_PRESET_KEYS.map((presetKey) => {
-            const prompt = tv(`presetsPrompts.${presetKey}` as `presetsPrompts.${VoicePresetKey}`)
-            return (
-              <button
-                key={presetKey}
-                onClick={() => onVoicePromptChange(prompt)}
-                className={`glass-btn-base px-2.5 py-1 text-xs rounded-md border transition-all ${
-                  voicePrompt === prompt
-                    ? 'glass-btn-tone-info border-[var(--glass-stroke-focus)]'
-                    : 'glass-btn-soft text-[var(--glass-text-secondary)] border-[var(--glass-stroke-base)] hover:border-[var(--glass-stroke-focus)]'
-                }`}
-              >
-                {tv(`presets.${presetKey}` as `presets.${VoicePresetKey}`)}
-              </button>
-            )
-          })}
+      {showPresets && (
+        <div>
+          <div className="text-sm text-[var(--glass-text-secondary)] mb-2">{tv('selectStyle')}</div>
+          <div className="flex flex-wrap gap-1.5">
+            {VOICE_PRESET_KEYS.map((presetKey) => {
+              const prompt = tv(`presetsPrompts.${presetKey}` as `presetsPrompts.${VoicePresetKey}`)
+              return (
+                <button
+                  key={presetKey}
+                  onClick={() => onVoicePromptChange(prompt)}
+                  className={`glass-btn-base px-2.5 py-1 text-xs rounded-md border transition-all ${
+                    voicePrompt === prompt
+                      ? 'glass-btn-tone-info border-[var(--glass-stroke-focus)]'
+                      : 'glass-btn-soft text-[var(--glass-text-secondary)] border-[var(--glass-stroke-base)] hover:border-[var(--glass-stroke-focus)]'
+                  }`}
+                >
+                  {tv(`presets.${presetKey}` as `presets.${VoicePresetKey}`)}
+                </button>
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       <div>
-        <div className="text-sm text-[var(--glass-text-secondary)] mb-1">{tv('orCustomDescription')}</div>
+        <div className="text-sm text-[var(--glass-text-secondary)] mb-1">{tv(showPresets ? 'orCustomDescription' : 'voiceDescription')}</div>
         <textarea
           value={voicePrompt}
           onChange={(event) => onVoicePromptChange(event.target.value)}
@@ -131,34 +135,38 @@ export default function VoiceDesignGeneratorSection({
             !voicePrompt.trim() ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
           }`}
         >
-          <div className="flex items-center justify-center gap-2">
-            <span>{tv('generateSchemesPrefix')}</span>
-            <div
-              className="group relative inline-flex items-center rounded-md px-1.5 py-0.5 transition-colors hover:bg-white/12 focus-within:bg-white/14"
-              onClick={(event) => event.stopPropagation()}
-              onKeyDown={(event) => event.stopPropagation()}
-            >
-              <select
-                value={String(normalizedSchemeCount)}
-                onChange={(event) => onSchemeCountChange(event.target.value)}
-                aria-label={tv('schemeCountAriaLabel')}
-                className="appearance-none bg-transparent border-0 pl-0 pr-3 text-sm font-semibold text-white/96 outline-none cursor-pointer leading-none transition-colors group-hover:text-white focus:text-white"
+          {MAX_VOICE_SCHEME_COUNT > MIN_VOICE_SCHEME_COUNT ? (
+            <div className="flex items-center justify-center gap-2">
+              <span>{tv('generateSchemesPrefix')}</span>
+              <div
+                className="group relative inline-flex items-center rounded-md px-1.5 py-0.5 transition-colors hover:bg-white/12 focus-within:bg-white/14"
+                onClick={(event) => event.stopPropagation()}
+                onKeyDown={(event) => event.stopPropagation()}
               >
-                {Array.from({ length: MAX_VOICE_SCHEME_COUNT - MIN_VOICE_SCHEME_COUNT + 1 }, (_, index) => {
-                  const value = String(index + MIN_VOICE_SCHEME_COUNT)
-                  return (
-                    <option key={value} value={value} className="text-black">
-                      {value}
-                    </option>
-                  )
-                })}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center text-white/82 transition-colors group-hover:text-white group-focus-within:text-white">
-                <AppIcon name="chevronDown" className="h-3 w-3" />
+                <select
+                  value={String(normalizedSchemeCount)}
+                  onChange={(event) => onSchemeCountChange(event.target.value)}
+                  aria-label={tv('schemeCountAriaLabel')}
+                  className="appearance-none bg-transparent border-0 pl-0 pr-3 text-sm font-semibold text-white/96 outline-none cursor-pointer leading-none transition-colors group-hover:text-white focus:text-white"
+                >
+                  {Array.from({ length: MAX_VOICE_SCHEME_COUNT - MIN_VOICE_SCHEME_COUNT + 1 }, (_, index) => {
+                    const value = String(index + MIN_VOICE_SCHEME_COUNT)
+                    return (
+                      <option key={value} value={value} className="text-black">
+                        {value}
+                      </option>
+                    )
+                  })}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center text-white/82 transition-colors group-hover:text-white group-focus-within:text-white">
+                  <AppIcon name="chevronDown" className="h-3 w-3" />
+                </div>
               </div>
+              <span>{tv('generateSchemesSuffix')}</span>
             </div>
-            <span>{tv('generateSchemesSuffix')}</span>
-          </div>
+          ) : (
+            <span>{tv('generateVoice')}</span>
+          )}
         </div>
       )}
 
@@ -173,8 +181,10 @@ export default function VoiceDesignGeneratorSection({
 
       {generatedVoices.length > 0 && (
         <div className="space-y-3">
-          <div className="text-sm text-[var(--glass-text-secondary)]">{tv('selectScheme')}</div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="text-sm text-[var(--glass-text-secondary)]">
+            {generatedVoices.length === 1 ? tv('generatedVoice') : tv('selectScheme')}
+          </div>
+          <div className={generatedVoices.length === 1 ? 'flex justify-center' : 'grid grid-cols-3 gap-2'}>
             {generatedVoices.map((voice, index) => (
               <div
                 key={voice.voiceId}
@@ -190,7 +200,9 @@ export default function VoiceDesignGeneratorSection({
                     <AppIcon name="checkSolid" className="w-3 h-3 text-white" />
                   </div>
                 )}
-                <div className="text-sm font-medium text-[var(--glass-text-primary)] mb-2">{tv('schemeN', { n: index + 1 })}</div>
+                {generatedVoices.length > 1 && (
+                  <div className="text-sm font-medium text-[var(--glass-text-primary)] mb-2">{tv('schemeN', { n: index + 1 })}</div>
+                )}
                 <button
                   onClick={(event) => {
                     event.stopPropagation()

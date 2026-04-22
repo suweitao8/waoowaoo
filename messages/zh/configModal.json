@@ -50,6 +50,7 @@
         "designFailed": "音色设计失败",
         "selectStyle": "选择声音风格",
         "orCustomDescription": "或自定义描述",
+        "defaultNarratorPrompt": "富有感情的叙述者，声音温暖有故事感",
         "describePlaceholder": "描述声音特征：年龄、性别、音色、语调...",
         "previewText": "预览文本",
         "previewTextPlaceholder": "输入试听文本（5-200字）",

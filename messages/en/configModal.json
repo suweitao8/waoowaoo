@@ -50,6 +50,7 @@
         "designFailed": "Voice design failed",
         "selectStyle": "Select voice style",
         "orCustomDescription": "Or custom description",
+        "defaultNarratorPrompt": "An emotional narrator with a warm, story-telling voice",
         "describePlaceholder": "Describe voice characteristics: age, gender, tone, pitch...",
         "previewText": "Preview Text",
         "previewTextPlaceholder": "Enter preview text (5-200 characters)",

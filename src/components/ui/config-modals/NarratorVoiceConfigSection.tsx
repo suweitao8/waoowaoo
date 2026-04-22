@@ -30,7 +30,7 @@ export function NarratorVoiceConfigSection({
   const t = useTranslations('configModal.narratorVoice')
 
   const [isExpanded, setIsExpanded] = useState(!narratorVoiceId)
-  const [voicePrompt, setVoicePrompt] = useState(narratorVoicePrompt || '')
+  const [voicePrompt, setVoicePrompt] = useState(narratorVoicePrompt || t('defaultNarratorPrompt'))
   const [previewText, setPreviewText] = useState(t('defaultPreviewText'))
   const [schemeCount, setSchemeCount] = useState(String(DEFAULT_VOICE_SCHEME_COUNT))
   const [isDesignSubmitting, setIsDesignSubmitting] = useState(false)
@@ -103,7 +103,7 @@ export function NarratorVoiceConfigSection({
   }
 
   const handleRedesign = () => {
-    setVoicePrompt(narratorVoicePrompt || '')
+    setVoicePrompt(narratorVoicePrompt || t('defaultNarratorPrompt'))
     setGeneratedVoices([])
     setSelectedIndex(null)
     setError(null)
@@ -167,13 +167,14 @@ export function NarratorVoiceConfigSection({
               schemeCount={schemeCount}
               onSchemeCountChange={setSchemeCount}
               isSubmitting={isDesignSubmitting}
-              submittingState={isDesignSubmitting ? { phase: 'processing', label: t('designing') } : null}
+              submittingState={isDesignSubmitting ? { phase: 'processing', intent: 'generate', resource: 'audio', hasOutput: false, mode: 'placeholder', isRunning: true, isError: false, labelKey: null } : null}
               error={error}
               generatedVoices={generatedVoices}
               selectedIndex={selectedIndex}
               onSelectIndex={setSelectedIndex}
               playingIndex={playingIndex}
               onPlayVoice={handlePlayVoice}
+              showPresets={false}
               onGenerate={() => {
                 void handleGenerate()
               }}
