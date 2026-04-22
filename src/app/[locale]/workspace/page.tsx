@@ -389,7 +389,9 @@ export default function WorkspacePage() {
       const response = await apiFetch(`/api/projects?${params}`)
       if (response.ok) {
         const data = await response.json()
-        setProjects(data.projects)
+        // 写小说项目现在使用独立的 NovelWritingProject 表，不再通过 projectType 区分
+        // /api/projects 只返回漫剧项目，无需过滤
+        setProjects(data.projects || [])
         setPagination(data.pagination)
       }
     } catch (error) {
@@ -730,7 +732,27 @@ export default function WorkspacePage() {
   if (status === 'loading' || !session) {
     return (
       <div className="glass-page min-h-screen flex items-center justify-center">
-        <div className="text-[var(--glass-text-secondary)]">{tc('loading')}</div>
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-[var(--glass-accent-from)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[var(--glass-text-secondary)]">{tc('loading')}</p>
+        </div>
+      </div>
+    )
+  }
+
+  // 数据加载中，显示完整加载状态
+  if (loading) {
+    return (
+      <div className="glass-page min-h-screen">
+        <Navbar />
+        <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
+          <div className="flex items-center justify-center h-[60vh]">
+            <div className="text-center">
+              <div className="w-8 h-8 border-2 border-[var(--glass-accent-from)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-[var(--glass-text-secondary)]">{tc('loading')}</p>
+            </div>
+          </div>
+        </main>
       </div>
     )
   }
@@ -795,126 +817,115 @@ export default function WorkspacePage() {
           </div>
 
           {/* Project Cards */}
-          {loading ? (
-            // Loading skeleton
-            Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="glass-surface p-6 animate-pulse">
-                <div className="h-4 bg-[var(--glass-bg-muted)] rounded mb-3"></div>
-                <div className="h-3 bg-[var(--glass-bg-muted)] rounded mb-2"></div>
-                <div className="h-3 bg-[var(--glass-bg-muted)] rounded w-2/3"></div>
-              </div>
-            ))
-          ) : (
-            projects.map((project) => (
-              <Link
-                key={project.id}
-                href={{ pathname: `/workspace/${project.id}` }}
-                className="glass-surface cursor-pointer relative group block hover:border-[var(--glass-tone-info-fg)]/40 transition-all duration-300 overflow-hidden"
-              >
-                {/* 悬停光效 */}
-                <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          {projects.map((project) => (
+            <Link
+              key={project.id}
+              href={{ pathname: `/workspace/${project.id}` }}
+              className="glass-surface cursor-pointer relative group block hover:border-[var(--glass-tone-info-fg)]/40 transition-all duration-300 overflow-hidden"
+            >
+              {/* 悬停光效 */}
+              <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                <div className="p-5 relative z-10">
-                  {/* 操作按钮 */}
-                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                    <button
-                      onClick={(e) => openEditModal(project, e)}
-                      className="glass-btn-base glass-btn-secondary p-2 rounded-lg transition-colors"
-                      title={t('editProject')}
-                    >
-                      <AppIcon name="editSquare" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
-                    </button>
-                    <button
-                      onClick={(e) => openDeleteConfirm(project, e)}
-                      className="glass-btn-base glass-btn-secondary p-2 rounded-lg transition-colors"
-                      title={t('deleteProject')}
-                      disabled={deletingProjectId === project.id}
-                    >
-                      {deletingProjectId === project.id ? (
-                        <TaskStatusInline
-                          state={resolveTaskPresentationState({
-                            phase: 'processing',
-                            intent: 'process',
-                            resource: 'text',
-                            hasOutput: true,
-                          })}
-                          className="[&>span]:sr-only"
-                        />
-                      ) : (
-                        <AppIcon name="trash" className="w-4 h-4 text-[var(--glass-tone-danger-fg)]" />
-                      )}
-                    </button>
-                  </div>
-
-                  {/* 标题 */}
-                  <h3 className="text-lg font-bold text-[var(--glass-text-primary)] mb-2 line-clamp-2 pr-20 group-hover:text-[var(--glass-tone-info-fg)] transition-colors">
-                    {project.name}
-                  </h3>
-
-                  {/* 描述：优先用户描述，fallback 到第一集故事 */}
-                  {(project.description || project.stats?.firstEpisodePreview) && (
-                    <div className="flex items-start gap-2 mb-4">
-                      <AppIcon name="fileText" className="w-4 h-4 text-[var(--glass-text-tertiary)] mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-[var(--glass-text-secondary)] line-clamp-2 leading-relaxed">
-                        {project.description || project.stats?.firstEpisodePreview}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* 统计信息 - 整行统一渐变 */}
-                  {project.stats && (project.stats.episodes > 0 || project.stats.images > 0 || project.stats.videos > 0) ? (
-                    <div className="flex items-center gap-2 mb-3">
-                      {/* 共享渐变定义 */}
-                      <IconGradientDefs className="w-0 h-0 absolute" aria-hidden="true" />
-                      <AppIcon name="statsBarGradient" className="w-4 h-4 flex-shrink-0" />
-                      <div className="flex items-center gap-3 text-sm font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                        {project.stats.episodes > 0 && (
-                          <span className="flex items-center gap-1" title={t('statsEpisodes')}>
-                            <AppIcon name="statsEpisodeGradient" className="w-3.5 h-3.5" />
-                            {project.stats.episodes}
-                          </span>
-                        )}
-                        {project.stats.images > 0 && (
-                          <span className="flex items-center gap-1" title={t('statsImages')}>
-                            <AppIcon name="statsImageGradient" className="w-3.5 h-3.5" />
-                            {project.stats.images}
-                          </span>
-                        )}
-                        {project.stats.videos > 0 && (
-                          <span className="flex items-center gap-1" title={t('statsVideos')}>
-                            <AppIcon name="statsVideoGradient" className="w-3.5 h-3.5" />
-                            {project.stats.videos}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <AppIcon name="statsBar" className="w-4 h-4 text-[var(--glass-text-tertiary)] flex-shrink-0" />
-                      <span className="text-xs text-[var(--glass-text-tertiary)]">{t('noContent')}</span>
-                    </div>
-                  )}
-
-                  {/* 底部信息 */}
-                  <div className="flex items-center justify-between text-[11px] text-[var(--glass-text-tertiary)]">
-                    <div className="flex items-center gap-1">
-                      <AppIcon name="clock" className="w-3 h-3" />
-                      {formatDate(project.updatedAt)}
-                    </div>
-                    {project.totalCost !== undefined && project.totalCost > 0 && (
-                      <span className="text-[11px] font-mono font-medium text-[var(--glass-text-secondary)]">
-                        {formatProjectCost(project.totalCost)}
-                      </span>
+              <div className="p-5 relative z-10">
+                {/* 操作按钮 */}
+                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <button
+                    onClick={(e) => openEditModal(project, e)}
+                    className="glass-btn-base glass-btn-secondary p-2 rounded-lg transition-colors"
+                    title={t('editProject')}
+                  >
+                    <AppIcon name="editSquare" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
+                  </button>
+                  <button
+                    onClick={(e) => openDeleteConfirm(project, e)}
+                    className="glass-btn-base glass-btn-secondary p-2 rounded-lg transition-colors"
+                    title={t('deleteProject')}
+                    disabled={deletingProjectId === project.id}
+                  >
+                    {deletingProjectId === project.id ? (
+                      <TaskStatusInline
+                        state={resolveTaskPresentationState({
+                          phase: 'processing',
+                          intent: 'process',
+                          resource: 'text',
+                          hasOutput: true,
+                        })}
+                        className="[&>span]:sr-only"
+                      />
+                    ) : (
+                      <AppIcon name="trash" className="w-4 h-4 text-[var(--glass-tone-danger-fg)]" />
                     )}
-                  </div>
+                  </button>
                 </div>
-              </Link>
-            ))
-          )}
+
+                {/* 标题 */}
+                <h3 className="text-lg font-bold text-[var(--glass-text-primary)] mb-2 line-clamp-2 pr-20 group-hover:text-[var(--glass-tone-info-fg)] transition-colors">
+                  {project.name}
+                </h3>
+
+                {/* 描述：优先用户描述，fallback 到第一集故事 */}
+                {(project.description || project.stats?.firstEpisodePreview) && (
+                  <div className="flex items-start gap-2 mb-4">
+                    <AppIcon name="fileText" className="w-4 h-4 text-[var(--glass-text-tertiary)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-[var(--glass-text-secondary)] line-clamp-2 leading-relaxed">
+                      {project.description || project.stats?.firstEpisodePreview}
+                    </p>
+                  </div>
+                )}
+
+                {/* 统计信息 - 整行统一渐变 */}
+                {project.stats && (project.stats.episodes > 0 || project.stats.images > 0 || project.stats.videos > 0) ? (
+                  <div className="flex items-center gap-2 mb-3">
+                    {/* 共享渐变定义 */}
+                    <IconGradientDefs className="w-0 h-0 absolute" aria-hidden="true" />
+                    <AppIcon name="statsBarGradient" className="w-4 h-4 flex-shrink-0" />
+                    <div className="flex items-center gap-3 text-sm font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                      {project.stats.episodes > 0 && (
+                        <span className="flex items-center gap-1" title={t('statsEpisodes')}>
+                          <AppIcon name="statsEpisodeGradient" className="w-3.5 h-3.5" />
+                          {project.stats.episodes}
+                        </span>
+                      )}
+                      {project.stats.images > 0 && (
+                        <span className="flex items-center gap-1" title={t('statsImages')}>
+                          <AppIcon name="statsImageGradient" className="w-3.5 h-3.5" />
+                          {project.stats.images}
+                        </span>
+                      )}
+                      {project.stats.videos > 0 && (
+                        <span className="flex items-center gap-1" title={t('statsVideos')}>
+                          <AppIcon name="statsVideoGradient" className="w-3.5 h-3.5" />
+                          {project.stats.videos}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <AppIcon name="statsBar" className="w-4 h-4 text-[var(--glass-text-tertiary)] flex-shrink-0" />
+                    <span className="text-xs text-[var(--glass-text-tertiary)]">{t('noContent')}</span>
+                  </div>
+                )}
+
+                {/* 底部信息 */}
+                <div className="flex items-center justify-between text-[11px] text-[var(--glass-text-tertiary)]">
+                  <div className="flex items-center gap-1">
+                    <AppIcon name="clock" className="w-3 h-3" />
+                    {formatDate(project.updatedAt)}
+                  </div>
+                  {project.totalCost !== undefined && project.totalCost > 0 && (
+                    <span className="text-[11px] font-mono font-medium text-[var(--glass-text-secondary)]">
+                      {formatProjectCost(project.totalCost)}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
 
         {/* Empty State */}
-        {!loading && projects.length === 0 && (
+        {projects.length === 0 && (
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-[var(--glass-bg-muted)] rounded-xl flex items-center justify-center mx-auto mb-4">
               <AppIcon name="folderCards" className="w-8 h-8 text-[var(--glass-text-tertiary)]" />
@@ -937,7 +948,7 @@ export default function WorkspacePage() {
         )}
 
         {/* 分页控件 */}
-        {!loading && pagination.totalPages > 1 && (
+        {pagination.totalPages > 1 && (
           <div className="mt-8 flex items-center justify-center gap-2">
             <button
               onClick={() => handlePageChange(pagination.page - 1)}
