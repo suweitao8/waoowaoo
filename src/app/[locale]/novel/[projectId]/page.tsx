@@ -27,8 +27,9 @@ interface ProjectData {
   id: string
   name: string
   description: string | null
-  novelPromotionData?: {
-    projectType: string
+  novelWritingData?: {
+    id: string
+    projectId: string
     worldContext?: string | null
     writingStyle?: string | null
     extractedCharacters?: string | null
@@ -67,18 +68,22 @@ export default function NovelProjectDetailPage() {
 
     try {
       setLoading(true)
-      const response = await apiFetch(`/api/projects/${projectId}/data`)
+      const response = await apiFetch(`/api/novel-writing/${projectId}`)
 
       if (!response.ok) {
         throw new Error('获取项目失败')
       }
 
       const data = await response.json()
-      setProject(data.project)
+      // 合并 project 和 novelWritingData 到一个对象
+      setProject({
+        ...data.project,
+        novelWritingData: data.novelWritingData
+      })
       setError(null)
 
       // 自动选择第一个章节
-      const episodes = data.project?.novelPromotionData?.episodes || []
+      const episodes = data.novelWritingData?.episodes || []
       if (episodes.length > 0 && !selectedChapterId) {
         const urlChapter = searchParams?.get('chapter')
         if (urlChapter && episodes.some((ep: Chapter) => ep.id === urlChapter)) {
@@ -102,14 +107,14 @@ export default function NovelProjectDetailPage() {
 
   // 获取章节列表
   const chapters = useMemo<Chapter[]>(() => {
-    if (!project?.novelPromotionData?.episodes) return []
+    if (!project?.novelWritingData?.episodes) return []
 
     const getNum = (name: string) => {
       const m = name.match(/\d+/)
       return m ? parseInt(m[0], 10) : Infinity
     }
 
-    return [...project.novelPromotionData.episodes].sort((a, b) => {
+    return [...project.novelWritingData.episodes].sort((a, b) => {
       const diff = getNum(a.name) - getNum(b.name)
       return diff !== 0 ? diff : a.name.localeCompare(b.name, 'zh')
     })
@@ -150,7 +155,7 @@ export default function NovelProjectDetailPage() {
     try {
       const chapterName = `第${chapters.length + 1}章`
 
-      const response = await apiFetch(`/api/novel-promotion/${projectId}/episodes`, {
+      const response = await apiFetch(`/api/novel-writing/${projectId}/episodes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -303,9 +308,9 @@ export default function NovelProjectDetailPage() {
           {viewMode === 'analyze' && (
             <AIAnalysisPanel
               projectId={projectId!}
-              worldContext={project.novelPromotionData?.worldContext}
-              writingStyle={project.novelPromotionData?.writingStyle}
-              extractedCharacters={project.novelPromotionData?.extractedCharacters}
+              worldContext={project.novelWritingData?.worldContext}
+              writingStyle={project.novelWritingData?.writingStyle}
+              extractedCharacters={project.novelWritingData?.extractedCharacters}
               onComplete={handleAnalysisComplete}
             />
           )}
@@ -316,9 +321,9 @@ export default function NovelProjectDetailPage() {
               chapterId={selectedChapter.id}
               chapterName={selectedChapter.name}
               novelText={selectedChapter.novelText || ''}
-              worldContext={project.novelPromotionData?.worldContext}
-              writingStyle={project.novelPromotionData?.writingStyle}
-              extractedCharacters={project.novelPromotionData?.extractedCharacters}
+              worldContext={project.novelWritingData?.worldContext}
+              writingStyle={project.novelWritingData?.writingStyle}
+              extractedCharacters={project.novelWritingData?.extractedCharacters}
               onComplete={handleRewriteComplete}
             />
           )}
