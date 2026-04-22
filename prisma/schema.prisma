@@ -93,12 +93,16 @@ model NovelPromotionCharacter {
   profileConfirmed        Boolean               @default(false)
   introduction            String?               @db.Text
   sourceGlobalCharacterId String?
+  // 新增：可选关联到写小说项目
+  novelWritingProjectId   String?
   appearances             CharacterAppearance[]
   customVoiceMedia        MediaObject?          @relation("NovelPromotionCharacterVoiceMedia", fields: [customVoiceMediaId], references: [id])
   novelPromotionProject   NovelPromotionProject @relation(fields: [novelPromotionProjectId], references: [id], onDelete: Cascade)
+  novelWritingProject     NovelWritingProject?  @relation("NovelWritingCharacters", fields: [novelWritingProjectId], references: [id], onDelete: Cascade)
 
   @@index([novelPromotionProjectId])
   @@index([customVoiceMediaId])
+  @@index([novelWritingProjectId])
   @@map("novel_promotion_characters")
 }
 
@@ -112,12 +116,16 @@ model NovelPromotionLocation {
   updatedAt               DateTime              @default(now()) @updatedAt
   sourceGlobalLocationId  String?
   selectedImageId         String?
+  // 新增：可选关联到写小说项目
+  novelWritingProjectId   String?
   images                  LocationImage[]       @relation("LocationImages")
   novelPromotionProject   NovelPromotionProject @relation(fields: [novelPromotionProjectId], references: [id], onDelete: Cascade)
+  novelWritingProject     NovelWritingProject?  @relation("NovelWritingLocations", fields: [novelWritingProjectId], references: [id], onDelete: Cascade)
   selectedImage           LocationImage?        @relation("SelectedLocationImage", fields: [selectedImageId], references: [id])
 
   @@index([novelPromotionProjectId])
   @@index([selectedImageId], map: "novel_promotion_locations_selectedImageId_fkey")
+  @@index([novelWritingProjectId])
   @@map("novel_promotion_locations")
 }
 
@@ -134,6 +142,9 @@ model NovelPromotionEpisode {
   createdAt               DateTime                   @default(now())
   updatedAt               DateTime                   @default(now()) @updatedAt
   speakerVoices           String?                    @db.Text
+  // 写小说专用字段
+  rewriteHistory          String?                    @db.Text
+  originalText            String?                    @db.Text
   clips                   NovelPromotionClip[]
   audioMedia              MediaObject?               @relation("NovelPromotionEpisodeAudioMedia", fields: [audioMediaId], references: [id])
   novelPromotionProject   NovelPromotionProject      @relation(fields: [novelPromotionProjectId], references: [id], onDelete: Cascade)
@@ -248,7 +259,7 @@ model NovelPromotionProject {
   projectId           String                    @unique
   createdAt           DateTime                  @default(now())
   updatedAt           DateTime                  @default(now()) @updatedAt
-  projectType         String                    @default("animation") // animation | audiobook
+  projectType         String                    @default("animation") // animation | audiobook | novel-writing
   analysisModel       String?
   imageModel          String?
   videoModel          String?
@@ -271,12 +282,73 @@ model NovelPromotionProject {
   narratorVoiceId     String?
   narratorVoiceType   String?
   narratorVoicePrompt String?                   @db.Text
+  // 写小说专用字段
+  worldContext        String?                   @db.Text
+  writingStyle        String?                   @db.Text
+  extractedCharacters String?                   @db.Text
   characters          NovelPromotionCharacter[]
   episodes            NovelPromotionEpisode[]
   locations           NovelPromotionLocation[]
   project             Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("novel_promotion_projects")
+}
+
+// 写小说项目独立表
+model NovelWritingProject {
+  id                    String   @id @default(uuid())
+  projectId             String   @unique
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt
+
+  // 写小说专用字段
+  worldContext          String?  @db.Text      // 世界观设定
+  writingStyle          String?  @db.Text      // 写作风格
+  extractedCharacters   String?  @db.Text      // 提取的角色信息 JSON
+
+  // 模型配置（复用现有模式）
+  analysisModel         String?
+  imageModel            String?
+  audioModel            String?
+  videoRatio            String   @default("16:9")
+  artStyle              String   @default("realistic")
+  artStylePrompt        String?  @db.Text
+
+  // 旁白音色配置
+  narratorVoiceId       String?
+  narratorVoiceType     String?
+  narratorVoicePrompt   String?  @db.Text
+
+  // 关联
+  project               Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  episodes              NovelWritingEpisode[]
+  characters            NovelPromotionCharacter[]  @relation("NovelWritingCharacters")
+  locations             NovelPromotionLocation[]   @relation("NovelWritingLocations")
+
+  @@map("novel_writing_projects")
+}
+
+// 写小说剧集独立表
+model NovelWritingEpisode {
+  id                    String   @id @default(uuid())
+  novelWritingProjectId String
+  episodeNumber         Int
+  name                  String
+  description           String?  @db.Text
+  novelText             String?  @db.Text
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt
+
+  // 写小说专用字段
+  rewriteHistory        String?  @db.Text      // 重写历史 JSON
+  originalText          String?  @db.Text      // 原始文本
+
+  // 关联
+  novelWritingProject   NovelWritingProject @relation(fields: [novelWritingProjectId], references: [id], onDelete: Cascade)
+
+  @@unique([novelWritingProjectId, episodeNumber])
+  @@index([novelWritingProjectId])
+  @@map("novel_writing_episodes")
 }
 
 model NovelPromotionShot {
@@ -365,6 +437,7 @@ model Project {
   updatedAt          DateTime               @default(now()) @updatedAt
   lastAccessedAt     DateTime?
   novelPromotionData NovelPromotionProject?
+  novelWritingData   NovelWritingProject?
   user               User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
   usageCosts         UsageCost[]
 
