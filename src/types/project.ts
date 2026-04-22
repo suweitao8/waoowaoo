@@ -6,7 +6,7 @@ import type { LocationAvailableSlot } from '@/lib/location-available-slots'
 // ============================================
 
 /** 项目类型 */
-export type ProjectType = 'animation' | 'audiobook'
+export type ProjectType = 'animation' | 'audiobook' | 'novel-writing'
 
 export interface BaseProject {
   id: string
@@ -247,7 +247,7 @@ export interface NovelPromotionProject {
   id: string
   projectId: string
   stage: string
-  projectType: ProjectType  // 项目类型：animation | audiobook
+  projectType: ProjectType  // 项目类型：animation | audiobook | novel-writing
   globalAssetText: string | null
   novelText: string | null
   analysisModel: string
@@ -271,6 +271,10 @@ export interface NovelPromotionProject {
   narratorVoiceId?: string | null
   narratorVoiceType?: string | null
   narratorVoicePrompt?: string | null
+  // 写小说专用字段
+  worldContext?: string | null
+  writingStyle?: string | null
+  extractedCharacters?: string | null
   characters?: Character[]
   locations?: Location[]
   props?: Prop[]
@@ -282,6 +286,9 @@ export interface NovelPromotionProject {
     novelText: string | null
     audioUrl: string | null
     srtContent: string | null
+    // 写小说专用字段
+    rewriteHistory?: string | null
+    originalText?: string | null
     createdAt: Date
     updatedAt: Date
   }>
@@ -291,8 +298,49 @@ export interface NovelPromotionProject {
 }
 
 // ============================================
+// 写小说项目类型（独立表）
+// ============================================
+
+/** 写小说剧集/章节类型 */
+export interface NovelWritingEpisode {
+  id: string
+  episodeNumber: number
+  name: string
+  description: string | null
+  novelText: string | null
+  rewriteHistory: string | null
+  originalText: string | null
+  createdAt: Date
+  updatedAt: Date
+}
+
+/** 写小说项目类型 */
+export interface NovelWritingProject {
+  id: string
+  projectId: string
+  worldContext: string | null
+  writingStyle: string | null
+  extractedCharacters: string | null
+  analysisModel: string | null
+  imageModel: string | null
+  audioModel: string | null
+  videoRatio: string
+  artStyle: string
+  artStylePrompt: string | null
+  narratorVoiceId: string | null
+  narratorVoiceType: string | null
+  narratorVoicePrompt: string | null
+  createdAt: Date
+  updatedAt: Date
+  episodes?: NovelWritingEpisode[]
+  characters?: Character[]
+  locations?: Location[]
+}
+
+// ============================================
 // 完整项目类型 (包含基础信息和模式数据)
 // ============================================
 export interface Project extends BaseProject {
-  novelPromotionData?: NovelPromotionProject
+  novelPromotionData?: NovelPromotionProject  // 漫剧项目
+  novelWritingData?: NovelWritingProject      // 写小说项目
 }
