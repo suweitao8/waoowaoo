@@ -61,7 +61,7 @@ export function ProviderCardShell({
     : (hideProviderLabel || t('hideProvider'))
 
   return (
-    <div className="pin-surface overflow-hidden rounded-2xl">
+    <div className="glass-surface overflow-hidden rounded-2xl">
 
       {/* ── 头部：logo + 名称 + 心电图 + 右侧操作 ── */}
       <div className="flex items-center justify-between px-3.5 py-2.5">
@@ -83,14 +83,14 @@ export function ProviderCardShell({
                   }
                 }
               }}
-              className="inline-flex h-6 w-6 items-center justify-center rounded-md text-[var(--pin-text-tertiary)] transition-colors hover:text-[var(--pin-text-secondary)]"
+              className="inline-flex h-6 w-6 items-center justify-center rounded-md text-[var(--glass-text-tertiary)] transition-colors hover:text-[var(--glass-text-secondary)]"
             >
               <AppIcon name={isHidden ? 'plus' : 'minus'} className="h-3.5 w-3.5" />
             </button>
           )}
-          <h3 className="text-[15px] font-bold text-[var(--pin-text-primary)]">{provider.name}</h3>
+          <h3 className="text-[15px] font-bold text-[var(--glass-text-primary)]">{provider.name}</h3>
           {compatibilityLayerLabel && (
-            <span className="rounded-full border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-muted)] px-2 py-0.5 text-[10px] font-semibold text-[var(--pin-text-secondary)]">
+            <span className="rounded-full border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-muted)] px-2 py-0.5 text-[10px] font-semibold text-[var(--glass-text-secondary)]">
               {compatibilityLayerLabel}
             </span>
           )}
@@ -108,8 +108,8 @@ export function ProviderCardShell({
               className={[
                 'flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-all',
                 canTest
-                  ? 'border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] hover:border-[var(--pin-stroke-strong)] hover:bg-[var(--pin-bg-muted)] hover:text-[var(--pin-text-primary)] cursor-pointer'
-                  : 'border-[var(--pin-stroke-base)] cursor-not-allowed text-[var(--pin-text-tertiary)] opacity-40',
+                  ? 'border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] hover:border-[var(--glass-stroke-strong)] hover:bg-[var(--glass-bg-muted)] hover:text-[var(--glass-text-primary)] cursor-pointer'
+                  : 'border-[var(--glass-stroke-base)] cursor-not-allowed text-[var(--glass-text-tertiary)] opacity-40',
               ].join(' ')}
             >
               <AppIcon name="refresh" className="h-3 w-3" />
@@ -119,7 +119,7 @@ export function ProviderCardShell({
           {!state.isPresetProvider && onDeleteProvider && (
             <button
               onClick={() => onDeleteProvider(provider.id)}
-              className="rounded p-1 text-[var(--pin-text-tertiary)] transition-colors hover:bg-[var(--pin-bg-muted)] hover:text-[var(--pin-tone-danger-fg)]"
+              className="rounded p-1 text-[var(--glass-text-tertiary)] transition-colors hover:bg-[var(--glass-bg-muted)] hover:text-[var(--glass-tone-danger-fg)]"
               title={t('delete')}
             >
               <AppIcon name="trash" className="w-3.5 h-3.5" />
@@ -128,7 +128,7 @@ export function ProviderCardShell({
           {state.tutorial && (
             <button
               onClick={() => state.setShowTutorial(true)}
-              className="pin-btn-base cursor-pointer flex items-center gap-1 rounded-lg border border-[var(--pin-stroke-base)] bg-transparent px-2 py-1 text-[12px] font-medium text-[var(--pin-text-primary)] hover:border-[var(--pin-stroke-strong)] hover:bg-[var(--pin-bg-muted)] hover:text-[var(--pin-text-primary)]"
+              className="glass-btn-base cursor-pointer flex items-center gap-1 rounded-lg border border-[var(--glass-stroke-base)] bg-transparent px-2 py-1 text-[12px] font-medium text-[var(--glass-text-primary)] hover:border-[var(--glass-stroke-strong)] hover:bg-[var(--glass-bg-muted)] hover:text-[var(--glass-text-primary)]"
             >
               <AppIcon name="bookOpen" className="h-3 w-3" />
               {t('tutorial.button')}
@@ -141,28 +141,28 @@ export function ProviderCardShell({
       {state.showTutorial && state.tutorial && typeof document !== 'undefined'
         ? createPortal(
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center pin-overlay"
+            className="fixed inset-0 z-50 flex items-center justify-center glass-overlay"
             onClick={() => state.setShowTutorial(false)}
           >
             <div
-              className="pin-surface-modal mx-4 w-full max-w-lg overflow-hidden rounded-xl"
+              className="glass-surface-modal mx-4 w-full max-w-lg overflow-hidden rounded-xl"
               onClick={(event) => event.stopPropagation()}
             >
-              <div className="flex items-center justify-between border-b border-[var(--pin-stroke-base)] px-5 py-4">
+              <div className="flex items-center justify-between border-b border-[var(--glass-stroke-base)] px-5 py-4">
                 <div className="flex items-center gap-3">
-                  <div className="pin-btn-base pin-btn-primary flex h-8 w-8 items-center justify-center rounded-lg text-white">
+                  <div className="glass-btn-base glass-btn-primary flex h-8 w-8 items-center justify-center rounded-lg text-white">
                     <AppIcon name="bookOpen" className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-[var(--pin-text-primary)]">
+                    <h3 className="text-sm font-semibold text-[var(--glass-text-primary)]">
                       {provider.name} {t('tutorial.title')}
                     </h3>
-                    <p className="text-xs text-[var(--pin-text-secondary)]">{t('tutorial.subtitle')}</p>
+                    <p className="text-xs text-[var(--glass-text-secondary)]">{t('tutorial.subtitle')}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => state.setShowTutorial(false)}
-                  className="pin-btn-base pin-btn-soft rounded-lg p-1.5"
+                  className="glass-btn-base glass-btn-soft rounded-lg p-1.5"
                 >
                   <AppIcon name="close" className="w-5 h-5" />
                 </button>
@@ -170,11 +170,11 @@ export function ProviderCardShell({
               <div className="space-y-4 p-5">
                 {state.tutorial.steps.map((step, index) => (
                   <div key={index} className="flex gap-3">
-                    <div className="pin-surface-soft flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--pin-stroke-base)] text-xs font-bold text-[var(--pin-text-secondary)]">
+                    <div className="glass-surface-soft flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--glass-stroke-base)] text-xs font-bold text-[var(--glass-text-secondary)]">
                       {index + 1}
                     </div>
                     <div className="flex-1 pt-0.5">
-                      <p className="text-sm leading-relaxed text-[var(--pin-text-secondary)]">
+                      <p className="text-sm leading-relaxed text-[var(--glass-text-secondary)]">
                         {t(`tutorial.steps.${step.text}`)}
                       </p>
                       {step.url && (
@@ -182,7 +182,7 @@ export function ProviderCardShell({
                           href={step.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-2 inline-flex items-center gap-1 text-xs text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] hover:underline"
+                          className="mt-2 inline-flex items-center gap-1 text-xs text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] hover:underline"
                         >
                           <AppIcon name="externalLink" className="w-3 h-3" />
                           {t('tutorial.openLink')}
@@ -192,10 +192,10 @@ export function ProviderCardShell({
                   </div>
                 ))}
               </div>
-              <div className="flex justify-end border-t border-[var(--pin-stroke-base)] px-5 py-3">
+              <div className="flex justify-end border-t border-[var(--glass-stroke-base)] px-5 py-3">
                 <button
                   onClick={() => state.setShowTutorial(false)}
-                  className="pin-btn-base pin-btn-secondary rounded-lg px-4 py-2 text-sm font-medium"
+                  className="glass-btn-base glass-btn-secondary rounded-lg px-4 py-2 text-sm font-medium"
                 >
                   {t('tutorial.close')}
                 </button>

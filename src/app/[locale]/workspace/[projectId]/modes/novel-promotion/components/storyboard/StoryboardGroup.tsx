@@ -136,7 +136,7 @@ export default function StoryboardGroup({
   )
 
   return (
-    <div className={`pin-surface-elevated p-6 relative ${failedError ? 'border-2 border-[var(--pin-stroke-danger)] bg-[var(--pin-danger-ring)]' : ''}`}>
+    <div className={`glass-surface-elevated p-6 relative ${failedError ? 'border-2 border-[var(--glass-stroke-danger)] bg-[var(--glass-danger-ring)]' : ''}`}>
       {failedError && (
         <StoryboardGroupFailedAlert
           failedError={failedError}
@@ -149,7 +149,7 @@ export default function StoryboardGroup({
       {(isSubmittingStoryboardTask || isSelectingCandidate) && (
         <TaskStatusOverlay
           state={groupOverlayState}
-          className="z-10 rounded-lg bg-[var(--pin-bg-surface-modal)]/90"
+          className="z-10 rounded-lg bg-[var(--glass-bg-surface-modal)]/90"
         />
       )}
 
@@ -181,17 +181,17 @@ export default function StoryboardGroup({
         <div className="mb-4">
           <button
             onClick={onToggleExpand}
-            className="pin-btn-base pin-btn-soft rounded-xl px-3 py-2 text-sm"
+            className="glass-btn-base glass-btn-soft rounded-xl px-3 py-2 text-sm"
           >
             <AppIcon name="chevronRightMd" className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
             <span>{clip.screenplay ? t('panel.stylePrompt') : t('panel.sourceText')}</span>
           </button>
           {isExpanded && (
-            <div className="mt-2 pin-surface-soft p-2">
+            <div className="mt-2 glass-surface-soft p-2">
               {clip.screenplay ? (
                 <ScreenplayDisplay screenplay={clip.screenplay} originalContent={clip.content} />
               ) : (
-                <div className="whitespace-pre-wrap p-3 text-sm text-[var(--pin-text-secondary)]">
+                <div className="whitespace-pre-wrap p-3 text-sm text-[var(--glass-text-secondary)]">
                   {clip.content}
                 </div>
               )}

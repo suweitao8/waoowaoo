@@ -9,11 +9,10 @@ import { executeAiVisionStep } from '@/lib/ai-runtime'
 import { getUserModelConfig } from '@/lib/config-service'
 import {
   CHARACTER_IMAGE_BANANA_RATIO,
+  addCharacterPromptSuffix,
   getArtStylePrompt,
 } from '@/lib/constants'
 import { encodeImageUrls } from '@/lib/contracts/image-urls-contract'
-import { getUserPromptTemplatesCached } from '@/lib/user-prompt-templates'
-import { buildCharacterPrompt } from '@/lib/prompt-templates'
 import { generateUniqueKey, getSignedUrl, uploadObject } from '@/lib/storage'
 import { initializeFonts, createLabelSVG } from '@/lib/fonts'
 import { reportTaskProgress } from '@/lib/workers/shared'
@@ -211,17 +210,11 @@ export async function handleReferenceToCharacterTask(job: Job<TaskJobData>) {
 
   const artStylePrompt = getArtStylePrompt(artStyle, job.data.locale)
 
-  // 获取用户提示词模板配置
-  const userTemplates = await getUserPromptTemplatesCached(job.data.userId)
-
   const basePrompt = customDescription || buildPrompt({
     promptId: PROMPT_IDS.CHARACTER_REFERENCE_TO_SHEET,
     locale: job.data.locale,
   })
-  // 使用用户配置的模板生成提示词
-  let prompt = buildCharacterPrompt(userTemplates.characterPromptTemplate, {
-    description: basePrompt,
-  })
+  let prompt = addCharacterPromptSuffix(basePrompt)
   if (artStylePrompt) {
     prompt = `${prompt}，${artStylePrompt}`
   }

@@ -299,23 +299,23 @@ export function LocationEditModal({
     }
 
     return (
-        <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 p-4">
-            <div className="pin-surface-modal max-w-2xl w-full max-h-[80vh] flex flex-col">
+        <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 p-4">
+            <div className="glass-surface-modal max-w-2xl w-full max-h-[80vh] flex flex-col">
                 <div className="p-6 space-y-4 overflow-y-auto flex-1">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">
+                        <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">
                             {t('modal.editLocation')} - {locationName}
                         </h3>
                         <button
                             onClick={onClose}
-                            className="pin-btn-base pin-btn-soft w-9 h-9 rounded-full text-[var(--pin-text-tertiary)]"
+                            className="glass-btn-base glass-btn-soft w-9 h-9 rounded-full text-[var(--glass-text-tertiary)]"
                         >
                             <AppIcon name="close" className="w-6 h-6" />
                         </button>
                     </div>
 
                     <div className="space-y-2">
-                        <label className="pin-field-label block">
+                        <label className="glass-field-label block">
                             {t('location.name')}
                         </label>
                         <div className="flex gap-2">
@@ -323,14 +323,14 @@ export function LocationEditModal({
                                 type="text"
                                 value={editingName}
                                 onChange={(e) => setEditingName(e.target.value)}
-                                className="pin-input-base flex-1 px-3 py-2"
+                                className="glass-input-base flex-1 px-3 py-2"
                                 placeholder={t('modal.namePlaceholder')}
                             />
                             {editingName !== locationName && (
                                 <button
                                     onClick={handleSaveName}
                                     disabled={updateAssetHubName.isPending || updateProjectName.isPending || !editingName.trim()}
-                                    className="pin-btn-base pin-btn-tone-success px-3 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
+                                    className="glass-btn-base glass-btn-tone-success px-3 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
                                 >
                                     {(updateAssetHubName.isPending || updateProjectName.isPending)
                                         ? t('smartImport.preview.saving')
@@ -358,13 +358,13 @@ export function LocationEditModal({
                     {/* AI 提示词输入框 */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <label className="pin-field-label block">
+                            <label className="glass-field-label block">
                                 {t('location.imagePrompt')}
                             </label>
                             <button
                                 onClick={handleGenerateImagePrompt}
                                 disabled={isGeneratingPrompt || (!editingName.trim() && !editingDescription.trim())}
-                                className="pin-btn-base pin-btn-tone-info px-3 py-1.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-1.5"
+                                className="glass-btn-base glass-btn-tone-info px-3 py-1.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-1.5"
                             >
                                 {isGeneratingPrompt ? (
                                     <TaskStatusInline state={generatingPromptState} className="text-white [&>span]:text-white [&_svg]:text-white text-xs" />
@@ -379,20 +379,20 @@ export function LocationEditModal({
                         <textarea
                             value={editingImagePrompt}
                             onChange={(e) => setEditingImagePrompt(e.target.value)}
-                            className="pin-textarea-base w-full px-3 py-2 min-h-[100px]"
+                            className="glass-textarea-base w-full px-3 py-2 min-h-[100px]"
                             placeholder={t('modal.imagePromptPlaceholder')}
                             rows={4}
                         />
-                        <p className="text-xs text-[var(--pin-text-tertiary)]">
+                        <p className="text-xs text-[var(--glass-text-tertiary)]">
                             {t('modal.imagePromptHint')}
                         </p>
                     </div>
                 </div>
 
-                <div className="flex gap-3 justify-end p-4 border-t border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)] rounded-b-lg flex-shrink-0">
+                <div className="flex gap-3 justify-end p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] rounded-b-lg flex-shrink-0">
                     <button
                         onClick={onClose}
-                        className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg"
+                        className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg"
                         disabled={isSaving}
                     >
                         {t('common.cancel')}
@@ -400,7 +400,7 @@ export function LocationEditModal({
                     <button
                         onClick={handleSaveOnly}
                         disabled={isSaving || !editingDescription.trim()}
-                        className="pin-btn-base pin-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="glass-btn-base glass-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                         {isSaving ? (
                             <TaskStatusInline state={savingState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -411,7 +411,7 @@ export function LocationEditModal({
                     <button
                         onClick={handleSaveAndGenerate}
                         disabled={isSaving || isTaskRunning || !editingDescription.trim()}
-                        className="pin-btn-base pin-btn-primary px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="glass-btn-base glass-btn-primary px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                         {isTaskRunning ? (
                             <TaskStatusInline state={taskRunningState} className="text-white [&>span]:text-white [&_svg]:text-white" />

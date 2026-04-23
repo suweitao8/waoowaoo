@@ -89,7 +89,7 @@ export function VoiceGenerationButtons({
       case 'generating':
         return {
           icon: 'loader' as const,
-          className: 'animate-spin text-[var(--pin-tone-info-fg)]',
+          className: 'animate-spin text-[var(--glass-tone-info-fg)]',
           disabled: true,
         }
       case 'success':
@@ -101,13 +101,13 @@ export function VoiceGenerationButtons({
       case 'error':
         return {
           icon: 'alert' as const,
-          className: 'text-[var(--pin-tone-danger-fg)]',
+          className: 'text-[var(--glass-tone-danger-fg)]',
           disabled: false,
         }
       default:
         return {
           icon: 'mic' as const,
-          className: 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-info-fg)]',
+          className: 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-info-fg)]',
           disabled: false,
         }
     }
@@ -115,8 +115,8 @@ export function VoiceGenerationButtons({
 
   const btnState = getGenerateButtonState()
   const generateTitleKey = type === 'dialogue'
-    ? (hasVoiceBinding ? 'voice.generateDialogue' : 'voice.bindVoiceFirst')
-    : 'voice.generateVoiceover'
+    ? (hasVoiceBinding ? 'script.voice.generateDialogue' : 'script.voice.bindVoiceFirst')
+    : 'script.voice.generateVoiceover'
 
   return (
     <div className="flex items-center gap-1 ml-2 shrink-0">
@@ -129,8 +129,8 @@ export function VoiceGenerationButtons({
         disabled={btnState.disabled}
         className={`
           p-1.5 rounded-lg transition-all
-          bg-[var(--pin-bg-surface)] hover:bg-[var(--pin-tone-info-bg)]
-          border border-[var(--pin-stroke-base)] hover:border-[var(--pin-stroke-focus)]
+          bg-[var(--glass-bg-surface)] hover:bg-[var(--glass-tone-info-bg)]
+          border border-[var(--glass-stroke-base)] hover:border-[var(--glass-stroke-focus)]
           disabled:opacity-50 disabled:cursor-not-allowed
           ${btnState.className}
           ${type === 'dialogue' && !hasVoiceBinding ? 'opacity-60' : ''}
@@ -149,14 +149,14 @@ export function VoiceGenerationButtons({
         disabled={!hasVoice}
         className={`
           p-1.5 rounded-lg transition-all
-          bg-[var(--pin-bg-surface)] hover:bg-[var(--pin-tone-info-bg)]
-          border border-[var(--pin-stroke-base)] hover:border-[var(--pin-stroke-focus)]
+          bg-[var(--glass-bg-surface)] hover:bg-[var(--glass-tone-info-bg)]
+          border border-[var(--glass-stroke-base)] hover:border-[var(--glass-stroke-focus)]
           disabled:opacity-40 disabled:cursor-not-allowed
           ${hasVoice
-            ? 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-info-fg)]'
-            : 'text-[var(--pin-text-tertiary)]'}
+            ? 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-info-fg)]'
+            : 'text-[var(--glass-text-tertiary)]'}
         `}
-        title={hasVoice ? t('voice.preview') : t('voice.noVoice')}
+        title={hasVoice ? t('script.voice.preview') : t('script.voice.noVoice')}
       >
         <AppIcon name="play" className="w-4 h-4" />
       </button>

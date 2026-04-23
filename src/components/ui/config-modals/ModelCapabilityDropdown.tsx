@@ -245,21 +245,21 @@ export function ModelCapabilityDropdown({
             <button
                 type="button"
                 onClick={handleToggleOpen}
-                className={`pin-input-base w-full ${triggerPx} ${triggerPy} rounded-[14px] transition-all duration-200 cursor-pointer ${isOpen
-                    ? '!border-[var(--pin-tone-info-fg)] shadow-[0_0_0_3px_var(--pin-tone-info-bg)]'
-                    : 'hover:border-[var(--pin-stroke-focus)]'
+                className={`glass-input-base w-full ${triggerPx} ${triggerPy} rounded-[14px] transition-all duration-200 cursor-pointer ${isOpen
+                    ? '!border-[var(--glass-tone-info-fg)] shadow-[0_0_0_3px_var(--glass-tone-info-bg)]'
+                    : 'hover:border-[var(--glass-stroke-active)]'
                     }`}
             >
                 <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                         {selectedModel ? (
                             <>
-                                <span className={`${textSize} text-[var(--pin-text-primary)] font-semibold truncate`}>
+                                <span className={`${textSize} text-[var(--glass-text-primary)] font-semibold truncate`}>
                                     {selectedModel.label}
                                 </span>
                             </>
                         ) : (
-                            <span className={`${textSize} text-[var(--pin-text-tertiary)]`}>
+                            <span className={`${textSize} text-[var(--glass-text-tertiary)]`}>
                                 {placeholder || t('pleaseSelect')}
                             </span>
                         )}
@@ -267,13 +267,13 @@ export function ModelCapabilityDropdown({
                     <div className="flex items-center gap-1.5 shrink-0">
                         {selectedModel && (paramSummary || selectedModel.providerName || selectedModel.provider) && (
                             <span className="relative group/info">
-                                <AppIcon name="info" className="w-4 h-4 text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)] transition-colors cursor-help" />
-                                <span className="pointer-events-none absolute right-0 bottom-full mb-2 whitespace-nowrap rounded-lg bg-[var(--pin-text-primary)] px-3 py-1.5 text-[12px] text-white opacity-0 transition-opacity group-hover/info:opacity-100 z-50 shadow-lg">
+                                <AppIcon name="info" className="w-4 h-4 text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] transition-colors cursor-help" />
+                                <span className="pointer-events-none absolute right-0 bottom-full mb-2 whitespace-nowrap rounded-lg bg-[var(--glass-text-primary)] px-3 py-1.5 text-[12px] text-white opacity-0 transition-opacity group-hover/info:opacity-100 z-50 shadow-lg">
                                     {[selectedModel.providerName || selectedModel.provider, paramSummary].filter(Boolean).join(' · ')}
                                 </span>
                             </span>
                         )}
-                        <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--pin-text-primary)]' : 'text-[var(--pin-text-tertiary)]'}`} />
+                        <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180 text-[var(--glass-text-primary)]' : 'text-[var(--glass-text-tertiary)]'}`} />
                     </div>
                 </div>
             </button>
@@ -282,7 +282,7 @@ export function ModelCapabilityDropdown({
             {isOpen && createPortal(
                 <div
                     ref={panelRef}
-                    className="pin-surface-modal z-[9999] overflow-hidden flex flex-col rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.1)]"
+                    className="glass-surface-modal z-[9999] overflow-hidden flex flex-col rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.1)]"
                     style={panelStyle}
                 >
                     {/* Model list */}
@@ -298,7 +298,7 @@ export function ModelCapabilityDropdown({
                             return Array.from(grouped.entries()).map(([providerLabel, groupModels]) => (
                                 <div key={providerLabel} className="mb-1">
                                     <div className="sticky top-0 z-10 px-2 pt-2 pb-1 bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-md">
-                                        <span className="text-[11px] font-bold text-[var(--pin-text-tertiary)] tracking-wide">
+                                        <span className="text-[11px] font-bold text-[var(--glass-text-tertiary)] tracking-wide">
                                             {providerLabel}
                                         </span>
                                     </div>
@@ -313,15 +313,15 @@ export function ModelCapabilityDropdown({
                                                 }}
                                                 disabled={m.disabled}
                                                 className={`w-full text-left px-4 py-2 transition-all border-l-[3px] ${value === m.value
-                                                    ? 'border-[var(--pin-tone-info-fg)] bg-[var(--pin-bg-surface-strong)] font-bold'
+                                                    ? 'border-[var(--glass-tone-info-fg)] bg-[var(--glass-bg-surface-strong)] font-bold'
                                                     : m.disabled
-                                                        ? 'border-transparent text-[var(--pin-text-tertiary)] opacity-60 cursor-not-allowed'
-                                                        : 'border-transparent hover:bg-[var(--pin-bg-fog)]'
+                                                        ? 'border-transparent text-[var(--glass-text-tertiary)] opacity-60 cursor-not-allowed'
+                                                        : 'border-transparent hover:bg-[var(--glass-bg-hover)]'
                                                     }`}
                                             >
                                                 <span className={value === m.value
-                                                    ? `${modelOptionTextSize} font-bold text-[var(--pin-text-primary)]`
-                                                    : `${modelOptionTextSize} font-medium text-[var(--pin-text-secondary)]`
+                                                    ? `${modelOptionTextSize} font-bold text-[var(--glass-text-primary)]`
+                                                    : `${modelOptionTextSize} font-medium text-[var(--glass-text-secondary)]`
                                                 }>
                                                     {m.label}
                                                 </span>
@@ -335,7 +335,7 @@ export function ModelCapabilityDropdown({
 
                     {/* Capability params: fixed at panel bottom */}
                     {(visibleCapabilityFields.length > 0 || booleanToggles.length > 0) && (
-                        <div data-capability-params className="shrink-0 bg-[var(--pin-bg-surface)]">
+                        <div data-capability-params className="shrink-0 bg-[var(--glass-bg-surface)]">
                             <div className="px-4 py-3">
                                 <div className="text-[10px] font-bold text-[#8e8e93] uppercase tracking-wider mb-2.5">
                                     {t('paramConfig')}
@@ -353,24 +353,24 @@ export function ModelCapabilityDropdown({
 
                                             return (
                                                 <div key={def.field} className="flex items-center justify-between gap-3">
-                                                    <span className="text-[13px] text-[var(--pin-text-secondary)] font-semibold shrink-0">
+                                                    <span className="text-[13px] text-[var(--glass-text-secondary)] font-semibold shrink-0">
                                                         {resolveCapabilityLabel(def)}
                                                     </span>
                                                     {def.options.length === 1 ? (
-                                                        <span className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-[var(--pin-bg-surface-strong)] border border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] flex items-center gap-1">
+                                                        <span className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-[var(--glass-bg-surface-strong)] border border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] flex items-center gap-1">
                                                             {(() => {
                                                                 const ratioValue = String(def.options[0])
                                                                 return isR && isValidRatioText(ratioValue) ? <RatioIcon ratio={ratioValue} size={10} /> : null
                                                             })()}
                                                             {formatOptionLabel(def.options[0])}
-                                                            <span className="text-[var(--pin-text-tertiary)] text-[10px]">({t('fixed')})</span>
+                                                            <span className="text-[var(--glass-text-tertiary)] text-[10px]">({t('fixed')})</span>
                                                         </span>
                                                     ) : useSelect ? (
                                                         <div className="relative group">
                                                             <select
                                                                 value={selectValue}
                                                                 onChange={(event) => onCapabilityChange(def.field, event.target.value, def.options[0])}
-                                                                className="appearance-none bg-transparent hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e] text-[13px] font-bold text-[var(--pin-text-primary)] pl-3 pr-7 py-1 rounded-md transition-colors outline-none cursor-pointer border border-transparent"
+                                                                className="appearance-none bg-transparent hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e] text-[13px] font-bold text-[var(--glass-text-primary)] pl-3 pr-7 py-1 rounded-md transition-colors outline-none cursor-pointer border border-transparent"
                                                             >
                                                                 {def.options.map((opt) => {
                                                                     const s = String(opt)
@@ -381,7 +381,7 @@ export function ModelCapabilityDropdown({
                                                                     )
                                                                 })}
                                                             </select>
-                                                            <AppIcon name="chevronDown" className="w-3.5 h-3.5 text-[var(--pin-text-tertiary)] absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-[var(--pin-text-primary)] transition-colors" />
+                                                            <AppIcon name="chevronDown" className="w-3.5 h-3.5 text-[var(--glass-text-tertiary)] absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-[var(--glass-text-primary)] transition-colors" />
                                                         </div>
                                                     ) : (
                                                         <div className="flex bg-[#f2f2f7] dark:bg-[#1c1c1e] p-[3px] rounded-lg shadow-inner">
@@ -413,7 +413,7 @@ export function ModelCapabilityDropdown({
                                         })}
                                         {booleanToggles.map((toggle) => (
                                             <div key={toggle.key} className="flex items-center justify-between gap-3">
-                                                <span className="text-[13px] text-[var(--pin-text-secondary)] font-semibold shrink-0">
+                                                <span className="text-[13px] text-[var(--glass-text-secondary)] font-semibold shrink-0">
                                                     {toggle.label}
                                                 </span>
                                                 <div className="flex bg-[#f2f2f7] dark:bg-[#1c1c1e] p-[3px] rounded-lg shadow-inner">

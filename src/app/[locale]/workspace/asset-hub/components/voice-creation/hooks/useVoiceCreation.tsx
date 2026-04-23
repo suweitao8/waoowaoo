@@ -94,10 +94,6 @@ export function useVoiceCreation({ isOpen, folderId, onClose, onSuccess, initial
                 onDesignVoice: (payload) => designVoiceMutation.mutateAsync(payload),
             })
             setGeneratedVoices(voices)
-            // 当只有一个方案时自动选中
-            if (voices.length === 1) {
-                setSelectedIndex(0)
-            }
         } catch (err: unknown) {
             const errMsg = err instanceof Error ? err.message : 'Unknown error'
             const status = (err as Error & { status?: number }).status

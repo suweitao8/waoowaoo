@@ -102,20 +102,20 @@ export default function VoicePickerDialog({ isOpen, onClose, onSelect }: VoicePi
     const dialogContent = (
         <>
             {/* 背景遮罩 */}
-            <div className="fixed inset-0 z-[9999] pin-overlay" onClick={handleClose} />
+            <div className="fixed inset-0 z-[9999] glass-overlay" onClick={handleClose} />
 
             {/* 对话框 */}
             <div
-                className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pin-surface-modal w-full max-w-2xl max-h-[80vh] overflow-hidden"
+                className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 glass-surface-modal w-full max-w-2xl max-h-[80vh] overflow-hidden"
                 onClick={e => e.stopPropagation()}
             >
                 {/* 头部 */}
-                <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)]">
+                <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)]">
                     <div className="flex items-center gap-2">
-                        <AppIcon name="mic" className="w-5 h-5 text-[var(--pin-tone-info-fg)]" />
-                        <h2 className="font-semibold text-[var(--pin-text-primary)]">{t('voicePickerTitle')}</h2>
+                        <AppIcon name="mic" className="w-5 h-5 text-[var(--glass-tone-info-fg)]" />
+                        <h2 className="font-semibold text-[var(--glass-text-primary)]">{t('voicePickerTitle')}</h2>
                     </div>
-                    <button onClick={handleClose} className="pin-btn-base pin-btn-soft p-1 text-[var(--pin-text-tertiary)]">
+                    <button onClick={handleClose} className="glass-btn-base glass-btn-soft p-1 text-[var(--glass-text-tertiary)]">
                         <AppIcon name="close" className="w-5 h-5" />
                     </button>
                 </div>
@@ -127,8 +127,8 @@ export default function VoicePickerDialog({ isOpen, onClose, onSelect }: VoicePi
                             <TaskStatusInline state={loadingState} />
                         </div>
                     ) : voices.length === 0 ? (
-                        <div className="text-center py-12 text-[var(--pin-text-secondary)]">
-                            <AppIcon name="mic" className="w-16 h-16 mx-auto mb-4 text-[var(--pin-text-tertiary)]" />
+                        <div className="text-center py-12 text-[var(--glass-text-secondary)]">
+                            <AppIcon name="mic" className="w-16 h-16 mx-auto mb-4 text-[var(--glass-text-tertiary)]" />
                             <p>{t('voicePickerEmpty')}</p>
                         </div>
                     ) : (
@@ -143,29 +143,29 @@ export default function VoicePickerDialog({ isOpen, onClose, onSelect }: VoicePi
                                         key={voice.id}
                                         onClick={() => setSelectedVoice(voice)}
                                         className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all ${isSelected
-                                            ? 'border-[var(--pin-stroke-focus)] bg-[var(--pin-tone-info-bg)]'
-                                            : 'border-[var(--pin-stroke-base)] hover:border-[var(--pin-stroke-focus)] bg-[var(--pin-bg-surface)]'
+                                            ? 'border-[var(--glass-stroke-focus)] bg-[var(--glass-tone-info-bg)]'
+                                            : 'border-[var(--glass-stroke-base)] hover:border-[var(--glass-stroke-focus)] bg-[var(--glass-bg-surface)]'
                                             }`}
                                     >
                                         {/* 选中标记 */}
                                         {isSelected && (
-                                            <div className="absolute -top-1.5 -right-1.5 w-5 h-5 pin-badge pin-badge-info rounded-full flex items-center justify-center p-0">
+                                            <div className="absolute -top-1.5 -right-1.5 w-5 h-5 glass-chip glass-chip-info rounded-full flex items-center justify-center p-0">
                                                 <AppIcon name="checkSolid" className="w-3 h-3 text-white" />
                                             </div>
                                         )}
 
                                         {/* 音色信息 */}
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full pin-surface-soft flex items-center justify-center flex-shrink-0">
-                                                <AppIcon name="mic" className="w-5 h-5 text-[var(--pin-tone-info-fg)]" />
+                                            <div className="w-10 h-10 rounded-full glass-surface-soft flex items-center justify-center flex-shrink-0">
+                                                <AppIcon name="mic" className="w-5 h-5 text-[var(--glass-tone-info-fg)]" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-1">
-                                                    <span className="font-medium text-[var(--pin-text-primary)] text-sm truncate">{voice.name}</span>
-                                                    {genderIcon && <span className="pin-badge pin-badge-neutral text-[10px] px-1.5 py-0">{genderIcon}</span>}
+                                                    <span className="font-medium text-[var(--glass-text-primary)] text-sm truncate">{voice.name}</span>
+                                                    {genderIcon && <span className="glass-chip glass-chip-neutral text-[10px] px-1.5 py-0">{genderIcon}</span>}
                                                 </div>
                                                 {voice.description && (
-                                                    <p className="text-xs text-[var(--pin-text-secondary)] truncate">{voice.description}</p>
+                                                    <p className="text-xs text-[var(--glass-text-secondary)] truncate">{voice.description}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -174,9 +174,9 @@ export default function VoicePickerDialog({ isOpen, onClose, onSelect }: VoicePi
                                         {voice.customVoiceUrl && (
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); handlePlay(voice) }}
-                                                className={`mt-2 w-full py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-1 pin-btn-base ${isPlaying
-                                                    ? 'pin-btn-tone-info'
-                                                    : 'pin-btn-secondary text-[var(--pin-text-secondary)]'
+                                                className={`mt-2 w-full py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-1 glass-btn-base ${isPlaying
+                                                    ? 'glass-btn-tone-info'
+                                                    : 'glass-btn-secondary text-[var(--glass-text-secondary)]'
                                                     }`}
                                             >
                                                 {isPlaying ? (
@@ -200,17 +200,17 @@ export default function VoicePickerDialog({ isOpen, onClose, onSelect }: VoicePi
                 </div>
 
                 {/* 底部操作 */}
-                <div className="flex gap-2 p-4 border-t border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)]">
+                <div className="flex gap-2 p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)]">
                     <button
                         onClick={handleClose}
-                        className="pin-btn-base pin-btn-secondary flex-1 py-2 rounded-lg text-sm"
+                        className="glass-btn-base glass-btn-secondary flex-1 py-2 rounded-lg text-sm"
                     >
                         {t('cancel')}
                     </button>
                     <button
                         onClick={handleConfirm}
                         disabled={!selectedVoice}
-                        className="pin-btn-base pin-btn-primary flex-1 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                        className="glass-btn-base glass-btn-primary flex-1 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                     >
                         {t('voicePickerConfirm')}
                     </button>

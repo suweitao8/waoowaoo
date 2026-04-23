@@ -117,27 +117,27 @@ export default function SpeakerVoiceBindingDialog({
     // 主弹窗：Tab 切换
     return createPortal(
         <>
-            <div className="fixed inset-0 z-[9999] pin-overlay" onClick={handleClose} />
+            <div className="fixed inset-0 z-[9999] glass-overlay" onClick={handleClose} />
             <div
-                className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pin-surface-modal w-full max-w-md overflow-hidden"
+                className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 glass-surface-modal w-full max-w-md overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* 头部 */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)]">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)]">
                     <div className="flex items-center gap-2 min-w-0">
-                        <AppIcon name="mic" className="w-5 h-5 text-[var(--pin-tone-info-fg)] shrink-0" />
-                        <h2 className="font-semibold text-[var(--pin-text-primary)] truncate">
+                        <AppIcon name="mic" className="w-5 h-5 text-[var(--glass-tone-info-fg)] shrink-0" />
+                        <h2 className="font-semibold text-[var(--glass-text-primary)] truncate">
                             {t('title', { speaker })}
                         </h2>
                     </div>
-                    <button onClick={handleClose} className="pin-btn-base pin-btn-soft p-1 text-[var(--pin-text-tertiary)] shrink-0">
+                    <button onClick={handleClose} className="glass-btn-base glass-btn-soft p-1 text-[var(--glass-text-tertiary)] shrink-0">
                         <AppIcon name="close" className="w-5 h-5" />
                     </button>
                 </div>
 
                 {/* 描述 */}
                 <div className="px-5 pt-4 pb-2">
-                    <p className="text-sm text-[var(--pin-text-secondary)]">
+                    <p className="text-sm text-[var(--glass-text-secondary)]">
                         {t('description')}
                     </p>
                 </div>
@@ -157,19 +157,19 @@ export default function SpeakerVoiceBindingDialog({
                 {/* Tab 内容区 — 显示描述和进入按钮 */}
                 <div className="p-5">
                     <div className="text-center py-6">
-                        <div className={`w-14 h-14 mx-auto rounded-full flex items-center justify-center mb-3 ${activeTab === 'select' ? 'bg-[var(--pin-tone-info-bg)]'
-                            : activeTab === 'upload' ? 'bg-[var(--pin-tone-success-bg)]'
-                                : 'bg-[var(--pin-tone-info-bg,var(--pin-tone-info-bg))]'
+                        <div className={`w-14 h-14 mx-auto rounded-full flex items-center justify-center mb-3 ${activeTab === 'select' ? 'bg-[var(--glass-tone-info-bg)]'
+                            : activeTab === 'upload' ? 'bg-[var(--glass-tone-success-bg)]'
+                                : 'bg-[var(--glass-accent-bg,var(--glass-tone-info-bg))]'
                             }`}>
                             <AppIcon
                                 name={activeTab === 'select' ? 'mic' : activeTab === 'upload' ? 'cloudUpload' : 'idea'}
-                                className={`w-6 h-6 ${activeTab === 'select' ? 'text-[var(--pin-tone-info-fg)]'
-                                    : activeTab === 'upload' ? 'text-[var(--pin-tone-success-fg)]'
-                                        : 'text-[var(--pin-color-brand,var(--pin-tone-info-fg))]'
+                                className={`w-6 h-6 ${activeTab === 'select' ? 'text-[var(--glass-tone-info-fg)]'
+                                    : activeTab === 'upload' ? 'text-[var(--glass-tone-success-fg)]'
+                                        : 'text-[var(--glass-accent-from,var(--glass-tone-info-fg))]'
                                     }`}
                             />
                         </div>
-                        <p className="text-sm text-[var(--pin-text-secondary)] mb-4">
+                        <p className="text-sm text-[var(--glass-text-secondary)] mb-4">
                             {activeTab === 'select' && t('selectFromLibraryDesc')}
                             {activeTab === 'upload' && t('uploadAudioDesc')}
                             {activeTab === 'design' && t('aiDesignDesc')}
@@ -179,7 +179,7 @@ export default function SpeakerVoiceBindingDialog({
                                 if (activeTab === 'upload' && !confirmUploadVoice()) return
                                 setSubDialogOpen(true)
                             }}
-                            className="pin-btn-base pin-btn-primary px-8 py-2.5 rounded-lg text-sm font-medium"
+                            className="glass-btn-base glass-btn-primary px-8 py-2.5 rounded-lg text-sm font-medium"
                         >
                             {activeTab === 'select' && t('selectFromLibrary')}
                             {activeTab === 'upload' && t('uploadAudio')}

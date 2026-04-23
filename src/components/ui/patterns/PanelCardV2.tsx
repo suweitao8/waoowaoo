@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl'
 import type { PanelEditData } from '@/app/[locale]/workspace/[projectId]/modes/novel-promotion/components/PanelEditForm'
 import type { StoryboardPanel } from '@/app/[locale]/workspace/[projectId]/modes/novel-promotion/components/storyboard/hooks/useStoryboardState'
 import { MediaImageWithLoading } from '@/components/media/MediaImageWithLoading'
-import { PinButton, PinBadge, PinSurface } from '@/components/ui/primitives'
+import { GlassButton, GlassChip, GlassSurface } from '@/components/ui/primitives'
 import PanelEditFormV2 from './PanelEditFormV2'
 import type { UiPatternMode } from './types'
 
@@ -73,7 +73,7 @@ export default function PanelCardV2({
       : null
 
   return (
-    <PinSurface
+    <GlassSurface
       variant="elevated"
       padded={false}
       className={`ui-pattern-panel-card ui-pattern-panel-card-${uiMode} relative overflow-hidden`}
@@ -82,19 +82,19 @@ export default function PanelCardV2({
         <div className="aspect-[9/16] w-full overflow-hidden bg-[rgba(255,255,255,0.35)]">
           {isDeleting || isModifying || isTaskRunning ? (
             <div className="flex h-full items-center justify-center">
-              <PinBadge tone={isDeleting ? 'danger' : 'info'}>
+              <GlassChip tone={isDeleting ? 'danger' : 'info'}>
                 {isDeleting
                   ? t('common.deleting')
                   : isModifying
                     ? t('common.editing')
                     : t('image.generating')}
-              </PinBadge>
+              </GlassChip>
             </div>
           ) : failedError ? (
             <div className="flex h-full flex-col items-center justify-center gap-2 p-4 text-center">
-              <PinBadge tone="danger">{t('image.failed')}</PinBadge>
-              <p className="text-xs text-[var(--pin-text-secondary)]">{failedError}</p>
-              <PinButton size="sm" variant="ghost" onClick={onClearError}>{t('common.cancel')}</PinButton>
+              <GlassChip tone="danger">{t('image.failed')}</GlassChip>
+              <p className="text-xs text-[var(--glass-text-secondary)]">{failedError}</p>
+              <GlassButton size="sm" variant="ghost" onClick={onClearError}>{t('common.cancel')}</GlassButton>
             </div>
           ) : selectedCandidate ? (
             <MediaImageWithLoading
@@ -112,33 +112,33 @@ export default function PanelCardV2({
             />
           ) : (
             <div className="flex h-full items-center justify-center">
-              <PinButton size="sm" variant="secondary" onClick={() => onRegeneratePanelImage(panel.id, 1)}>
+              <GlassButton size="sm" variant="secondary" onClick={() => onRegeneratePanelImage(panel.id, 1)}>
                 {t('panel.generateImage')}
-              </PinButton>
+              </GlassButton>
             </div>
           )}
         </div>
 
         <div className="absolute left-2 top-2 flex items-center gap-2">
-          <PinBadge tone="neutral">#{globalPanelNumber}</PinBadge>
-          <PinBadge tone="info">{panel.shot_type || t('panel.noShotType')}</PinBadge>
+          <GlassChip tone="neutral">#{globalPanelNumber}</GlassChip>
+          <GlassChip tone="info">{panel.shot_type || t('panel.noShotType')}</GlassChip>
         </div>
 
         <div className="absolute right-2 top-2">
-          <PinButton size="sm" variant="danger" onClick={onDelete}>{t('common.delete')}</PinButton>
+          <GlassButton size="sm" variant="danger" onClick={onDelete}>{t('common.delete')}</GlassButton>
         </div>
 
         <div className="absolute bottom-2 left-2 right-2 flex flex-wrap items-center gap-2">
-          <PinButton size="sm" variant="secondary" onClick={() => onRegeneratePanelImage(panel.id, 1, isTaskRunning)}>
+          <GlassButton size="sm" variant="secondary" onClick={() => onRegeneratePanelImage(panel.id, 1, isTaskRunning)}>
             {t('image.regenerate')}
-          </PinButton>
-          <PinButton size="sm" variant="secondary" onClick={onOpenEditModal}>{t('image.editImage')}</PinButton>
-          <PinButton size="sm" variant="secondary" onClick={onOpenAIDataModal}>{t('aiData.title')}</PinButton>
+          </GlassButton>
+          <GlassButton size="sm" variant="secondary" onClick={onOpenEditModal}>{t('image.editImage')}</GlassButton>
+          <GlassButton size="sm" variant="secondary" onClick={onOpenAIDataModal}>{t('aiData.title')}</GlassButton>
 
           {candidateData ? (
             <>
-              <PinButton size="sm" variant="ghost" onClick={() => onCancelCandidate(panel.id)}>{t('image.cancelSelection')}</PinButton>
-              <PinButton
+              <GlassButton size="sm" variant="ghost" onClick={() => onCancelCandidate(panel.id)}>{t('image.cancelSelection')}</GlassButton>
+              <GlassButton
                 size="sm"
                 variant="primary"
                 onClick={() => {
@@ -149,14 +149,14 @@ export default function PanelCardV2({
                 }}
               >
                 {t('image.confirmCandidate')}
-              </PinButton>
+              </GlassButton>
               <div className="ml-auto flex gap-1">
                 {candidateData.candidates.slice(0, 4).map((_, index) => (
                   <button
                     key={index}
                     type="button"
                     onClick={() => onSelectCandidateIndex(panel.id, index)}
-                    className={`h-2.5 w-2.5 rounded-full ${index === candidateData.selectedIndex ? 'bg-[var(--pin-color-brand)]' : 'bg-[var(--pin-bg-surface)]/80 border border-[var(--pin-stroke-base)]'}`}
+                    className={`h-2.5 w-2.5 rounded-full ${index === candidateData.selectedIndex ? 'bg-[var(--glass-accent-from)]' : 'bg-[var(--glass-bg-surface)]/80 border border-[var(--glass-stroke-base)]'}`}
                     aria-label={`candidate-${index + 1}`}
                   />
                 ))}
@@ -178,6 +178,6 @@ export default function PanelCardV2({
           uiMode={uiMode}
         />
       </div>
-    </PinSurface>
+    </GlassSurface>
   )
 }

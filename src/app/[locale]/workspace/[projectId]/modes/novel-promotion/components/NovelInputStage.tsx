@@ -100,7 +100,7 @@ AI 将根据您的文本智能分析：
             <button
               onClick={handleStartClick}
               disabled={!hasContent || isSubmittingTask || isSwitchingStage}
-              className="pin-btn-base pin-btn-primary h-10 flex-shrink-0 px-5 text-sm disabled:opacity-50 flex items-center gap-2"
+              className="glass-btn-base glass-btn-primary h-10 flex-shrink-0 px-5 text-sm disabled:opacity-50 flex items-center gap-2"
             >
               {isSwitchingStage ? (
                 <TaskStatusInline state={stageSwitchingState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -114,8 +114,8 @@ AI 将根据您的文本智能分析：
           )}
           leftTitle={episodeName && (
             <div className="text-sm">
-              <span className="text-[var(--pin-text-tertiary)]">当前剧集：</span>
-              <span className="font-medium text-[var(--pin-text-primary)]">{episodeName}</span>
+              <span className="text-[var(--glass-text-tertiary)]">当前剧集：</span>
+              <span className="font-medium text-[var(--glass-text-primary)]">{episodeName}</span>
             </div>
           )}
         />
@@ -123,24 +123,24 @@ AI 将根据您的文本智能分析：
 
       {/* 旁白开关 */}
       {onEnableNarrationChange && (
-        <div className="pin-surface p-6">
-          <div className="pin-surface-soft flex items-center justify-between p-4 rounded-xl">
+        <div className="glass-surface p-6">
+          <div className="glass-surface-soft flex items-center justify-between p-4 rounded-xl">
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] font-semibold text-sm">VO</span>
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] font-semibold text-sm">VO</span>
               <div>
-                <div className="font-medium text-[var(--pin-text-primary)]">{t("storyInput.narration.title")}</div>
-                <div className="text-xs text-[var(--pin-text-tertiary)]">{t("storyInput.narration.description")}</div>
+                <div className="font-medium text-[var(--glass-text-primary)]">{t("storyInput.narration.title")}</div>
+                <div className="text-xs text-[var(--glass-text-tertiary)]">{t("storyInput.narration.description")}</div>
               </div>
             </div>
             <button
               onClick={() => onEnableNarrationChange(!enableNarration)}
               className={`relative w-14 h-8 rounded-full transition-colors ${enableNarration
-                ? 'bg-[var(--pin-color-brand)]'
-                : 'bg-[var(--pin-stroke-strong)]'
+                ? 'bg-[var(--glass-accent-from)]'
+                : 'bg-[var(--glass-stroke-strong)]'
                 }`}
             >
               <span
-                className={`absolute top-1 left-1 w-6 h-6 bg-[var(--pin-bg-surface)] rounded-full shadow-sm transition-transform ${enableNarration ? 'translate-x-6' : 'translate-x-0'
+                className={`absolute top-1 left-1 w-6 h-6 bg-[var(--glass-bg-surface)] rounded-full shadow-sm transition-transform ${enableNarration ? 'translate-x-6' : 'translate-x-0'
                   }`}
               />
             </button>

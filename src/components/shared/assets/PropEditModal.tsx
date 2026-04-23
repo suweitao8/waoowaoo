@@ -144,42 +144,42 @@ export function PropEditModal({
   }
 
   return (
-    <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 p-4">
-      <div className="pin-surface-modal max-w-2xl w-full max-h-[80vh] flex flex-col">
+    <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 p-4">
+      <div className="glass-surface-modal max-w-2xl w-full max-h-[80vh] flex flex-col">
         <div className="p-6 space-y-4 overflow-y-auto flex-1">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">
+            <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">
               {t('modal.editProp')} - {propName}
             </h3>
             <button
               onClick={onClose}
-              className="pin-btn-base pin-btn-soft w-9 h-9 rounded-full text-[var(--pin-text-tertiary)]"
+              className="glass-btn-base glass-btn-soft w-9 h-9 rounded-full text-[var(--glass-text-tertiary)]"
             >
               <AppIcon name="close" className="w-6 h-6" />
             </button>
           </div>
 
           <div className="space-y-2">
-            <label className="pin-field-label block">
+            <label className="glass-field-label block">
               {t('prop.name')}
             </label>
             <input
               type="text"
               value={editingName}
               onChange={(event) => setEditingName(event.target.value)}
-              className="pin-input-base w-full px-3 py-2"
+              className="glass-input-base w-full px-3 py-2"
               placeholder={t('modal.namePlaceholder')}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="pin-field-label block">
+            <label className="glass-field-label block">
               {t('prop.summary')}
             </label>
             <textarea
               value={editingSummary}
               onChange={(event) => setEditingSummary(event.target.value)}
-              className="pin-textarea-base h-28 w-full px-3 py-2 resize-none"
+              className="glass-textarea-base h-28 w-full px-3 py-2 resize-none"
               placeholder={t('prop.summaryPlaceholder')}
             />
           </div>
@@ -200,10 +200,10 @@ export function PropEditModal({
           />
         </div>
 
-        <div className="flex gap-3 justify-end p-4 border-t border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)] rounded-b-lg flex-shrink-0">
+        <div className="flex gap-3 justify-end p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] rounded-b-lg flex-shrink-0">
           <button
             onClick={onClose}
-            className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg"
+            className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg"
             disabled={isSaving}
           >
             {t('common.cancel')}
@@ -211,7 +211,7 @@ export function PropEditModal({
           <button
             onClick={() => void handleSaveOnly()}
             disabled={isSaving || !editingName.trim() || !editingSummary.trim() || !editingDescription.trim()}
-            className="pin-btn-base pin-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="glass-btn-base glass-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {isSaving ? (
               <TaskStatusInline state={savingState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -222,7 +222,7 @@ export function PropEditModal({
           <button
             onClick={() => void handleSaveAndGenerate()}
             disabled={isSaving || !editingName.trim() || !editingSummary.trim() || !editingDescription.trim()}
-            className="pin-btn-base pin-btn-primary px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="glass-btn-base glass-btn-primary px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t('modal.saveAndGenerate')}
           </button>

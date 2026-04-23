@@ -20,9 +20,6 @@ interface Chapter {
   id: string
   name: string
   novelText?: string | null
-  analysisStatus?: string | null
-  worldContext?: string | null
-  writingStyle?: string | null
   createdAt: string
 }
 
@@ -54,11 +51,8 @@ export default function NovelProjectDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // 改为多选
-  const [selectedChapterIds, setSelectedChapterIds] = useState<string[]>([])
+  const [selectedChapterId, setSelectedChapterId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('read')
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [isSummarizing, setIsSummarizing] = useState(false)
 
   // 检查登录状态
   useEffect(() => {
@@ -90,12 +84,12 @@ export default function NovelProjectDetailPage() {
 
       // 自动选择第一个章节
       const episodes = data.novelWritingData?.episodes || []
-      if (episodes.length > 0 && selectedChapterIds.length === 0) {
+      if (episodes.length > 0 && !selectedChapterId) {
         const urlChapter = searchParams?.get('chapter')
         if (urlChapter && episodes.some((ep: Chapter) => ep.id === urlChapter)) {
-          setSelectedChapterIds([urlChapter])
+          setSelectedChapterId(urlChapter)
         } else {
-          setSelectedChapterIds([episodes[0].id])
+          setSelectedChapterId(episodes[0].id)
         }
       }
     } catch (err) {
@@ -103,7 +97,7 @@ export default function NovelProjectDetailPage() {
     } finally {
       setLoading(false)
     }
-  }, [projectId, selectedChapterIds.length, searchParams])
+  }, [projectId, selectedChapterId, searchParams])
 
   useEffect(() => {
     if (session && projectId) {
@@ -126,11 +120,11 @@ export default function NovelProjectDetailPage() {
     })
   }, [project])
 
-  // 当前选中的章节（取第一个作为主章节）
+  // 当前选中的章节
   const selectedChapter = useMemo(() => {
-    if (selectedChapterIds.length === 0 || !chapters.length) return null
-    return chapters.find(ch => ch.id === selectedChapterIds[0]) || null
-  }, [selectedChapterIds, chapters])
+    if (!selectedChapterId || !chapters.length) return null
+    return chapters.find(ch => ch.id === selectedChapterId) || null
+  }, [selectedChapterId, chapters])
 
   // 更新 URL
   const updateUrl = useCallback((chapterId: string | null) => {
@@ -148,15 +142,11 @@ export default function NovelProjectDetailPage() {
     )
   }, [router, projectId])
 
-  // 选择章节（支持多选）
-  const handleChapterSelect = useCallback((chapterIds: string[], isMulti?: boolean) => {
-    setSelectedChapterIds(chapterIds)
-
-    // 单选时更新 URL
-    if (!isMulti && chapterIds.length === 1) {
-      updateUrl(chapterIds[0])
-    }
-  }, [updateUrl])
+  // 选择章节
+  const handleChapterSelect = (chapterId: string) => {
+    setSelectedChapterId(chapterId)
+    updateUrl(chapterId)
+  }
 
   // 创建新章节
   const handleNewChapter = async () => {
@@ -184,105 +174,11 @@ export default function NovelProjectDetailPage() {
 
       // 选择新创建的章节
       if (data.episode?.id) {
-        setSelectedChapterIds([data.episode.id])
+        setSelectedChapterId(data.episode.id)
         updateUrl(data.episode.id)
       }
     } catch (err) {
       console.error('创建章节失败:', err)
-    }
-  }
-
-  // 分析选中章节
-  const handleAnalyzeChapters = async (chapterIds: string[]) => {
-    if (!projectId || chapterIds.length === 0) return
-
-    setIsAnalyzing(true)
-    try {
-      const response = await apiFetch(`/api/novel-writing/${projectId}/analyze-chapters`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chapterIds }),
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || '分析失败')
-      }
-
-      // 刷新项目数据
-      fetchProject()
-    } catch (err) {
-      console.error('分析失败:', err)
-    } finally {
-      setIsAnalyzing(false)
-    }
-  }
-
-  // 汇总项目
-  const handleSummarize = async () => {
-    if (!projectId) return
-
-    setIsSummarizing(true)
-    try {
-      const response = await apiFetch(`/api/novel-writing/${projectId}/summarize-project`, {
-        method: 'POST',
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || '汇总失败')
-      }
-
-      // 刷新项目数据
-      fetchProject()
-    } catch (err) {
-      console.error('汇总失败:', err)
-    } finally {
-      setIsSummarizing(false)
-    }
-  }
-
-  // 重命名章节
-  const handleRenameChapter = async (chapterId: string) => {
-    const chapter = chapters.find(ch => ch.id === chapterId)
-    if (!chapter) return
-
-    const newName = prompt('请输入新的章节名称', chapter.name)
-    if (!newName || newName === chapter.name) return
-
-    try {
-      const response = await apiFetch(`/api/novel-writing/${projectId}/episodes/${chapterId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newName }),
-      })
-
-      if (!response.ok) {
-        throw new Error('重命名失败')
-      }
-
-      fetchProject()
-    } catch (err) {
-      console.error('重命名失败:', err)
-    }
-  }
-
-  // 删除章节
-  const handleDeleteChapters = async (chapterIds: string[]) => {
-    if (!confirm(`确定要删除 ${chapterIds.length} 个章节吗？`)) return
-
-    try {
-      for (const chapterId of chapterIds) {
-        await apiFetch(`/api/novel-writing/${projectId}/episodes/${chapterId}`, {
-          method: 'DELETE',
-        })
-      }
-
-      // 清除已删除章节的选中状态
-      setSelectedChapterIds(prev => prev.filter(id => !chapterIds.includes(id)))
-      fetchProject()
-    } catch (err) {
-      console.error('删除失败:', err)
     }
   }
 
@@ -298,21 +194,21 @@ export default function NovelProjectDetailPage() {
 
   if (status === 'loading' || !session) {
     return (
-      <div className="pin-page min-h-screen flex items-center justify-center">
-        <div className="text-[var(--pin-text-secondary)]">{tc('loading')}</div>
+      <div className="glass-page min-h-screen flex items-center justify-center">
+        <div className="text-[var(--glass-text-secondary)]">{tc('loading')}</div>
       </div>
     )
   }
 
   if (loading) {
     return (
-      <div className="pin-page min-h-screen">
+      <div className="glass-page min-h-screen">
         <Navbar />
         <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
           <div className="flex items-center justify-center h-[60vh]">
             <div className="text-center">
-              <div className="w-8 h-8 border-2 border-[var(--pin-color-brand)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-[var(--pin-text-secondary)]">{tc('loading')}</p>
+              <div className="w-8 h-8 border-2 border-[var(--glass-accent-from)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-[var(--glass-text-secondary)]">{tc('loading')}</p>
             </div>
           </div>
         </main>
@@ -322,14 +218,14 @@ export default function NovelProjectDetailPage() {
 
   if (error || !project) {
     return (
-      <div className="pin-page min-h-screen">
+      <div className="glass-page min-h-screen">
         <Navbar />
         <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
-          <div className="pin-surface p-6 text-center">
-            <p className="text-[var(--pin-tone-danger-fg)] mb-4">{error || '项目不存在'}</p>
+          <div className="glass-surface p-6 text-center">
+            <p className="text-[var(--glass-tone-danger-fg)] mb-4">{error || '项目不存在'}</p>
             <button
               onClick={() => router.push({ pathname: '/novel' })}
-              className="pin-btn-base pin-btn-primary px-6 py-2"
+              className="glass-btn-base glass-btn-primary px-6 py-2"
             >
               返回项目列表
             </button>
@@ -340,7 +236,7 @@ export default function NovelProjectDetailPage() {
   }
 
   return (
-    <div className="pin-page min-h-screen">
+    <div className="glass-page min-h-screen">
       <Navbar />
 
       <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
@@ -349,14 +245,14 @@ export default function NovelProjectDetailPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => router.push({ pathname: '/novel' })}
-              className="text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)] transition-colors"
+              className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] transition-colors"
             >
               <AppIcon name="chevronLeft" className="w-5 h-5" />
             </button>
-            <h1 className="text-2xl font-bold text-[var(--pin-text-primary)]">
+            <h1 className="text-2xl font-bold text-[var(--glass-text-primary)]">
               {project.name}
             </h1>
-            <span className="text-sm text-[var(--pin-text-tertiary)]">
+            <span className="text-sm text-[var(--glass-text-tertiary)]">
               {chapters.length} 章节
             </span>
           </div>
@@ -365,8 +261,8 @@ export default function NovelProjectDetailPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setViewMode('read')}
-              className={`pin-btn-base px-4 py-2 text-sm ${
-                viewMode === 'read' ? 'pin-btn-primary' : 'pin-btn-secondary'
+              className={`glass-btn-base px-4 py-2 text-sm ${
+                viewMode === 'read' ? 'glass-btn-primary' : 'glass-btn-secondary'
               }`}
             >
               <AppIcon name="bookOpen" className="w-4 h-4 mr-2 inline" />
@@ -374,8 +270,8 @@ export default function NovelProjectDetailPage() {
             </button>
             <button
               onClick={() => setViewMode('analyze')}
-              className={`pin-btn-base px-4 py-2 text-sm ${
-                viewMode === 'analyze' ? 'pin-btn-primary' : 'pin-btn-secondary'
+              className={`glass-btn-base px-4 py-2 text-sm ${
+                viewMode === 'analyze' ? 'glass-btn-primary' : 'glass-btn-secondary'
               }`}
             >
               <AppIcon name="sparkles" className="w-4 h-4 mr-2 inline" />
@@ -383,10 +279,10 @@ export default function NovelProjectDetailPage() {
             </button>
             <button
               onClick={() => setViewMode('rewrite')}
-              className={`pin-btn-base px-4 py-2 text-sm ${
-                viewMode === 'rewrite' ? 'pin-btn-primary' : 'pin-btn-secondary'
+              className={`glass-btn-base px-4 py-2 text-sm ${
+                viewMode === 'rewrite' ? 'glass-btn-primary' : 'glass-btn-secondary'
               }`}
-              disabled={selectedChapterIds.length !== 1}
+              disabled={!selectedChapter}
             >
               <AppIcon name="edit" className="w-4 h-4 mr-2 inline" />
               {t('aiRewrite')}
@@ -394,26 +290,14 @@ export default function NovelProjectDetailPage() {
           </div>
         </div>
 
-        {/* 分析/汇总状态提示 */}
-        {(isAnalyzing || isSummarizing) && (
-          <div className="mb-4 p-3 rounded-lg bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] text-sm flex items-center gap-2">
-            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            {isAnalyzing ? '正在分析选中章节...' : '正在汇总项目设定...'}
-          </div>
-        )}
-
         {/* 主内容区 */}
         <div className="flex gap-6">
           {/* 章节侧边栏 */}
           <ChapterSidebar
             chapters={chapters}
-            selectedChapterIds={selectedChapterIds}
+            selectedChapterId={selectedChapterId}
             onChapterSelect={handleChapterSelect}
             onNewChapter={handleNewChapter}
-            onAnalyzeChapters={handleAnalyzeChapters}
-            onRenameChapter={handleRenameChapter}
-            onDeleteChapters={handleDeleteChapters}
-            onSummarize={handleSummarize}
           />
 
           {/* 主内容 */}
@@ -427,7 +311,6 @@ export default function NovelProjectDetailPage() {
               worldContext={project.novelWritingData?.worldContext}
               writingStyle={project.novelWritingData?.writingStyle}
               extractedCharacters={project.novelWritingData?.extractedCharacters}
-              chapters={chapters}
               onComplete={handleAnalysisComplete}
             />
           )}

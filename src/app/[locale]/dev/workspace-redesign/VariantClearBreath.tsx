@@ -84,10 +84,10 @@ export default function VariantClearBreath({ children }: { children?: React.Reac
 
       <div className="flex flex-col items-center pt-[18vh] pb-12 px-4 max-w-3xl mx-auto w-full">
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-[var(--pin-text-primary)] mb-2">
+          <h1 className="text-3xl font-bold text-[var(--glass-text-primary)] mb-2">
             ✨ {t('quickActions.title')}
           </h1>
-          <p className="text-sm text-[var(--pin-text-tertiary)]">{t('inputPlaceholder')}</p>
+          <p className="text-sm text-[var(--glass-text-tertiary)]">{t('inputPlaceholder')}</p>
         </div>
 
         {/* 呼吸光晕容器 */}
@@ -117,13 +117,13 @@ export default function VariantClearBreath({ children }: { children?: React.Reac
             }}
           />
 
-          <div className="relative w-full pin-surface-elevated rounded-2xl overflow-hidden">
+          <div className="relative w-full glass-surface-elevated rounded-2xl overflow-hidden">
             <textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={t('inputPlaceholder')}
               rows={4}
-              className="w-full bg-transparent border-none outline-none text-[var(--pin-text-primary)] placeholder:text-[var(--pin-text-tertiary)] text-base resize-none p-5 pb-2"
+              className="w-full bg-transparent border-none outline-none text-[var(--glass-text-primary)] placeholder:text-[var(--glass-text-tertiary)] text-base resize-none p-5 pb-2"
             />
             <div className="flex items-center justify-between gap-2 px-5 pb-4">
               <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export default function VariantClearBreath({ children }: { children?: React.Reac
                 <InlineSelector label={t('ratio')} selectedId={selectedRatio} options={RATIO_OPTIONS} onSelect={setSelectedRatio} renderLabel={(o) => t(o.labelKey)} />
                 <InlineSelector label={t('quality')} selectedId={selectedQuality} options={QUALITY_OPTIONS} onSelect={setSelectedQuality} renderLabel={(o) => t(o.labelKey)} />
               </div>
-              <button className="pin-btn-base pin-btn-primary px-5 py-2 text-sm flex-shrink-0">
+              <button className="glass-btn-base glass-btn-primary px-5 py-2 text-sm flex-shrink-0">
                 {t('startCreation')}
                 <AppIcon name="arrowRight" className="w-4 h-4" />
               </button>

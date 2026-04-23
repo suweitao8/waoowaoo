@@ -266,27 +266,27 @@ export default function ComfyUIPage() {
   }
 
   return (
-    <div className="pin-page min-h-screen">
+    <div className="glass-page min-h-screen">
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 标题 */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[var(--pin-text-primary)] mb-2">{t('title')}</h1>
-          <p className="text-[var(--pin-text-secondary)]">{t('subtitle')}</p>
-          <p className="text-sm text-[var(--pin-text-tertiary)] mt-2">
+          <h1 className="text-3xl font-bold text-[var(--glass-text-primary)] mb-2">{t('title')}</h1>
+          <p className="text-[var(--glass-text-secondary)]">{t('subtitle')}</p>
+          <p className="text-sm text-[var(--glass-text-tertiary)] mt-2">
             使用工作流: Z-Image 瑶光版 超真实细节增强
           </p>
         </div>
 
         {/* 标签页切换 */}
-        <div className="mb-6 flex gap-2 border-b border-[var(--pin-stroke-base)]">
+        <div className="mb-6 flex gap-2 border-b border-[var(--glass-stroke-subtle)]">
           <button
             onClick={() => setActiveTab('prompt')}
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               activeTab === 'prompt'
-                ? 'text-[var(--pin-tone-info-fg)] border-b-2 border-[var(--pin-tone-info-fg)]'
-                : 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]'
+                ? 'text-[var(--glass-tone-info-fg)] border-b-2 border-[var(--glass-tone-info-fg)]'
+                : 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]'
             }`}
           >
             {t('prompt')}
@@ -295,8 +295,8 @@ export default function ComfyUIPage() {
             onClick={() => setActiveTab('character')}
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               activeTab === 'character'
-                ? 'text-[var(--pin-tone-info-fg)] border-b-2 border-[var(--pin-tone-info-fg)]'
-                : 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]'
+                ? 'text-[var(--glass-tone-info-fg)] border-b-2 border-[var(--glass-tone-info-fg)]'
+                : 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]'
             }`}
           >
             {t('characterGenerator')}
@@ -314,7 +314,7 @@ export default function ComfyUIPage() {
                 : 'bg-red-500'
             }`}
           />
-          <span className="text-sm text-[var(--pin-text-secondary)]">
+          <span className="text-sm text-[var(--glass-text-secondary)]">
             {status === 'checking'
               ? t('statusChecking')
               : status === 'online'
@@ -324,7 +324,7 @@ export default function ComfyUIPage() {
           {status === 'offline' && (
             <button
               onClick={() => void checkStatus()}
-              className="text-sm text-[var(--pin-tone-info-fg)] hover:underline ml-2"
+              className="text-sm text-[var(--glass-tone-info-fg)] hover:underline ml-2"
             >
               {tc('refresh')}
             </button>
@@ -333,17 +333,17 @@ export default function ComfyUIPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* 左侧：表单 */}
-          <div className="pin-surface p-6">
+          <div className="glass-surface p-6">
             {/* 提示词标签页内容 */}
             {activeTab === 'prompt' && (
               <>
                 {/* 提示词 */}
                 <div className="mb-4">
-                  <label className="pin-field-label block mb-2">{t('prompt')}</label>
+                  <label className="glass-field-label block mb-2">{t('prompt')}</label>
                   <textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    className="pin-textarea-base w-full px-3 py-2"
+                    className="glass-textarea-base w-full px-3 py-2"
                     placeholder={t('promptPlaceholder')}
                     rows={6}
                     disabled={generating}
@@ -355,7 +355,7 @@ export default function ComfyUIPage() {
                   <button
                     onClick={() => void handleOptimizePrompt()}
                     disabled={optimizing || !prompt.trim() || generating}
-                    className="pin-btn-base pin-btn-secondary flex-1 px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-secondary flex-1 px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {optimizing ? (
                       <span className="flex items-center justify-center gap-2">
@@ -372,7 +372,7 @@ export default function ComfyUIPage() {
                   <button
                     onClick={() => void handleGenerate()}
                     disabled={generating || !prompt.trim() || status !== 'online'}
-                    className="pin-btn-base pin-btn-primary flex-1 px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-primary flex-1 px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {generating ? (
                       <span className="flex items-center justify-center gap-2">
@@ -390,12 +390,12 @@ export default function ComfyUIPage() {
 
                 {/* 进度条 */}
                 {progress && (
-                  <div className="mb-4 p-4 rounded-xl border border-[var(--pin-stroke-strong)] bg-[var(--pin-bg-muted)]">
+                  <div className="mb-4 p-4 rounded-xl border border-[var(--glass-stroke-strong)] bg-[var(--glass-bg-muted)]">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-[var(--pin-text-primary)]">{progress.status}</span>
-                      <span className="text-xs text-[var(--pin-text-tertiary)]">{Math.round(progress.current)}%</span>
+                      <span className="text-sm text-[var(--glass-text-primary)]">{progress.status}</span>
+                      <span className="text-xs text-[var(--glass-text-tertiary)]">{Math.round(progress.current)}%</span>
                     </div>
-                    <div className="w-full h-2 bg-[var(--pin-stroke-base)] rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-[var(--glass-stroke-subtle)] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 ease-out"
                         style={{ width: `${progress.current}%` }}
@@ -406,11 +406,11 @@ export default function ComfyUIPage() {
 
                 {/* 尺寸选择 */}
                 <div className="mb-4">
-                  <label className="pin-field-label block mb-2">{t('size')}</label>
+                  <label className="glass-field-label block mb-2">{t('size')}</label>
                   <select
                     value={size}
                     onChange={(e) => setSize(e.target.value)}
-                    className="pin-input-base w-full px-3 py-2"
+                    className="glass-input-base w-full px-3 py-2"
                     disabled={generating}
                   >
                     {PRESET_SIZES.map((s) => (
@@ -428,12 +428,12 @@ export default function ComfyUIPage() {
               <>
                 {/* 角色名称 */}
                 <div className="mb-4">
-                  <label className="pin-field-label block mb-2">{t('characterName')}</label>
+                  <label className="glass-field-label block mb-2">{t('characterName')}</label>
                   <input
                     type="text"
                     value={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
-                    className="pin-input-base w-full px-3 py-2"
+                    className="glass-input-base w-full px-3 py-2"
                     placeholder={t('characterNamePlaceholder')}
                     disabled={generatingCharacter}
                   />
@@ -441,11 +441,11 @@ export default function ComfyUIPage() {
 
                 {/* 角色描述 */}
                 <div className="mb-4">
-                  <label className="pin-field-label block mb-2">{t('characterDescription')}</label>
+                  <label className="glass-field-label block mb-2">{t('characterDescription')}</label>
                   <textarea
                     value={characterDescription}
                     onChange={(e) => setCharacterDescription(e.target.value)}
-                    className="pin-textarea-base w-full px-3 py-2"
+                    className="glass-textarea-base w-full px-3 py-2"
                     placeholder={t('characterDescriptionPlaceholder')}
                     rows={6}
                     disabled={generatingCharacter}
@@ -457,7 +457,7 @@ export default function ComfyUIPage() {
                   <button
                     onClick={() => void handleGenerateCharacter()}
                     disabled={generatingCharacter || !characterDescription.trim()}
-                    className="pin-btn-base pin-btn-primary w-full px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-primary w-full px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {generatingCharacter ? (
                       <span className="flex items-center justify-center gap-2">
@@ -477,30 +477,30 @@ export default function ComfyUIPage() {
                 {characterResult && (
                   <div className="space-y-4">
                     {/* 角色档案信息 */}
-                    <div className="p-4 rounded-xl border border-[var(--pin-stroke-strong)] bg-[var(--pin-bg-muted)]">
-                      <h4 className="text-sm font-medium text-[var(--pin-text-primary)] mb-2">
+                    <div className="p-4 rounded-xl border border-[var(--glass-stroke-strong)] bg-[var(--glass-bg-muted)]">
+                      <h4 className="text-sm font-medium text-[var(--glass-text-primary)] mb-2">
                         {characterResult.profile.name}
                       </h4>
-                      <div className="text-sm text-[var(--pin-text-secondary)] space-y-1">
-                        <p><span className="text-[var(--pin-text-tertiary)]">类型:</span> {characterResult.profile.archetype}</p>
-                        <p><span className="text-[var(--pin-text-tertiary)]">性格:</span> {characterResult.profile.personality_tags?.join(', ')}</p>
-                        <p><span className="text-[var(--pin-text-tertiary)]">关键词:</span> {characterResult.profile.visual_keywords?.join(', ')}</p>
+                      <div className="text-sm text-[var(--glass-text-secondary)] space-y-1">
+                        <p><span className="text-[var(--glass-text-tertiary)]">类型:</span> {characterResult.profile.archetype}</p>
+                        <p><span className="text-[var(--glass-text-tertiary)]">性格:</span> {characterResult.profile.personality_tags?.join(', ')}</p>
+                        <p><span className="text-[var(--glass-text-tertiary)]">关键词:</span> {characterResult.profile.visual_keywords?.join(', ')}</p>
                       </div>
                     </div>
 
                     {/* 视觉描述选择 */}
                     <div>
-                      <label className="pin-field-label block mb-2">{t('selectVisualDescription')}</label>
+                      <label className="glass-field-label block mb-2">{t('selectVisualDescription')}</label>
                       <div className="space-y-2">
                         {characterResult.visualDescriptions.map((desc, index) => (
                           <button
                             key={index}
                             onClick={() => handleUseDescription(desc)}
-                            className="w-full text-left p-3 rounded-lg border border-[var(--pin-stroke-base)] hover:border-[var(--pin-tone-info-fg)] hover:bg-[var(--pin-bg-fog)] transition-colors text-sm text-[var(--pin-text-secondary)]"
+                            className="w-full text-left p-3 rounded-lg border border-[var(--glass-stroke-subtle)] hover:border-[var(--glass-tone-info-fg)] hover:bg-[var(--glass-bg-hover)] transition-colors text-sm text-[var(--glass-text-secondary)]"
                           >
                             <div className="flex items-start justify-between gap-2">
                               <span className="line-clamp-2">{desc}</span>
-                              <AppIcon name="arrowRight" className="w-4 h-4 flex-shrink-0 text-[var(--pin-text-tertiary)]" />
+                              <AppIcon name="arrowRight" className="w-4 h-4 flex-shrink-0 text-[var(--glass-text-tertiary)]" />
                             </div>
                           </button>
                         ))}
@@ -513,8 +513,8 @@ export default function ComfyUIPage() {
           </div>
 
           {/* 右侧：结果预览 */}
-          <div className="pin-surface p-6">
-            <h3 className="text-lg font-medium text-[var(--pin-text-primary)] mb-4">
+          <div className="glass-surface p-6">
+            <h3 className="text-lg font-medium text-[var(--glass-text-primary)] mb-4">
               {t('generated')}
             </h3>
 
@@ -526,7 +526,7 @@ export default function ComfyUIPage() {
 
             {result?.imageUrl ? (
               <div className="space-y-4">
-                <div className="aspect-video rounded-xl overflow-hidden bg-[var(--pin-bg-muted)]">
+                <div className="aspect-video rounded-xl overflow-hidden bg-[var(--glass-bg-muted)]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={result.imageUrl}
@@ -536,14 +536,14 @@ export default function ComfyUIPage() {
                 </div>
                 {/* 生成时间统计 */}
                 {result.duration !== undefined && (
-                  <div className="flex items-center justify-center gap-2 text-sm text-[var(--pin-text-secondary)]">
+                  <div className="flex items-center justify-center gap-2 text-sm text-[var(--glass-text-secondary)]">
                     <AppIcon name="clock" className="w-4 h-4" />
                     <span>生成耗时: {result.duration} 秒</span>
                   </div>
                 )}
                 <button
                   onClick={handleDownload}
-                  className="pin-btn-base pin-btn-secondary w-full px-4 py-2"
+                  className="glass-btn-base glass-btn-secondary w-full px-4 py-2"
                 >
                   <span className="flex items-center justify-center gap-2">
                     <AppIcon name="download" className="w-4 h-4" />
@@ -552,8 +552,8 @@ export default function ComfyUIPage() {
                 </button>
               </div>
             ) : (
-              <div className="aspect-video rounded-xl bg-[var(--pin-bg-muted)] flex items-center justify-center">
-                <div className="text-center text-[var(--pin-text-tertiary)]">
+              <div className="aspect-video rounded-xl bg-[var(--glass-bg-muted)] flex items-center justify-center">
+                <div className="text-center text-[var(--glass-text-tertiary)]">
                   <AppIcon name="image" className="w-16 h-16 mx-auto mb-2 opacity-50" />
                   <p>{generating ? progress?.status : t('promptPlaceholder')}</p>
                 </div>

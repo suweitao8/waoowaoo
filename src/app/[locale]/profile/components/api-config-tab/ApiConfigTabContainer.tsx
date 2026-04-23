@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
-import { PinModalShell } from '@/components/ui/primitives'
+import { GlassModalShell } from '@/components/ui/primitives'
 import { resolveTaskPresentationState } from '@/lib/task/presentation'
 import type { CapabilityValue } from '@/lib/model-config-contract'
 import { apiFetch } from '@/lib/api-fetch'
@@ -239,7 +239,7 @@ export function ApiConfigTabContainer() {
 
   if (loading) {
     return (
-      <div className="flex h-full items-center justify-center p-6 text-[var(--pin-text-tertiary)]">
+      <div className="flex h-full items-center justify-center p-6 text-[var(--glass-text-tertiary)]">
         {tc('loading')}
       </div>
     )
@@ -311,7 +311,7 @@ export function ApiConfigTabContainer() {
         </div>
       </div>
 
-      <PinModalShell
+      <GlassModalShell
         open={showAddGeminiProvider}
         onClose={handleCancelAddGeminiProvider}
         title={t('addGeminiProvider')}
@@ -321,14 +321,14 @@ export function ApiConfigTabContainer() {
           <div className="flex justify-end gap-2">
             <button
               onClick={handleCancelAddGeminiProvider}
-              className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm"
+              className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm"
             >
               {tc('cancel')}
             </button>
             {testStatus === 'failed' && (
               <button
                 onClick={handleForceAdd}
-                className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm"
+                className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm"
               >
                 {t('addAnyway')}
               </button>
@@ -336,7 +336,7 @@ export function ApiConfigTabContainer() {
             {testStatus === 'failed' ? (
               <button
                 onClick={handleAddGeminiProvider}
-                className="pin-btn-base pin-btn-primary px-3 py-1.5 text-sm"
+                className="glass-btn-base glass-btn-primary px-3 py-1.5 text-sm"
               >
                 {t('testRetry')}
               </button>
@@ -344,7 +344,7 @@ export function ApiConfigTabContainer() {
               <button
                 onClick={handleAddGeminiProvider}
                 disabled={testStatus === 'testing'}
-                className="pin-btn-base pin-btn-primary px-3 py-1.5 text-sm disabled:opacity-50"
+                className="glass-btn-base glass-btn-primary px-3 py-1.5 text-sm disabled:opacity-50"
               >
                 {testStatus === 'testing' ? t('testing') : tp('add')}
               </button>
@@ -358,7 +358,7 @@ export function ApiConfigTabContainer() {
             <span className="text-[12px] leading-relaxed">{t('customProviderTip')}</span>
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-[var(--pin-text-primary)]">
+            <label className="mb-1.5 block text-xs font-medium text-[var(--glass-text-primary)]">
               {t('apiType')}
             </label>
             <div className="relative">
@@ -371,19 +371,19 @@ export function ApiConfigTabContainer() {
                   })
                 }
                 disabled={testStatus === 'testing'}
-                className="pin-select-base w-full cursor-pointer appearance-none px-3 py-2.5 pr-8 text-sm"
+                className="glass-select-base w-full cursor-pointer appearance-none px-3 py-2.5 pr-8 text-sm"
               >
                 <option value="gemini-compatible">{t('apiTypeGeminiCompatible')}</option>
                 <option value="openai-compatible">{t('apiTypeOpenAICompatible')}</option>
               </select>
-              <div className="pointer-events-none absolute right-3 top-3 text-[var(--pin-text-tertiary)]">
+              <div className="pointer-events-none absolute right-3 top-3 text-[var(--glass-text-tertiary)]">
                 <Icons.chevronDown />
               </div>
             </div>
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-[var(--pin-text-primary)]">
+            <label className="mb-1.5 block text-xs font-medium text-[var(--glass-text-primary)]">
               {tp('name')}
             </label>
             <input
@@ -397,12 +397,12 @@ export function ApiConfigTabContainer() {
               }
               disabled={testStatus === 'testing'}
               placeholder={tp('name')}
-              className="pin-input-base w-full px-3 py-2.5 text-sm"
+              className="glass-input-base w-full px-3 py-2.5 text-sm"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-[var(--pin-text-primary)]">
+            <label className="mb-1.5 block text-xs font-medium text-[var(--glass-text-primary)]">
               {t('baseUrl')}
             </label>
             <input
@@ -416,12 +416,12 @@ export function ApiConfigTabContainer() {
               }
               disabled={testStatus === 'testing'}
               placeholder={t('baseUrl')}
-              className="pin-input-base w-full px-3 py-2.5 text-sm font-mono"
+              className="glass-input-base w-full px-3 py-2.5 text-sm font-mono"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-[var(--pin-text-primary)]">
+            <label className="mb-1.5 block text-xs font-medium text-[var(--glass-text-primary)]">
               {t('apiKeyLabel')}
             </label>
             <input
@@ -435,12 +435,12 @@ export function ApiConfigTabContainer() {
               }
               disabled={testStatus === 'testing'}
               placeholder={t('apiKeyLabel')}
-              className="pin-input-base w-full px-3 py-2.5 text-sm"
+              className="glass-input-base w-full px-3 py-2.5 text-sm"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-[var(--pin-text-primary)]">
+            <label className="mb-1.5 block text-xs font-medium text-[var(--glass-text-primary)]">
               {t('llmModelLabel')} ({t('llmModelOptional')})
             </label>
             <input
@@ -454,23 +454,23 @@ export function ApiConfigTabContainer() {
               }
               disabled={testStatus === 'testing'}
               placeholder={t('llmModelPlaceholder')}
-              className="pin-input-base w-full px-3 py-2.5 text-sm font-mono"
+              className="glass-input-base w-full px-3 py-2.5 text-sm font-mono"
             />
-            <p className="mt-1 text-[11px] text-[var(--pin-text-tertiary)]">
+            <p className="mt-1 text-[11px] text-[var(--glass-text-tertiary)]">
               {t('llmModelHint')}
             </p>
           </div>
 
           {/* Test Results */}
           {testStatus !== 'idle' && (
-            <div className="space-y-2 rounded-xl border border-[var(--pin-stroke-base)] p-3">
-              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--pin-text-primary)]">
+            <div className="space-y-2 rounded-xl border border-[var(--glass-border)] p-3">
+              <div className="flex items-center gap-2 text-xs font-semibold text-[var(--glass-text-primary)]">
                 <AppIcon name="settingsHex" className="h-3.5 w-3.5" />
                 {t('testConnection')}
               </div>
 
               {testStatus === 'testing' && testSteps.length === 0 && (
-                <div className="flex items-center gap-2 text-xs text-[var(--pin-text-secondary)]">
+                <div className="flex items-center gap-2 text-xs text-[var(--glass-text-secondary)]">
                   <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
                   {t('testing')}
                 </div>
@@ -492,22 +492,22 @@ export function ApiConfigTabContainer() {
                         </span>
                       )}
                       {step.status === 'skip' && (
-                        <span className="text-[var(--pin-text-tertiary)]">–</span>
+                        <span className="text-[var(--glass-text-tertiary)]">–</span>
                       )}
-                      <span className="font-medium text-[var(--pin-text-primary)]">
+                      <span className="font-medium text-[var(--glass-text-primary)]">
                         {stepLabel}
                       </span>
                       {step.model && (
-                        <span className="rounded bg-[var(--pin-bg-surface)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--pin-text-secondary)]">
+                        <span className="rounded bg-[var(--glass-bg-surface)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--glass-text-secondary)]">
                           {step.model}
                         </span>
                       )}
                     </div>
-                    <p className={`pl-5 text-[11px] ${step.status === 'fail' ? 'text-red-400' : 'text-[var(--pin-text-secondary)]'}`}>
+                    <p className={`pl-5 text-[11px] ${step.status === 'fail' ? 'text-red-400' : 'text-[var(--glass-text-secondary)]'}`}>
                       {step.message}
                     </p>
                     {step.detail && (
-                      <p className="pl-5 text-[10px] text-[var(--pin-text-tertiary)] break-all line-clamp-3">
+                      <p className="pl-5 text-[10px] text-[var(--glass-text-tertiary)] break-all line-clamp-3">
                         {step.detail}
                       </p>
                     )}
@@ -531,7 +531,7 @@ export function ApiConfigTabContainer() {
             </div>
           )}
         </div>
-      </PinModalShell>
+      </GlassModalShell>
     </div>
   )
 }

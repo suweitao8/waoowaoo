@@ -276,26 +276,26 @@ export default function CreateNovelProjectModal({
   if (!show) return null
 
   return (
-    <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 backdrop-blur-sm">
-      <div className="pin-surface-modal p-6 w-full max-w-md mx-4">
-        <h2 className="text-xl font-bold text-[var(--pin-text-primary)] mb-4">
+    <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 backdrop-blur-sm">
+      <div className="glass-surface-modal p-6 w-full max-w-md mx-4">
+        <h2 className="text-xl font-bold text-[var(--glass-text-primary)] mb-4">
           {t('createProject')}
         </h2>
 
         <form onSubmit={handleSubmit}>
           {/* 小说文件上传 */}
           <div className="mb-4">
-            <label className="pin-field-label block mb-2">
+            <label className="glass-field-label block mb-2">
               {t('novelFile')}
             </label>
             {!novelFile ? (
-              <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[var(--pin-stroke-strong)] rounded-xl cursor-pointer hover:border-[var(--pin-tone-info-fg)]/40 transition-colors">
+              <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[var(--glass-stroke-strong)] rounded-xl cursor-pointer hover:border-[var(--glass-tone-info-fg)]/40 transition-colors">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <AppIcon name="upload" className="w-6 h-6 mb-2 text-[var(--pin-text-tertiary)]" />
-                  <p className="text-sm text-[var(--pin-text-secondary)]">
+                  <AppIcon name="upload" className="w-6 h-6 mb-2 text-[var(--glass-text-tertiary)]" />
+                  <p className="text-sm text-[var(--glass-text-secondary)]">
                     {t('dragDropFile')} <span className="font-semibold">{t('browse')}</span>
                   </p>
-                  <p className="text-xs text-[var(--pin-text-tertiary)]">{t('supportedFormats')}</p>
+                  <p className="text-xs text-[var(--glass-text-tertiary)]">{t('supportedFormats')}</p>
                 </div>
                 <input
                   type="file"
@@ -305,16 +305,16 @@ export default function CreateNovelProjectModal({
                 />
               </label>
             ) : (
-              <div className="flex items-center justify-between p-3 border border-[var(--pin-stroke-strong)] rounded-xl bg-[var(--pin-bg-muted)]">
+              <div className="flex items-center justify-between p-3 border border-[var(--glass-stroke-strong)] rounded-xl bg-[var(--glass-bg-muted)]">
                 <div className="flex items-center gap-2">
-                  <AppIcon name="fileText" className="w-5 h-5 text-[var(--pin-tone-info-fg)]" />
-                  <span className="text-sm text-[var(--pin-text-primary)] truncate max-w-[200px]">{novelFileName}</span>
-                  <span className="text-xs text-[var(--pin-text-tertiary)]">({Math.round(novelContent.length / 1024)}KB)</span>
+                  <AppIcon name="fileText" className="w-5 h-5 text-[var(--glass-tone-info-fg)]" />
+                  <span className="text-sm text-[var(--glass-text-primary)] truncate max-w-[200px]">{novelFileName}</span>
+                  <span className="text-xs text-[var(--glass-text-tertiary)]">({Math.round(novelContent.length / 1024)}KB)</span>
                 </div>
                 <button
                   type="button"
                   onClick={handleClearFile}
-                  className="text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-danger-fg)] transition-colors"
+                  className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
                 >
                   <AppIcon name="close" className="w-4 h-4" />
                 </button>
@@ -324,7 +324,7 @@ export default function CreateNovelProjectModal({
 
           {/* 项目名称 */}
           <div className="mb-4">
-            <label htmlFor="name" className="pin-field-label block mb-2">
+            <label htmlFor="name" className="glass-field-label block mb-2">
               {t('projectName')} *
             </label>
             <input
@@ -335,7 +335,7 @@ export default function CreateNovelProjectModal({
                 setName(e.target.value)
                 if (error) setError(null)
               }}
-              className="pin-input-base w-full px-3 py-2"
+              className="glass-input-base w-full px-3 py-2"
               placeholder={t('projectNamePlaceholder')}
               maxLength={100}
               required
@@ -345,14 +345,14 @@ export default function CreateNovelProjectModal({
 
           {/* 项目描述 */}
           <div className="mb-6">
-            <label htmlFor="description" className="pin-field-label block mb-2">
+            <label htmlFor="description" className="glass-field-label block mb-2">
               {t('projectDescription')}
             </label>
             <textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="pin-textarea-base w-full px-3 py-2"
+              className="glass-textarea-base w-full px-3 py-2"
               placeholder={t('projectDescriptionPlaceholder')}
               rows={3}
               maxLength={500}
@@ -371,14 +371,14 @@ export default function CreateNovelProjectModal({
             <button
               type="button"
               onClick={onClose}
-              className="pin-btn-base pin-btn-secondary px-4 py-2"
+              className="glass-btn-base glass-btn-secondary px-4 py-2"
               disabled={loading}
             >
               {tc('cancel')}
             </button>
             <button
               type="submit"
-              className="pin-btn-base pin-btn-primary px-4 py-2 disabled:opacity-50"
+              className="glass-btn-base glass-btn-primary px-4 py-2 disabled:opacity-50"
               disabled={loading || !name.trim()}
             >
               {loading ? t('creating') : (novelContent ? t('createProjectWithNovel') : t('createProject'))}

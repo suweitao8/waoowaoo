@@ -104,30 +104,30 @@ export default function CharacterCreationForm({
       </div>
 
       {mode === 'project' && availableCharacters.length > 0 && (
-        <div className="flex items-start gap-3 p-3 pin-surface-soft rounded-lg border border-[var(--pin-stroke-base)]">
+        <div className="flex items-start gap-3 p-3 glass-surface-soft rounded-lg border border-[var(--glass-stroke-base)]">
           <input
             type="checkbox"
             id="isSubAppearance"
             checked={isSubAppearance}
             onChange={(e) => setIsSubAppearance(e.target.checked)}
-            className="mt-0.5 w-4 h-4 rounded border-[var(--pin-stroke-base)] text-[var(--pin-tone-info-fg)]"
+            className="mt-0.5 w-4 h-4 rounded border-[var(--glass-stroke-base)] text-[var(--glass-tone-info-fg)]"
           />
           <label htmlFor="isSubAppearance" className="flex-1 text-sm cursor-pointer">
-            <span className="font-medium text-[var(--pin-text-primary)]">{t('character.isSubAppearance')}</span>
-            <p className="text-xs text-[var(--pin-text-secondary)] mt-0.5">{t('character.isSubAppearanceHint')}</p>
+            <span className="font-medium text-[var(--glass-text-primary)]">{t('character.isSubAppearance')}</span>
+            <p className="text-xs text-[var(--glass-text-secondary)] mt-0.5">{t('character.isSubAppearanceHint')}</p>
           </label>
         </div>
       )}
 
       {isSubAppearance && (
         <div className="space-y-2">
-          <label className="pin-field-label block">
-            {t('character.selectMainCharacter')} <span className="text-[var(--pin-tone-danger-fg)]">*</span>
+          <label className="glass-field-label block">
+            {t('character.selectMainCharacter')} <span className="text-[var(--glass-tone-danger-fg)]">*</span>
           </label>
           <select
             value={selectedCharacterId}
             onChange={(e) => setSelectedCharacterId(e.target.value)}
-            className="pin-select-base w-full px-3 py-2 text-sm"
+            className="glass-select-base w-full px-3 py-2 text-sm"
           >
             <option value="">{t('character.selectCharacterPlaceholder')}</option>
             {availableCharacters.map((char) => (
@@ -141,37 +141,37 @@ export default function CharacterCreationForm({
 
       {isSubAppearance && (
         <div className="space-y-2">
-          <label className="pin-field-label block">
-            {t('character.changeReason')} <span className="text-[var(--pin-tone-danger-fg)]">*</span>
+          <label className="glass-field-label block">
+            {t('character.changeReason')} <span className="text-[var(--glass-tone-danger-fg)]">*</span>
           </label>
           <input
             type="text"
             value={changeReason}
             onChange={(e) => setChangeReason(e.target.value)}
             placeholder={t('character.changeReasonPlaceholder')}
-            className="pin-input-base w-full px-3 py-2 text-sm"
+            className="glass-input-base w-full px-3 py-2 text-sm"
           />
         </div>
       )}
 
       {!isSubAppearance && (
         <div className="space-y-2">
-          <label className="pin-field-label block">
-            {t('character.name')} <span className="text-[var(--pin-tone-danger-fg)]">*</span>
+          <label className="glass-field-label block">
+            {t('character.name')} <span className="text-[var(--glass-tone-danger-fg)]">*</span>
           </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={t('character.namePlaceholder')}
-            className="pin-input-base w-full px-3 py-2 text-sm"
+            className="glass-input-base w-full px-3 py-2 text-sm"
           />
         </div>
       )}
 
       {mode === 'asset-hub' && !isSubAppearance && (
         <div className="space-y-2">
-          <label className="pin-field-label block">
+          <label className="glass-field-label block">
             {t('artStyle.title')}
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -180,9 +180,9 @@ export default function CharacterCreationForm({
                 key={style.value}
                 type="button"
                 onClick={() => setArtStyle(style.value)}
-                className={`pin-btn-base px-3 py-2 rounded-lg text-sm border transition-all justify-start ${artStyle === style.value
-                  ? 'pin-btn-tone-info border-[var(--pin-stroke-focus)]'
-                  : 'pin-btn-soft border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)]'
+                className={`glass-btn-base px-3 py-2 rounded-lg text-sm border transition-all justify-start ${artStyle === style.value
+                  ? 'glass-btn-tone-info border-[var(--glass-stroke-focus)]'
+                  : 'glass-btn-soft border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)]'
                   }`}
               >
                 <span>{style.label}</span>
@@ -193,17 +193,17 @@ export default function CharacterCreationForm({
       )}
 
       {createMode === 'reference' && (
-        <div className="pin-surface-soft rounded-xl p-4 space-y-3 border border-[var(--pin-stroke-base)]">
+        <div className="glass-surface-soft rounded-xl p-4 space-y-3 border border-[var(--glass-stroke-base)]">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm font-medium text-[var(--pin-tone-info-fg)]">
+            <div className="flex items-center gap-2 text-sm font-medium text-[var(--glass-tone-info-fg)]">
               <PhotoIcon className="w-4 h-4" />
               <span>{t('character.uploadReference')}</span>
             </div>
-            <span className="text-xs text-[var(--pin-text-tertiary)]">{t('character.pasteHint')}</span>
+            <span className="text-xs text-[var(--glass-text-tertiary)]">{t('character.pasteHint')}</span>
           </div>
 
-          <div className="pin-surface flex items-center gap-2 p-2 rounded-lg">
-            <span className="text-xs text-[var(--pin-text-secondary)] shrink-0">{t('character.generationMode')}：</span>
+          <div className="glass-surface flex items-center gap-2 p-2 rounded-lg">
+            <span className="text-xs text-[var(--glass-text-secondary)] shrink-0">{t('character.generationMode')}：</span>
             <SegmentedControl
               className="flex-1"
               options={[
@@ -219,7 +219,7 @@ export default function CharacterCreationForm({
             <button
               onClick={handleExtractDescription}
               disabled={isExtracting || referenceImagesBase64.length === 0}
-              className="pin-btn-base pin-btn-tone-info w-full px-3 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="glass-btn-base glass-btn-tone-info w-full px-3 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {isExtracting ? t('aiDesign.generating') : t('character.extractFirst')}
             </button>
@@ -239,8 +239,8 @@ export default function CharacterCreationForm({
       {createMode === 'description' && (
         <>
           {!isSubAppearance && (
-            <div className="pin-surface-soft rounded-xl p-4 space-y-3 border border-[var(--pin-stroke-base)]">
-              <div className="flex items-center gap-2 text-sm font-medium text-[var(--pin-tone-info-fg)]">
+            <div className="glass-surface-soft rounded-xl p-4 space-y-3 border border-[var(--glass-stroke-base)]">
+              <div className="flex items-center gap-2 text-sm font-medium text-[var(--glass-tone-info-fg)]">
                 <SparklesIcon className="w-4 h-4" />
                 <span>{t('aiDesign.title')}</span>
               </div>
@@ -250,7 +250,7 @@ export default function CharacterCreationForm({
                   value={aiInstruction}
                   onChange={(e) => setAiInstruction(e.target.value)}
                   placeholder={t('aiDesign.placeholder')}
-                  className="pin-input-base flex-1 px-3 py-2 text-sm"
+                  className="glass-input-base flex-1 px-3 py-2 text-sm"
                   disabled={isAiDesigning}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -262,7 +262,7 @@ export default function CharacterCreationForm({
                 <button
                   onClick={handleAiDesign}
                   disabled={isAiDesigning || !aiInstruction.trim()}
-                  className="pin-btn-base pin-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
+                  className="glass-btn-base glass-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
                 >
                   {isAiDesigning ? t('aiDesign.generating') : t('aiDesign.generate')}
                 </button>
@@ -271,8 +271,8 @@ export default function CharacterCreationForm({
           )}
 
           <div className="space-y-2">
-            <label className="pin-field-label block">
-              {isSubAppearance ? t('character.modifyDescription') : t('character.description')} <span className="text-[var(--pin-tone-danger-fg)]">*</span>
+            <label className="glass-field-label block">
+              {isSubAppearance ? t('character.modifyDescription') : t('character.description')} <span className="text-[var(--glass-tone-danger-fg)]">*</span>
             </label>
             <textarea
               value={description}
@@ -281,7 +281,7 @@ export default function CharacterCreationForm({
               placeholder={isSubAppearance
                 ? t('character.modifyDescriptionPlaceholder')
                 : t('character.descPlaceholder')}
-              className="pin-textarea-base w-full px-3 py-2 text-sm resize-none"
+              className="glass-textarea-base w-full px-3 py-2 text-sm resize-none"
             />
           </div>
         </>

@@ -72,7 +72,7 @@ function NovelPromotionWorkspaceContent(props: NovelPromotionWorkspaceProps) {
   }
 
   if (!vm.project.projectData) {
-    return <div className="text-center text-(--pin-text-secondary)">{vm.i18n.tc('loading')}</div>
+    return <div className="text-center text-(--glass-text-secondary)">{vm.i18n.tc('loading')}</div>
   }
 
   return (

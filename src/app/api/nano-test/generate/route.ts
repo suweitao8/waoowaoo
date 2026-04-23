@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireUserAuth, isErrorResponse } from '@/lib/api-auth'
+import { requireUserAuth } from '@/lib/api-auth'
 import { generateImage } from '@/lib/generator-api'
 
 export async function POST(request: NextRequest) {
   try {
     const authResult = await requireUserAuth()
-    if (isErrorResponse(authResult)) return authResult
+    if ('error' in authResult) {
+      return NextResponse.json({ error: authResult.error }, { status: 401 })
+    }
     const { session } = authResult
     const userId = session.user.id
 

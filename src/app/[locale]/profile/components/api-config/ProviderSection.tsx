@@ -60,16 +60,16 @@ export function ProviderSection({
     }
 
     return (
-        <div className="pin-surface mb-5 rounded-2xl p-5">
+        <div className="glass-surface mb-5 rounded-2xl p-5">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="flex items-center gap-2 text-sm font-semibold text-[var(--pin-text-primary)]">
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-[var(--glass-text-primary)]">
                     {icon}
                     {title}
                 </h3>
                 {showAddButton && (
                     <button
                         onClick={() => setShowAddForm(!showAddForm)}
-                        className="pin-btn-base pin-btn-tone-info cursor-pointer px-2 py-1 text-xs font-medium"
+                        className="glass-btn-base glass-btn-tone-info cursor-pointer px-2 py-1 text-xs font-medium"
                     >
                         {t('addProvider')}
                     </button>
@@ -78,13 +78,13 @@ export function ProviderSection({
 
             {/* 添加表单 */}
             {showAddForm && (
-                <div className="pin-surface-soft mb-4 flex items-center gap-2 rounded-xl p-3">
+                <div className="glass-surface-soft mb-4 flex items-center gap-2 rounded-xl p-3">
                     <input
                         type="text"
                         value={newProvider.name}
                         onChange={e => setNewProvider({ ...newProvider, name: e.target.value })}
                         placeholder={t('name')}
-                        className="pin-input-base w-24 px-2 py-1.5 text-sm"
+                        className="glass-input-base w-24 px-2 py-1.5 text-sm"
                     />
                     {showBaseUrl && (
                         <input
@@ -92,7 +92,7 @@ export function ProviderSection({
                             value={newProvider.baseUrl}
                             onChange={e => setNewProvider({ ...newProvider, baseUrl: e.target.value })}
                             placeholder="Base URL"
-                            className="pin-input-base flex-1 px-2 py-1.5 text-sm font-mono"
+                            className="glass-input-base flex-1 px-2 py-1.5 text-sm font-mono"
                         />
                     )}
                     <input
@@ -100,12 +100,12 @@ export function ProviderSection({
                         value={newProvider.apiKey}
                         onChange={e => setNewProvider({ ...newProvider, apiKey: e.target.value })}
                         placeholder="API Key"
-                        className="pin-input-base w-40 px-2 py-1.5 text-sm"
+                        className="glass-input-base w-40 px-2 py-1.5 text-sm"
                     />
-                    <button onClick={handleAdd} className="pin-btn-base pin-btn-primary rounded-lg px-3 py-1.5 text-sm">
+                    <button onClick={handleAdd} className="glass-btn-base glass-btn-primary rounded-lg px-3 py-1.5 text-sm">
                         {t('add')}
                     </button>
-                    <button onClick={() => setShowAddForm(false)} className="pin-btn-base pin-btn-secondary px-2 py-1.5 text-sm">
+                    <button onClick={() => setShowAddForm(false)} className="glass-btn-base glass-btn-secondary px-2 py-1.5 text-sm">
                         {tc('cancel')}
                     </button>
                 </div>
@@ -119,41 +119,41 @@ export function ProviderSection({
 
                     if (isEditing && showBaseUrl) {
                         return (
-                            <div key={provider.id} className="pin-surface-soft flex items-center gap-3 rounded-xl px-3 py-2.5">
+                            <div key={provider.id} className="glass-surface-soft flex items-center gap-3 rounded-xl px-3 py-2.5">
                                 <input
                                     type="text"
                                     value={editData.name}
                                     onChange={e => setEditData({ ...editData, name: e.target.value })}
-                                    className="pin-input-base w-28 px-2 py-1.5 text-sm"
+                                    className="glass-input-base w-28 px-2 py-1.5 text-sm"
                                 />
                                 <input
                                     type="text"
                                     value={editData.baseUrl}
                                     onChange={e => setEditData({ ...editData, baseUrl: e.target.value })}
-                                    className="pin-input-base flex-1 px-2 py-1.5 text-sm font-mono"
+                                    className="glass-input-base flex-1 px-2 py-1.5 text-sm font-mono"
                                 />
-                                <button onClick={() => handleSaveEdit(provider)} className="pin-btn-base pin-btn-primary rounded-lg px-3 py-1 text-sm">{t('save')}</button>
-                                <button onClick={() => setEditingId(null)} className="pin-btn-base pin-btn-secondary rounded-lg px-2 py-1 text-sm">{tc('cancel')}</button>
+                                <button onClick={() => handleSaveEdit(provider)} className="glass-btn-base glass-btn-primary rounded-lg px-3 py-1 text-sm">{t('save')}</button>
+                                <button onClick={() => setEditingId(null)} className="glass-btn-base glass-btn-secondary rounded-lg px-2 py-1 text-sm">{tc('cancel')}</button>
                             </div>
                         )
                     }
 
                     return (
-                        <div key={provider.id} className="pin-surface-soft group flex items-center gap-3 rounded-xl px-3 py-2.5">
+                        <div key={provider.id} className="glass-surface-soft group flex items-center gap-3 rounded-xl px-3 py-2.5">
                             {showBaseUrl && (
                                 <button
                                     onClick={() => {
                                         setEditingId(provider.id)
                                         setEditData({ name: provider.name, baseUrl: provider.baseUrl || '' })
                                     }}
-                                    className="pin-btn-base pin-btn-tone-info cursor-pointer rounded-lg p-1.5"
+                                    className="glass-btn-base glass-btn-tone-info cursor-pointer rounded-lg p-1.5"
                                 >
                                     <AppIcon name="edit" className="w-4 h-4" />
                                 </button>
                             )}
-                            <span className="w-28 truncate text-sm font-medium text-[var(--pin-text-primary)]">{provider.name}</span>
+                            <span className="w-28 truncate text-sm font-medium text-[var(--glass-text-primary)]">{provider.name}</span>
                             {showBaseUrl && (
-                                <span className="w-64 truncate font-mono text-xs text-[var(--pin-text-tertiary)]">{provider.baseUrl}</span>
+                                <span className="w-64 truncate font-mono text-xs text-[var(--glass-text-tertiary)]">{provider.baseUrl}</span>
                             )}
                             <div className="relative flex-1">
                                 <input
@@ -161,11 +161,11 @@ export function ProviderSection({
                                     value={provider.apiKey || ''}
                                     onChange={e => onUpdateApiKey(provider.id, e.target.value)}
                                     placeholder="API Key"
-                                    className="pin-input-base w-full px-3 py-1.5 pr-9 text-sm"
+                                    className="glass-input-base w-full px-3 py-1.5 pr-9 text-sm"
                                 />
                                 <button
                                     onClick={() => setShowApiKeys({ ...showApiKeys, [provider.id]: !isVisible })}
-                                    className="pin-btn-base pin-btn-soft absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer p-1"
+                                    className="glass-btn-base glass-btn-soft absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer p-1"
                                 >
                                     {isVisible ? (
                                         <AppIcon name="eye" className="w-4 h-4" />
@@ -175,14 +175,14 @@ export function ProviderSection({
                                 </button>
                             </div>
                             {provider.apiKey && (
-                                <span className="pin-badge pin-badge-success px-1.5 py-0.5">
+                                <span className="glass-chip glass-chip-success px-1.5 py-0.5">
                                     <AppIcon name="checkDot" className="h-3 w-3" />
                                 </span>
                             )}
                             {!isPreset(provider.id) && onDelete && (
                                 <button
                                     onClick={() => onDelete(provider.id)}
-                                    className="pin-btn-base pin-btn-tone-danger cursor-pointer rounded-lg p-1.5"
+                                    className="glass-btn-base glass-btn-tone-danger cursor-pointer rounded-lg p-1.5"
                                 >
                                     <AppIcon name="trash" className="w-4 h-4" />
                                 </button>

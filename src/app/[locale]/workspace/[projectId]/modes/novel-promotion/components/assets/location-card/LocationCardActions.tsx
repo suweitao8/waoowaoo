@@ -31,7 +31,7 @@ export default function LocationCardActions(props: LocationCardActionsProps) {
   if (props.mode === 'selection') {
     return (
       <>
-        <div className="mt-3 text-xs text-[var(--pin-text-tertiary)] text-center">
+        <div className="mt-3 text-xs text-[var(--glass-text-tertiary)] text-center">
           {t('image.selectTip')}
         </div>
 
@@ -40,7 +40,7 @@ export default function LocationCardActions(props: LocationCardActionsProps) {
             <button
               onClick={props.onConfirmSelection}
               disabled={props.isConfirmingSelection}
-              className="px-4 py-2 text-sm bg-[var(--pin-tone-success-fg)] text-white rounded-lg hover:bg-[var(--pin-tone-success-fg)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-4 py-2 text-sm bg-[var(--glass-tone-success-fg)] text-white rounded-lg hover:bg-[var(--glass-tone-success-fg)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {props.isConfirmingSelection ? (
                 <TaskStatusInline state={props.confirmingSelectionState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -69,7 +69,7 @@ export default function LocationCardActions(props: LocationCardActionsProps) {
         onClick={() => props.onGenerate(props.generationCount)}
         disabled={!props.canGenerate}
         ariaLabel={t('image.selectCount')}
-        className="pin-btn-base pin-btn-primary flex w-full items-center justify-center gap-1 py-1 text-xs disabled:opacity-50"
+        className="glass-btn-base glass-btn-primary flex w-full items-center justify-center gap-1 py-1 text-xs disabled:opacity-50"
         selectClassName="appearance-none bg-transparent border-0 pl-0 pr-3 text-xs font-semibold text-current outline-none cursor-pointer leading-none transition-colors"
       />
     )

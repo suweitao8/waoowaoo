@@ -58,11 +58,11 @@ export function MediaImageWithLoading({
   }
 
   return (
-    <div className={mergeClassNames('relative overflow-hidden bg-[var(--pin-bg-muted)]', containerClassName)}>
+    <div className={mergeClassNames('relative overflow-hidden bg-[var(--glass-bg-muted)]', containerClassName)}>
       {shouldShowSkeleton && (
         <div
           className={mergeClassNames(
-            'pointer-events-none absolute inset-0 z-0 animate-pulse bg-[var(--pin-bg-muted)]',
+            'pointer-events-none absolute inset-0 z-0 animate-pulse bg-[var(--glass-bg-muted)]',
             skeletonClassName,
           )}
         />
@@ -74,7 +74,7 @@ export function MediaImageWithLoading({
             loadingIndicatorClassName,
           )}
         >
-          <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--pin-stroke-strong)] border-t-[var(--pin-tone-info-fg)]" />
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--glass-stroke-strong)] border-t-[var(--glass-tone-info-fg)]" />
           <span className="sr-only">Loading</span>
         </div>
       )}

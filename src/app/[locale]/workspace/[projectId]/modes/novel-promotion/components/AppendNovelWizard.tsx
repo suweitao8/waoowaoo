@@ -154,14 +154,14 @@ export default function AppendNovelWizard({
   })
 
   return (
-    <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 backdrop-blur-sm">
-      <div className="pin-surface-modal p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 backdrop-blur-sm">
+      <div className="glass-surface-modal p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-[var(--pin-text-primary)]">{t('appendNovel.title')}</h2>
+          <h2 className="text-xl font-bold text-[var(--glass-text-primary)]">{t('appendNovel.title')}</h2>
           <button
             onClick={onClose}
-            className="text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)] transition-colors"
+            className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] transition-colors"
           >
             <AppIcon name="close" className="w-5 h-5" />
           </button>
@@ -171,15 +171,15 @@ export default function AppendNovelWizard({
         {stage === 'upload' && (
           <>
             <div className="mb-4">
-              <label className="pin-field-label block mb-2">{t('upload.label')}</label>
+              <label className="glass-field-label block mb-2">{t('upload.label')}</label>
               {!novelFile ? (
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[var(--pin-stroke-strong)] rounded-xl cursor-pointer hover:border-[var(--pin-tone-info-fg)]/40 transition-colors">
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[var(--glass-stroke-strong)] rounded-xl cursor-pointer hover:border-[var(--glass-tone-info-fg)]/40 transition-colors">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <AppIcon name="upload" className="w-8 h-8 mb-2 text-[var(--pin-text-tertiary)]" />
-                    <p className="text-sm text-[var(--pin-text-secondary)]">
+                    <AppIcon name="upload" className="w-8 h-8 mb-2 text-[var(--glass-text-tertiary)]" />
+                    <p className="text-sm text-[var(--glass-text-secondary)]">
                       {t('upload.dragDrop')} <span className="font-semibold">{t('upload.browse')}</span>
                     </p>
-                    <p className="text-xs text-[var(--pin-text-tertiary)]">{t('upload.formats')}</p>
+                    <p className="text-xs text-[var(--glass-text-tertiary)]">{t('upload.formats')}</p>
                   </div>
                   <input
                     type="file"
@@ -189,16 +189,16 @@ export default function AppendNovelWizard({
                   />
                 </label>
               ) : (
-                <div className="flex items-center justify-between p-3 border border-[var(--pin-stroke-strong)] rounded-xl bg-[var(--pin-bg-muted)]">
+                <div className="flex items-center justify-between p-3 border border-[var(--glass-stroke-strong)] rounded-xl bg-[var(--glass-bg-muted)]">
                   <div className="flex items-center gap-2">
-                    <AppIcon name="fileText" className="w-5 h-5 text-[var(--pin-tone-info-fg)]" />
-                    <span className="text-sm text-[var(--pin-text-primary)] truncate max-w-[300px]">{novelFileName}</span>
-                    <span className="text-xs text-[var(--pin-text-tertiary)]">({Math.round(novelContent.length / 1024)}KB)</span>
+                    <AppIcon name="fileText" className="w-5 h-5 text-[var(--glass-tone-info-fg)]" />
+                    <span className="text-sm text-[var(--glass-text-primary)] truncate max-w-[300px]">{novelFileName}</span>
+                    <span className="text-xs text-[var(--glass-text-tertiary)]">({Math.round(novelContent.length / 1024)}KB)</span>
                   </div>
                   <button
                     type="button"
                     onClick={handleClearFile}
-                    className="text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-danger-fg)] transition-colors"
+                    className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
                   >
                     <AppIcon name="close" className="w-4 h-4" />
                   </button>
@@ -209,23 +209,23 @@ export default function AppendNovelWizard({
             {/* Chapter Preview */}
             {chapters.length > 0 && (
               <div className="mb-4">
-                <p className="text-sm font-medium text-[var(--pin-text-secondary)] mb-2">
+                <p className="text-sm font-medium text-[var(--glass-text-secondary)] mb-2">
                   {t('appendNovel.chaptersFound', { count: chapters.length })}
                 </p>
-                <div className="bg-[var(--pin-bg-muted)] rounded-xl p-4 max-h-48 overflow-y-auto space-y-2">
+                <div className="bg-[var(--glass-bg-muted)] rounded-xl p-4 max-h-48 overflow-y-auto space-y-2">
                   {chapters.slice(0, 10).map((ch, idx) => (
                     <div key={idx} className="flex items-center gap-3 text-sm">
-                      <span className="flex-shrink-0 w-8 font-medium text-[var(--pin-tone-info-fg)]">
+                      <span className="flex-shrink-0 w-8 font-medium text-[var(--glass-tone-info-fg)]">
                         {existingEpisodeCount + idx + 1}
                       </span>
-                      <span className="text-[var(--pin-text-secondary)] truncate flex-1">{ch.title}</span>
-                      <span className="text-[var(--pin-text-tertiary)] text-xs">
+                      <span className="text-[var(--glass-text-secondary)] truncate flex-1">{ch.title}</span>
+                      <span className="text-[var(--glass-text-tertiary)] text-xs">
                         ~{ch.content.length.toLocaleString()}
                       </span>
                     </div>
                   ))}
                   {chapters.length > 10 && (
-                    <div className="text-xs text-[var(--pin-text-tertiary)] text-center pt-2">
+                    <div className="text-xs text-[var(--glass-text-tertiary)] text-center pt-2">
                       {t('appendNovel.moreChapters', { count: chapters.length - 10 })}
                     </div>
                   )}
@@ -234,7 +234,7 @@ export default function AppendNovelWizard({
             )}
 
             {error && (
-              <div className="mb-4 p-3 bg-[var(--pin-tone-danger-bg)] border border-[var(--pin-stroke-danger)] rounded-lg text-[var(--pin-tone-danger-fg)] text-sm">
+              <div className="mb-4 p-3 bg-[var(--glass-tone-danger-bg)] border border-[var(--glass-stroke-danger)] rounded-lg text-[var(--glass-tone-danger-fg)] text-sm">
                 {error}
               </div>
             )}
@@ -244,14 +244,14 @@ export default function AppendNovelWizard({
               <button
                 type="button"
                 onClick={onClose}
-                className="pin-btn-base pin-btn-secondary px-4 py-2"
+                className="glass-btn-base glass-btn-secondary px-4 py-2"
               >
                 {tc('cancel')}
               </button>
               <button
                 type="button"
                 onClick={() => setStage('preview')}
-                className="pin-btn-base pin-btn-primary px-4 py-2 disabled:opacity-50"
+                className="glass-btn-base glass-btn-primary px-4 py-2 disabled:opacity-50"
                 disabled={chapters.length === 0}
               >
                 {tc('next')}
@@ -264,17 +264,17 @@ export default function AppendNovelWizard({
         {stage === 'preview' && (
           <>
             <div className="mb-4">
-              <p className="text-[var(--pin-text-secondary)] mb-2">
+              <p className="text-[var(--glass-text-secondary)] mb-2">
                 {t('appendNovel.confirmImport', { count: chapters.length, start: existingEpisodeCount + 1, end: existingEpisodeCount + chapters.length })}
               </p>
-              <div className="bg-[var(--pin-bg-muted)] rounded-xl p-4 max-h-64 overflow-y-auto space-y-2">
+              <div className="bg-[var(--glass-bg-muted)] rounded-xl p-4 max-h-64 overflow-y-auto space-y-2">
                 {chapters.map((ch, idx) => (
                   <div key={idx} className="flex items-center gap-3 text-sm">
-                    <span className="flex-shrink-0 w-8 font-medium text-[var(--pin-tone-info-fg)]">
+                    <span className="flex-shrink-0 w-8 font-medium text-[var(--glass-tone-info-fg)]">
                       {existingEpisodeCount + idx + 1}
                     </span>
-                    <span className="text-[var(--pin-text-secondary)] truncate flex-1">{ch.title}</span>
-                    <span className="text-[var(--pin-text-tertiary)] text-xs">
+                    <span className="text-[var(--glass-text-secondary)] truncate flex-1">{ch.title}</span>
+                    <span className="text-[var(--glass-text-tertiary)] text-xs">
                       ~{ch.content.length.toLocaleString()}
                     </span>
                   </div>
@@ -286,14 +286,14 @@ export default function AppendNovelWizard({
               <button
                 type="button"
                 onClick={() => setStage('upload')}
-                className="pin-btn-base pin-btn-secondary px-4 py-2"
+                className="glass-btn-base glass-btn-secondary px-4 py-2"
               >
                 {tc('back')}
               </button>
               <button
                 type="button"
                 onClick={handleStartImport}
-                className="pin-btn-base pin-btn-primary px-4 py-2"
+                className="glass-btn-base glass-btn-primary px-4 py-2"
               >
                 {t('appendNovel.startImport')}
               </button>
@@ -305,15 +305,15 @@ export default function AppendNovelWizard({
         {stage === 'importing' && progress && (
           <div className="py-8">
             <div className="flex items-center justify-center mb-6">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[var(--pin-bg-muted)]">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[var(--glass-bg-muted)]">
                 <TaskStatusInline state={loadingTaskState} className="[&>span]:sr-only" />
               </div>
             </div>
             <div className="text-center mb-4">
-              <p className="text-[var(--pin-text-primary)] font-medium">{progress.status}</p>
-              <p className="text-sm text-[var(--pin-text-tertiary)]">{progress.current}/{progress.total}</p>
+              <p className="text-[var(--glass-text-primary)] font-medium">{progress.status}</p>
+              <p className="text-sm text-[var(--glass-text-tertiary)]">{progress.current}/{progress.total}</p>
             </div>
-            <div className="w-full h-2 bg-[var(--pin-stroke-base)] rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-[var(--glass-stroke-subtle)] rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 ease-out"
                 style={{ width: `${progress.total > 0 ? (progress.current / progress.total * 100) : 0}%` }}

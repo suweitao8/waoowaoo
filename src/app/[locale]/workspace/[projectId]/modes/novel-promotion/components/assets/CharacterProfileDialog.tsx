@@ -99,17 +99,17 @@ export default function CharacterProfileDialog({
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--pin-overlay)]" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--glass-overlay)]" onClick={onClose}>
             <div
-                className="bg-[var(--pin-bg-surface)] rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col m-4"
+                className="bg-[var(--glass-bg-surface)] rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col m-4"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* 头部 */}
-                <div className="bg-[var(--pin-bg-surface)] border-b border-[var(--pin-stroke-base)] px-6 py-4 flex items-center justify-between shrink-0">
-                    <h2 className="text-xl font-semibold text-[var(--pin-text-primary)]">{t('characterProfile.editDialogTitle', { name: characterName })}</h2>
+                <div className="bg-[var(--glass-bg-surface)] border-b border-[var(--glass-stroke-base)] px-6 py-4 flex items-center justify-between shrink-0">
+                    <h2 className="text-xl font-semibold text-[var(--glass-text-primary)]">{t('characterProfile.editDialogTitle', { name: characterName })}</h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-[var(--pin-bg-muted)] rounded-lg transition-colors"
+                        className="p-2 hover:bg-[var(--glass-bg-muted)] rounded-lg transition-colors"
                     >
                         <AppIcon name="close" className="w-5 h-5" />
                     </button>
@@ -119,11 +119,11 @@ export default function CharacterProfileDialog({
                 <div className="p-6 space-y-4 overflow-y-auto app-scrollbar flex-1 min-h-0">
                     {/* 角色层级 */}
                     <div>
-                        <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">{t('characterProfile.importanceLevel')}</label>
+                        <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">{t('characterProfile.importanceLevel')}</label>
                         <select
                             value={formData.role_level}
                             onChange={(e) => setFormData({ ...formData, role_level: e.target.value as RoleLevel })}
-                            className="w-full px-3 py-2 border border-[var(--pin-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--pin-tone-info-fg)] focus:border-[var(--pin-stroke-focus)]"
+                            className="w-full px-3 py-2 border border-[var(--glass-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--glass-tone-info-fg)] focus:border-[var(--glass-stroke-focus)]"
                         >
                             {ROLE_LEVELS.map((level) => (
                                 <option key={level} value={level}>
@@ -135,24 +135,24 @@ export default function CharacterProfileDialog({
 
                     {/* 角色原型 */}
                     <div>
-                        <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">{t('characterProfile.characterArchetype')}</label>
+                        <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">{t('characterProfile.characterArchetype')}</label>
                         <input
                             type="text"
                             value={formData.archetype}
                             onChange={(e) => setFormData({ ...formData, archetype: e.target.value })}
                             placeholder={t('characterProfile.archetypePlaceholder')}
-                            className="w-full px-3 py-2 border border-[var(--pin-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--pin-tone-info-fg)] focus:border-[var(--pin-stroke-focus)]"
+                            className="w-full px-3 py-2 border border-[var(--glass-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--glass-tone-info-fg)] focus:border-[var(--glass-stroke-focus)]"
                         />
                     </div>
 
                     {/* 性格标签 */}
                     <div>
-                        <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">{t('characterProfile.personalityTags')}</label>
+                        <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">{t('characterProfile.personalityTags')}</label>
                         <div className="flex gap-2 mb-2">
                             {formData.personality_tags.map((tag, i) => (
-                                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] rounded-lg text-sm">
+                                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] rounded-lg text-sm">
                                     {tag}
-                                    <button onClick={() => removeTag(i)} className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]">
+                                    <button onClick={() => removeTag(i)} className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]">
                                         <AppIcon name="closeSm" className="h-3 w-3" />
                                     </button>
                                 </span>
@@ -165,9 +165,9 @@ export default function CharacterProfileDialog({
                                 onChange={(e) => setNewTag(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
                                 placeholder={t('characterProfile.addTagPlaceholder')}
-                                className="flex-1 px-3 py-2 border border-[var(--pin-stroke-strong)] rounded-lg"
+                                className="flex-1 px-3 py-2 border border-[var(--glass-stroke-strong)] rounded-lg"
                             />
-                            <button onClick={addTag} className="px-4 py-2 bg-[var(--pin-color-brand)] text-white rounded-lg hover:bg-[var(--pin-color-brand-hover)]">
+                            <button onClick={addTag} className="px-4 py-2 bg-[var(--glass-accent-from)] text-white rounded-lg hover:bg-[var(--glass-accent-to)]">
                                 {t("common.add")}
                             </button>
                         </div>
@@ -175,11 +175,11 @@ export default function CharacterProfileDialog({
 
                     {/* 服装华丽度 */}
                     <div>
-                        <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">{t('characterProfile.costumeLevelLabel')}</label>
+                        <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">{t('characterProfile.costumeLevelLabel')}</label>
                         <select
                             value={formData.costume_tier}
                             onChange={(e) => setFormData({ ...formData, costume_tier: Number(e.target.value) as CostumeTier })}
-                            className="w-full px-3 py-2 border border-[var(--pin-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--pin-tone-info-fg)] focus:border-[var(--pin-stroke-focus)]"
+                            className="w-full px-3 py-2 border border-[var(--glass-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--glass-tone-info-fg)] focus:border-[var(--glass-stroke-focus)]"
                         >
                             {COSTUME_TIERS.map((tier) => (
                                 <option key={tier} value={tier}>
@@ -191,12 +191,12 @@ export default function CharacterProfileDialog({
 
                     {/* 建议色彩 */}
                     <div>
-                        <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">{t('characterProfile.suggestedColors')}</label>
+                        <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">{t('characterProfile.suggestedColors')}</label>
                         <div className="flex gap-2 mb-2 flex-wrap">
                             {formData.suggested_colors.map((color, i) => (
-                                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--pin-bg-muted)] text-[var(--pin-text-secondary)] rounded-lg text-sm">
+                                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] rounded-lg text-sm">
                                     {color}
-                                    <button onClick={() => removeColor(i)} className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]">
+                                    <button onClick={() => removeColor(i)} className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]">
                                         <AppIcon name="closeSm" className="h-3 w-3" />
                                     </button>
                                 </span>
@@ -209,9 +209,9 @@ export default function CharacterProfileDialog({
                                 onChange={(e) => setNewColor(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addColor())}
                                 placeholder={t('characterProfile.colorPlaceholder')}
-                                className="flex-1 px-3 py-2 border border-[var(--pin-stroke-strong)] rounded-lg"
+                                className="flex-1 px-3 py-2 border border-[var(--glass-stroke-strong)] rounded-lg"
                             />
-                            <button onClick={addColor} className="px-4 py-2 bg-[var(--pin-color-brand)] text-white rounded-lg hover:bg-[var(--pin-color-brand-hover)]">
+                            <button onClick={addColor} className="px-4 py-2 bg-[var(--glass-accent-from)] text-white rounded-lg hover:bg-[var(--glass-accent-to)]">
                                 {t("common.add")}
                             </button>
                         </div>
@@ -219,26 +219,26 @@ export default function CharacterProfileDialog({
 
                     {/* 辨识标志 */}
                     <div>
-                        <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">
-                            {t('characterProfile.primaryMarker')} <span className="text-xs text-[var(--pin-text-tertiary)]">{t('characterProfile.markerNote')}</span>
+                        <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">
+                            {t('characterProfile.primaryMarker')} <span className="text-xs text-[var(--glass-text-tertiary)]">{t('characterProfile.markerNote')}</span>
                         </label>
                         <input
                             type="text"
                             value={formData.primary_identifier || ''}
                             onChange={(e) => setFormData({ ...formData, primary_identifier: e.target.value })}
                             placeholder={t('characterProfile.markingsPlaceholder')}
-                            className="w-full px-3 py-2 border border-[var(--pin-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--pin-tone-info-fg)] focus:border-[var(--pin-stroke-focus)]"
+                            className="w-full px-3 py-2 border border-[var(--glass-stroke-strong)] rounded-lg focus:ring-2 focus:ring-[var(--glass-tone-info-fg)] focus:border-[var(--glass-stroke-focus)]"
                         />
                     </div>
 
                     {/* 视觉关键词 */}
                     <div>
-                        <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">{t('characterProfile.visualKeywords')}</label>
+                        <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">{t('characterProfile.visualKeywords')}</label>
                         <div className="flex gap-2 mb-2 flex-wrap">
                             {formData.visual_keywords.map((keyword, i) => (
-                                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] rounded-lg text-sm">
+                                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] rounded-lg text-sm">
                                     {keyword}
-                                    <button onClick={() => removeKeyword(i)} className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]">
+                                    <button onClick={() => removeKeyword(i)} className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]">
                                         <AppIcon name="closeSm" className="h-3 w-3" />
                                     </button>
                                 </span>
@@ -251,9 +251,9 @@ export default function CharacterProfileDialog({
                                 onChange={(e) => setNewKeyword(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
                                 placeholder={t('characterProfile.keywordsPlaceholder')}
-                                className="flex-1 px-3 py-2 border border-[var(--pin-stroke-strong)] rounded-lg"
+                                className="flex-1 px-3 py-2 border border-[var(--glass-stroke-strong)] rounded-lg"
                             />
-                            <button onClick={addKeyword} className="px-4 py-2 bg-[var(--pin-color-brand)] text-white rounded-lg hover:bg-[var(--pin-color-brand-hover)]">
+                            <button onClick={addKeyword} className="px-4 py-2 bg-[var(--glass-accent-from)] text-white rounded-lg hover:bg-[var(--glass-accent-to)]">
                                 {t("common.add")}
                             </button>
                         </div>
@@ -261,18 +261,18 @@ export default function CharacterProfileDialog({
                 </div>
 
                 {/* 底部按钮 */}
-                <div className="bg-[var(--pin-bg-surface)] border-t border-[var(--pin-stroke-base)] px-6 py-4 flex gap-3 justify-end shrink-0">
+                <div className="bg-[var(--glass-bg-surface)] border-t border-[var(--glass-stroke-base)] px-6 py-4 flex gap-3 justify-end shrink-0">
                     <button
                         onClick={onClose}
                         disabled={isSaving}
-                        className="px-6 py-2 border border-[var(--pin-stroke-strong)] rounded-lg hover:bg-[var(--pin-bg-muted)] transition-colors disabled:opacity-50"
+                        className="px-6 py-2 border border-[var(--glass-stroke-strong)] rounded-lg hover:bg-[var(--glass-bg-muted)] transition-colors disabled:opacity-50"
                     >
                         {t("common.cancel")}
                     </button>
                     <button
                         onClick={handleSubmit}
                         disabled={isSaving}
-                        className="px-6 py-2 bg-[var(--pin-color-brand)] text-white rounded-lg hover:bg-[var(--pin-color-brand-hover)] transition-colors disabled:opacity-50 flex items-center gap-2"
+                        className="px-6 py-2 bg-[var(--glass-accent-from)] text-white rounded-lg hover:bg-[var(--glass-accent-to)] transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
                         {isSaving && <TaskStatusInline state={savingState} className="text-white [&>span]:sr-only [&_svg]:text-white" />}
                         {t('characterProfile.confirmAndGenerate')}

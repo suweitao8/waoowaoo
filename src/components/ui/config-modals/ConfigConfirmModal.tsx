@@ -30,27 +30,27 @@ export function ConfigConfirmModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center pin-overlay animate-fadeIn"
+      className="fixed inset-0 z-[100] flex items-center justify-center glass-overlay animate-fadeIn"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
     >
-      <div className="pin-surface-modal w-full max-w-md p-6">
+      <div className="glass-surface-modal w-full max-w-md p-6">
         <div className="mb-4">
-          <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">{title}</h3>
+          <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">{title}</h3>
           {description && (
-            <p className="mt-2 text-sm text-[var(--pin-text-secondary)]">{description}</p>
+            <p className="mt-2 text-sm text-[var(--glass-text-secondary)]">{description}</p>
           )}
         </div>
 
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm">
+          <button onClick={onClose} className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm">
             {cancelText || t('cancel')}
           </button>
           <button
             onClick={onConfirm}
             disabled={confirmDisabled}
-            className={`pin-btn-base px-3 py-1.5 text-sm ${danger ? 'pin-btn-tone-danger' : 'pin-btn-primary'} disabled:pointer-events-none disabled:opacity-50`}
+            className={`glass-btn-base px-3 py-1.5 text-sm ${danger ? 'glass-btn-tone-danger' : 'glass-btn-primary'} disabled:pointer-events-none disabled:opacity-50`}
           >
             {confirmText || t('confirm')}
           </button>

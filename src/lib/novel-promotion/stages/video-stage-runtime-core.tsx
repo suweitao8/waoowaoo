@@ -576,18 +576,18 @@ export function useVideoStageRuntime({
 
       {isBatchConfigOpen && (
         <div
-          className="fixed inset-0 z-[120] pin-overlay flex items-center justify-center p-4"
+          className="fixed inset-0 z-[120] glass-overlay flex items-center justify-center p-4"
           onClick={handleCloseBatchGenerateModal}
         >
           <div
-            className="pin-surface-modal w-full max-w-2xl p-5 space-y-4"
+            className="glass-surface-modal w-full max-w-2xl p-5 space-y-4"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="space-y-1">
-              <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">
+              <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">
                 {t('toolbar.batchConfigTitle')}
               </h3>
-              <p className="text-sm text-[var(--pin-text-tertiary)]">
+              <p className="text-sm text-[var(--glass-text-tertiary)]">
                 {t('toolbar.batchConfigDesc')}
               </p>
             </div>
@@ -611,7 +611,7 @@ export function useVideoStageRuntime({
               <button
                 type="button"
                 onClick={handleCloseBatchGenerateModal}
-                className="pin-btn-base pin-btn-secondary px-4 py-2 text-sm font-medium"
+                className="glass-btn-base glass-btn-secondary px-4 py-2 text-sm font-medium"
               >
                 {t('panelCard.cancel')}
               </button>
@@ -619,7 +619,7 @@ export function useVideoStageRuntime({
                 type="button"
                 onClick={() => { void handleConfirmBatchGenerate() }}
                 disabled={!canSubmitBatchGenerate || isConfirming}
-                className="pin-btn-base pin-btn-primary px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="glass-btn-base glass-btn-primary px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isConfirming ? (
                   <>

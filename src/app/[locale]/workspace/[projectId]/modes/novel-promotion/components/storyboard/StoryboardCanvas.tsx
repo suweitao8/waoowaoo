@@ -8,7 +8,7 @@ import { PanelEditData } from '../PanelEditForm'
 import { VariantData, VariantOptions } from './hooks/usePanelVariant'
 import type { PanelSaveState } from './hooks/usePanelCrudActions'
 import { AppIcon } from '@/components/ui/icons'
-import { PinButton } from '@/components/ui/primitives'
+import { GlassButton } from '@/components/ui/primitives'
 
 interface StoryboardCanvasProps {
   sortedStoryboards: NovelPromotionStoryboard[]
@@ -126,7 +126,7 @@ export default function StoryboardCanvas({
   const t = useTranslations('storyboard')
   if (sortedStoryboards.length === 0) {
     return (
-      <div className="text-center py-12 text-[var(--pin-text-tertiary)]">
+      <div className="text-center py-12 text-[var(--glass-text-tertiary)]">
         <p>{t('canvas.emptyTitle')}</p>
         <p className="text-sm mt-2">{t('canvas.emptyDescription')}</p>
       </div>
@@ -201,7 +201,7 @@ export default function StoryboardCanvas({
             />
 
             <div className="flex justify-center py-2">
-              <PinButton
+              <GlassButton
                 variant="ghost"
                 size="sm"
                 onClick={() => addStoryboardGroup(sbIndex + 1)}
@@ -210,7 +210,7 @@ export default function StoryboardCanvas({
               >
                 <AppIcon name="plusAlt" className="h-3 w-3" />
                 <span>{t('group.insertHere')}</span>
-              </PinButton>
+              </GlassButton>
             </div>
           </div>
         )

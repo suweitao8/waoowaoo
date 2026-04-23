@@ -343,12 +343,6 @@ model NovelWritingEpisode {
   rewriteHistory        String?  @db.Text      // 重写历史 JSON
   originalText          String?  @db.Text      // 原始文本
 
-  // 新增：章节分析字段
-  worldContext          String?  @db.Text      // 章节世界观设定
-  writingStyle          String?  @db.Text      // 章节写作风格
-  analysisStatus        String?  @db.Text      // 分析状态: pending | analyzing | completed | failed
-  analyzedAt            DateTime?              // 分析完成时间
-
   // 关联
   novelWritingProject   NovelWritingProject @relation(fields: [novelWritingProjectId], references: [id], onDelete: Cascade)
 
@@ -542,10 +536,6 @@ model UserPreference {
   qwenApiKey          String?  @db.Text
   customModels        String?  @db.Text
   customProviders     String?  @db.Text
-  // 提示词模板配置
-  characterPromptTemplate String? @db.Text  // 角色提示词模板
-  locationPromptTemplate  String? @db.Text  // 场景提示词模板
-  propPromptTemplate      String? @db.Text  // 道具提示词模板
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_preferences")

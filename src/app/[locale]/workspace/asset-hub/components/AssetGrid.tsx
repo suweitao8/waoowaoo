@@ -89,7 +89,7 @@ function AddAssetDropdown({
             <button
                 ref={triggerRef}
                 onClick={() => setOpen((prev) => !prev)}
-                className="pin-btn-base pin-btn-primary px-4 py-2 rounded-lg text-sm flex items-center gap-1.5"
+                className="glass-btn-base glass-btn-primary px-4 py-2 rounded-lg text-sm flex items-center gap-1.5"
             >
                 <AppIcon name="plus" className="w-4 h-4" />
                 <span>{t('addAsset')}</span>
@@ -101,16 +101,16 @@ function AddAssetDropdown({
             {open && menuPos && createPortal(
                 <div
                     ref={menuRef}
-                    className="fixed z-[9999] min-w-[160px] py-1.5 rounded-xl bg-white dark:bg-[#2c2c2e] shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08)] border border-[var(--pin-stroke-base)] animate-in fade-in-0 zoom-in-95 duration-150"
+                    className="fixed z-[9999] min-w-[160px] py-1.5 rounded-xl bg-white dark:bg-[#2c2c2e] shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08)] border border-[var(--glass-stroke-base)] animate-in fade-in-0 zoom-in-95 duration-150"
                     style={{ top: menuPos.top, right: menuPos.right }}
                 >
                     {menuItems.map((item) => (
                         <button
                             key={item.label}
                             onClick={() => handleSelect(item.action)}
-                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--pin-text-primary)] hover:bg-[var(--pin-bg-muted)] transition-colors cursor-pointer"
+                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--glass-text-primary)] hover:bg-[var(--glass-bg-muted)] transition-colors cursor-pointer"
                         >
-                            <AppIcon name={item.icon} className="w-4 h-4 text-[var(--pin-text-tertiary)]" />
+                            <AppIcon name={item.icon} className="w-4 h-4 text-[var(--glass-text-tertiary)]" />
                             <span>{item.label}</span>
                         </button>
                     ))}
@@ -255,17 +255,17 @@ export function AssetGrid({
                 <button
                     onClick={() => setPage(type, page - 1)}
                     disabled={page <= 1}
-                    className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-xs rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-xs rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                     {t('pagination.previous')}
                 </button>
-                <span className="text-xs text-[var(--pin-text-tertiary)]">
+                <span className="text-xs text-[var(--glass-text-tertiary)]">
                     {page} / {totalPages}
                 </span>
                 <button
                     onClick={() => setPage(type, page + 1)}
                     disabled={page >= totalPages}
-                    className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-xs rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-xs rounded-md disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                     {t('pagination.next')}
                 </button>
@@ -326,7 +326,7 @@ export function AssetGrid({
                             onClick={onDownloadAll}
                             disabled={isDownloading || isEmpty}
                             title={t('downloadAllTitle')}
-                            className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <AppIcon name={isDownloading ? 'refresh' : 'download'} className={`w-4 h-4 ${isDownloading ? 'animate-spin' : ''}`} />
                             <span>{isDownloading ? t('downloading') : t('downloadAll')}</span>
@@ -343,12 +343,12 @@ export function AssetGrid({
 
             {isEmpty ? (
                 /* 空状态 */
-                <div className="pin-surface rounded-xl p-12 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--pin-bg-muted)] flex items-center justify-center">
-                        <PlusIcon className="w-8 h-8 text-[var(--pin-text-tertiary)]" />
+                <div className="glass-surface rounded-xl p-12 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--glass-bg-muted)] flex items-center justify-center">
+                        <PlusIcon className="w-8 h-8 text-[var(--glass-text-tertiary)]" />
                     </div>
-                    <p className="text-[var(--pin-text-secondary)] mb-2">{t('emptyState')}</p>
-                    <p className="text-sm text-[var(--pin-text-tertiary)]">{t('emptyStateHint')}</p>
+                    <p className="text-[var(--glass-text-secondary)] mb-2">{t('emptyState')}</p>
+                    <p className="text-sm text-[var(--glass-text-tertiary)]">{t('emptyStateHint')}</p>
                     <div className="mt-6 flex justify-center">
                         <AddAssetDropdown
                             onAddCharacter={onAddCharacter}
@@ -360,7 +360,7 @@ export function AssetGrid({
                 </div>
             ) : visibleAssetCount === 0 ? (
                 <div className="flex min-h-[320px] items-center justify-center">
-                    <p className="text-sm text-[var(--pin-text-tertiary)]">
+                    <p className="text-sm text-[var(--glass-text-tertiary)]">
                         {t('filteredEmptyHint')}
                     </p>
                 </div>
@@ -369,9 +369,9 @@ export function AssetGrid({
                     {/* 角色区块 */}
                     {(filter === 'all' || filter === 'character') && characters.length > 0 && (
                         <section>
-                            <h2 className="text-sm font-semibold text-[var(--pin-text-primary)] mb-3 flex items-center gap-2">
+                            <h2 className="text-sm font-semibold text-[var(--glass-text-primary)] mb-3 flex items-center gap-2">
                                 {t('characters')}
-                                <span className="pin-badge pin-badge-neutral px-2 py-0.5">{characters.length}</span>
+                                <span className="glass-chip glass-chip-neutral px-2 py-0.5">{characters.length}</span>
                             </h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                                 {charactersPage.items.map((character) => (
@@ -393,9 +393,9 @@ export function AssetGrid({
                     {/* 场景区块 */}
                     {(filter === 'all' || filter === 'location') && locations.length > 0 && (
                         <section>
-                            <h2 className="text-sm font-semibold text-[var(--pin-text-primary)] mb-3 flex items-center gap-2">
+                            <h2 className="text-sm font-semibold text-[var(--glass-text-primary)] mb-3 flex items-center gap-2">
                                 {t('locations')}
-                                <span className="pin-badge pin-badge-neutral px-2 py-0.5">{locations.length}</span>
+                                <span className="glass-chip glass-chip-neutral px-2 py-0.5">{locations.length}</span>
                             </h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {locationsPage.items.map((location) => (
@@ -414,9 +414,9 @@ export function AssetGrid({
 
                     {(filter === 'all' || filter === 'prop') && props.length > 0 && (
                         <section>
-                            <h2 className="text-sm font-semibold text-[var(--pin-text-primary)] mb-3 flex items-center gap-2">
+                            <h2 className="text-sm font-semibold text-[var(--glass-text-primary)] mb-3 flex items-center gap-2">
                                 {t('props')}
-                                <span className="pin-badge pin-badge-neutral px-2 py-0.5">{props.length}</span>
+                                <span className="glass-chip glass-chip-neutral px-2 py-0.5">{props.length}</span>
                             </h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {propsPage.items.map((prop) => (
@@ -437,9 +437,9 @@ export function AssetGrid({
                     {/* 音色区块 */}
                     {(filter === 'all' || filter === 'voice') && voices.length > 0 && (
                         <section>
-                            <h2 className="text-sm font-semibold text-[var(--pin-text-primary)] mb-3 flex items-center gap-2">
+                            <h2 className="text-sm font-semibold text-[var(--glass-text-primary)] mb-3 flex items-center gap-2">
                                 {t('voices')}
-                                <span className="pin-badge pin-badge-info px-2 py-0.5">{voices.length}</span>
+                                <span className="glass-chip glass-chip-info px-2 py-0.5">{voices.length}</span>
                             </h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                                 {voicesPage.items.map((voice) => (

@@ -5,7 +5,7 @@ import type { TaskPresentationState } from '@/lib/task/presentation'
 import StoryboardHeader from './StoryboardHeader'
 import TaskStatusInline from '@/components/task/TaskStatusInline'
 import { AppIcon } from '@/components/ui/icons'
-import { PinButton } from '@/components/ui/primitives'
+import { GlassButton } from '@/components/ui/primitives'
 
 interface StoryboardToolbarProps {
   totalSegments: number
@@ -52,7 +52,7 @@ export default function StoryboardToolbar({
       />
 
       <div className="flex justify-center">
-        <PinButton
+        <GlassButton
           variant="ghost"
           size="sm"
           onClick={onAddStoryboardGroupAtStart}
@@ -67,7 +67,7 @@ export default function StoryboardToolbar({
               <span>{t('group.addAtStart')}</span>
             </>
           )}
-        </PinButton>
+        </GlassButton>
       </div>
     </>
   )

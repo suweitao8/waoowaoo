@@ -38,7 +38,7 @@ export default function CharacterCardActions(props: CharacterCardActionsProps) {
   if (props.mode === 'selection') {
     return (
       <>
-        <div className="mt-3 text-xs text-[var(--pin-text-tertiary)] text-center">
+        <div className="mt-3 text-xs text-[var(--glass-text-tertiary)] text-center">
           {t('image.selectTip')}
         </div>
 
@@ -47,7 +47,7 @@ export default function CharacterCardActions(props: CharacterCardActionsProps) {
             <button
               onClick={props.onConfirmSelection}
               disabled={props.isConfirmingSelection}
-              className="px-4 py-2 bg-[var(--pin-tone-success-fg)] text-white rounded-lg hover:bg-[var(--pin-tone-success-fg)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium"
+              className="px-4 py-2 bg-[var(--glass-tone-success-fg)] text-white rounded-lg hover:bg-[var(--glass-tone-success-fg)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium"
             >
               {props.isConfirmingSelection ? (
                 <TaskStatusInline state={props.confirmSelectionState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -69,7 +69,7 @@ export default function CharacterCardActions(props: CharacterCardActionsProps) {
   return (
     <>
       {!props.isPrimaryAppearance && !props.primaryAppearanceSelected ? (
-        <div className="w-full py-2 text-xs text-center text-[var(--pin-text-tertiary)] bg-[var(--pin-bg-muted)] rounded border border-dashed border-[var(--pin-stroke-strong)]">
+        <div className="w-full py-2 text-xs text-center text-[var(--glass-text-tertiary)] bg-[var(--glass-bg-muted)] rounded border border-dashed border-[var(--glass-stroke-strong)]">
           <div className="flex items-center justify-center gap-1">
             <AppIcon name="lock" className="w-3 h-3" />
             {t('character.selectPrimaryFirst')}
@@ -86,7 +86,7 @@ export default function CharacterCardActions(props: CharacterCardActionsProps) {
             onClick={() => props.onGenerate(props.generationCount)}
             disabled={!props.hasDescription}
             ariaLabel={t('image.selectCount')}
-            className={`pin-btn-base flex w-full items-center justify-center gap-1 py-1 text-xs disabled:opacity-50 ${props.isPrimaryAppearance ? 'pin-btn-primary' : 'pin-btn-tone-info'}`}
+            className={`glass-btn-base flex w-full items-center justify-center gap-1 py-1 text-xs disabled:opacity-50 ${props.isPrimaryAppearance ? 'glass-btn-primary' : 'glass-btn-tone-info'}`}
             selectClassName="appearance-none bg-transparent border-0 pl-0 pr-3 text-xs font-semibold text-current outline-none cursor-pointer leading-none transition-colors"
           />
         )

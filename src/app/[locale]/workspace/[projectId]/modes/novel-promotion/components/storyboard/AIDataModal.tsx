@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { createPortal } from 'react-dom'
 import { AppIcon } from '@/components/ui/icons'
-import PinButton from '@/components/ui/primitives/PinButton'
+import GlassButton from '@/components/ui/primitives/GlassButton'
 import type { AIDataModalProps } from './AIDataModal.types'
 import { useAIDataModalState } from './hooks/useAIDataModalState'
 import AIDataModalFormPane from './AIDataModalFormPane'
@@ -93,30 +93,30 @@ export default function AIDataModal({
 
   return createPortal(
     <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
-      <div className="pin-overlay absolute inset-0" onClick={onClose} />
+      <div className="glass-overlay absolute inset-0" onClick={onClose} />
 
       <div
-        className="relative z-10 pin-surface-modal w-full max-w-[920px] flex flex-col overflow-hidden"
+        className="relative z-10 glass-surface-modal w-full max-w-[920px] flex flex-col overflow-hidden"
         style={{ maxHeight: '92vh' }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[var(--pin-stroke-base)] flex-shrink-0">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[var(--glass-stroke-base)] flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-[var(--pin-radius-xs)] bg-[var(--pin-tone-info-bg)] flex-shrink-0">
-              <AppIcon name="clapperboard" className="h-3.5 w-3.5 text-[var(--pin-tone-info-fg)]" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-[var(--glass-radius-xs)] bg-[var(--glass-tone-info-bg)] flex-shrink-0">
+              <AppIcon name="clapperboard" className="h-3.5 w-3.5 text-[var(--glass-tone-info-fg)]" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-[var(--pin-text-primary)] leading-none">
+              <h2 className="text-sm font-semibold text-[var(--glass-text-primary)] leading-none">
                 {t('aiData.title')}
               </h2>
-              <p className="text-[11px] text-[var(--pin-text-tertiary)] mt-0.5">
+              <p className="text-[11px] text-[var(--glass-text-tertiary)] mt-0.5">
                 {t('aiData.subtitle', { number: panelNumber })} · {videoRatio}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="pin-btn-base pin-btn-ghost h-7 w-7 flex-shrink-0"
+            className="glass-btn-base glass-btn-ghost h-7 w-7 flex-shrink-0"
             aria-label={t('common.cancel')}
           >
             <AppIcon name="close" className="h-3.5 w-3.5" />
@@ -152,23 +152,23 @@ export default function AIDataModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t border-[var(--pin-stroke-base)] px-5 py-3 flex-shrink-0">
-          <p className="text-[11px] text-[var(--pin-text-tertiary)]">
+        <div className="flex items-center justify-between border-t border-[var(--glass-stroke-base)] px-5 py-3 flex-shrink-0">
+          <p className="text-[11px] text-[var(--glass-text-tertiary)]">
             {characters.map(c => c.name).join('、')}
             {location ? ` · ${location}` : ''}
           </p>
           <div className="flex gap-2">
-            <PinButton variant="secondary" size="sm" onClick={onClose}>
+            <GlassButton variant="secondary" size="sm" onClick={onClose}>
               {t('common.cancel')}
-            </PinButton>
-            <PinButton
+            </GlassButton>
+            <GlassButton
               variant="primary"
               size="sm"
               onClick={handleSave}
               iconLeft={<AppIcon name="check" className="h-3.5 w-3.5" />}
             >
               {t('aiData.save')}
-            </PinButton>
+            </GlassButton>
           </div>
         </div>
       </div>

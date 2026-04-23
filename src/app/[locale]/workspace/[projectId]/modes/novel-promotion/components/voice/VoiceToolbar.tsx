@@ -53,32 +53,32 @@ export default function VoiceToolbar({
         : null
 
     return (
-        <div className="pin-surface-elevated p-6">
+        <div className="glass-surface-elevated p-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={onBack}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-[var(--pin-bg-surface)] text-[var(--pin-text-secondary)] font-medium rounded-xl border border-[var(--pin-stroke-base)] hover:bg-[var(--pin-bg-muted)] hover:text-[var(--pin-tone-info-fg)] transition-all"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-[var(--glass-bg-surface)] text-[var(--glass-text-secondary)] font-medium rounded-xl border border-[var(--glass-stroke-base)] hover:bg-[var(--glass-bg-muted)] hover:text-[var(--glass-tone-info-fg)] transition-all"
                     >
                         {t("toolbar.back")}
                     </button>
                     <button
                         onClick={onAnalyze}
                         disabled={analyzing}
-                        className="pin-btn-base pin-btn-primary flex items-center gap-2 px-5 py-2.5 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="glass-btn-base glass-btn-primary flex items-center gap-2 px-5 py-2.5 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {analyzing ? t("assets.stage.analyzing") : t("toolbar.analyzeLines")}
                     </button>
                     <button
                         onClick={onAddLine}
-                        className="pin-btn-base pin-btn-secondary flex items-center gap-2 px-5 py-2.5 font-medium border border-[var(--pin-stroke-base)]"
+                        className="glass-btn-base glass-btn-secondary flex items-center gap-2 px-5 py-2.5 font-medium border border-[var(--glass-stroke-base)]"
                     >
                         {t("toolbar.addLine")}
                     </button>
                     <button
                         onClick={onGenerateAll}
                         disabled={isBatchSubmitting || !allSpeakersHaveVoice || totalLines === 0}
-                        className="pin-btn-base pin-btn-tone-success flex items-center gap-2 px-5 py-2.5 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="glass-btn-base glass-btn-tone-success flex items-center gap-2 px-5 py-2.5 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         title={!allSpeakersHaveVoice ? t("toolbar.uploadReferenceHint") : ''}
                     >
                         {isBatchSubmitting ? (
@@ -91,7 +91,7 @@ export default function VoiceToolbar({
                     <button
                         onClick={onDownloadAll}
                         disabled={linesWithAudio === 0 || isDownloading}
-                        className="pin-btn-base pin-btn-tone-info flex items-center gap-2 px-5 py-2.5 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="glass-btn-base glass-btn-tone-info flex items-center gap-2 px-5 py-2.5 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         title={linesWithAudio === 0 ? t("toolbar.noDownload") : t("toolbar.downloadCount", { count: linesWithAudio })}
                     >
                         {isDownloading ? (
@@ -99,7 +99,7 @@ export default function VoiceToolbar({
                         ) : t("toolbar.downloadAll")}
                     </button>
                 </div>
-                <div className="text-sm text-[var(--pin-text-tertiary)]">
+                <div className="text-sm text-[var(--glass-text-tertiary)]">
                     {t("toolbar.stats", { total: totalLines, withVoice: linesWithVoice, withAudio: linesWithAudio })}
                 </div>
             </div>

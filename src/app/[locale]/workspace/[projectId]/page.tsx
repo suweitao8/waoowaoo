@@ -412,10 +412,10 @@ export default function ProjectDetailPage() {
 
   if (isInitializing) {
     return (
-      <div className="pin-page min-h-screen">
+      <div className="glass-page min-h-screen">
         <Navbar />
         <main className="flex items-center justify-center h-[calc(100vh-64px)]">
-          <div className="text-[var(--pin-text-secondary)]">{tc('loading')}</div>
+          <div className="text-[var(--glass-text-secondary)]">{tc('loading')}</div>
         </main>
       </div>
     )
@@ -424,14 +424,14 @@ export default function ProjectDetailPage() {
   // Error状态
   if (error || !project) {
     return (
-      <div className="pin-page min-h-screen">
+      <div className="glass-page min-h-screen">
         <Navbar />
         <main className="container mx-auto px-4 py-8">
-          <div className="pin-surface p-6 text-center">
-            <p className="text-[var(--pin-tone-danger-fg)] mb-4">{error || t('projectNotFound')}</p>
+          <div className="glass-surface p-6 text-center">
+            <p className="text-[var(--glass-tone-danger-fg)] mb-4">{error || t('projectNotFound')}</p>
             <button
               onClick={() => router.push({ pathname: '/workspace' })}
-              className="pin-btn-base pin-btn-primary px-6 py-2"
+              className="glass-btn-base glass-btn-primary px-6 py-2"
             >
               {t('backToWorkspace')}
             </button>
@@ -442,7 +442,7 @@ export default function ProjectDetailPage() {
   }
 
   return (
-    <div className="pin-page min-h-screen flex flex-col">
+    <div className="glass-page min-h-screen flex flex-col">
       <Navbar />
 
       {/* V3 UI: 浮动导航替代了旧的 Sidebar */}
@@ -453,7 +453,7 @@ export default function ProjectDetailPage() {
           {isGlobalAssetsView && project.novelPromotionData ? (
             // 全局资产视图（确保数据准备好）
             <div>
-              <h1 className="text-2xl font-bold text-[var(--pin-text-primary)] mb-6">{t('globalAssets')}</h1>
+              <h1 className="text-2xl font-bold text-[var(--glass-text-primary)] mb-6">{t('globalAssets')}</h1>
               <NovelPromotionWorkspace
                 project={project}
                 projectId={projectId}
@@ -464,35 +464,35 @@ export default function ProjectDetailPage() {
             </div>
           ) : shouldShowImportWizard && !isGlobalAssetsView ? (
             isCheckingModelSetup ? (
-              <div className="pin-surface p-8 text-center">
-                <div className="mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center bg-[var(--pin-bg-muted)] text-[var(--pin-text-tertiary)]">
+              <div className="glass-surface p-8 text-center">
+                <div className="mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center bg-[var(--glass-bg-muted)] text-[var(--glass-text-tertiary)]">
                   <TaskStatusInline state={initLoadingState} className="[&>span]:sr-only" />
                 </div>
-                <h2 className="text-xl font-semibold text-[var(--pin-text-secondary)] mb-2">{tc('loading')}</h2>
+                <h2 className="text-xl font-semibold text-[var(--glass-text-secondary)] mb-2">{tc('loading')}</h2>
               </div>
             ) : needsModelSetup ? (
-              <div className="pin-surface p-8 max-w-2xl mx-auto">
+              <div className="glass-surface p-8 max-w-2xl mx-auto">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-[var(--pin-tone-warning-bg)] text-[var(--pin-tone-warning-fg)] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-[var(--glass-tone-warning-bg)] text-[var(--glass-tone-warning-fg)] flex items-center justify-center shrink-0">
                     <AppIcon name="alert" className="w-5 h-5" />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-xl font-semibold text-[var(--pin-text-primary)] mb-2">
+                    <h2 className="text-xl font-semibold text-[var(--glass-text-primary)] mb-2">
                       {t('modelSetup.title')}
                     </h2>
-                    <p className="text-[var(--pin-text-secondary)] mb-5">
+                    <p className="text-[var(--glass-text-secondary)] mb-5">
                       {t('modelSetup.description')}
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <button
                         onClick={() => setIsModelSetupModalOpen(true)}
-                        className="pin-btn-base pin-btn-primary px-4 py-2"
+                        className="glass-btn-base glass-btn-primary px-4 py-2"
                       >
                         {t('modelSetup.configureNow')}
                       </button>
                       <button
                         onClick={() => router.push({ pathname: '/profile' })}
-                        className="pin-btn-base pin-btn-secondary px-4 py-2"
+                        className="glass-btn-base glass-btn-secondary px-4 py-2"
                       >
                         {t('modelSetup.goProfile')}
                       </button>
@@ -501,21 +501,21 @@ export default function ProjectDetailPage() {
                 </div>
 
                 {isModelSetupModalOpen && (
-                  <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 backdrop-blur-sm">
-                    <div className="pin-surface-modal p-6 w-full max-w-xl mx-4">
-                      <h3 className="text-xl font-bold text-[var(--pin-text-primary)] mb-2">
+                  <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 backdrop-blur-sm">
+                    <div className="glass-surface-modal p-6 w-full max-w-xl mx-4">
+                      <h3 className="text-xl font-bold text-[var(--glass-text-primary)] mb-2">
                         {t('modelSetup.modalTitle')}
                       </h3>
-                      <p className="text-sm text-[var(--pin-text-secondary)] mb-5">
+                      <p className="text-sm text-[var(--glass-text-secondary)] mb-5">
                         {t('modelSetup.modalDescription')}
                       </p>
 
                       <div className="mb-6">
-                        <label className="pin-field-label block mb-2">{t('modelSetup.selectModelLabel')}</label>
+                        <label className="glass-field-label block mb-2">{t('modelSetup.selectModelLabel')}</label>
                         {userModelsQuery.isLoading ? (
-                          <div className="text-sm text-[var(--pin-text-tertiary)]">{tc('loading')}</div>
+                          <div className="text-sm text-[var(--glass-text-tertiary)]">{tc('loading')}</div>
                         ) : llmModelOptions.length === 0 ? (
-                          <div className="text-sm text-[var(--pin-tone-warning-fg)]">
+                          <div className="text-sm text-[var(--glass-tone-warning-fg)]">
                             {t('modelSetup.noModelOptions')}
                           </div>
                         ) : (
@@ -539,7 +539,7 @@ export default function ProjectDetailPage() {
                         <button
                           type="button"
                           onClick={() => setIsModelSetupModalOpen(false)}
-                          className="pin-btn-base pin-btn-secondary px-4 py-2"
+                          className="glass-btn-base glass-btn-secondary px-4 py-2"
                           disabled={modelSetupSaving}
                         >
                           {tc('cancel')}
@@ -547,7 +547,7 @@ export default function ProjectDetailPage() {
                         <button
                           type="button"
                           onClick={() => { void handleSaveDefaultAnalysisModel() }}
-                          className="pin-btn-base pin-btn-primary px-4 py-2 disabled:opacity-50"
+                          className="glass-btn-base glass-btn-primary px-4 py-2 disabled:opacity-50"
                           disabled={modelSetupSaving || llmModelOptions.length === 0 || !analysisModelDraft.trim()}
                         >
                           {modelSetupSaving ? tc('loading') : tc('save')}
@@ -587,11 +587,11 @@ export default function ProjectDetailPage() {
             />
           ) : (
             // 加载中
-            <div className="pin-surface p-8 text-center">
-              <div className="mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center bg-[var(--pin-bg-muted)] text-[var(--pin-text-tertiary)]">
+            <div className="glass-surface p-8 text-center">
+              <div className="mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center bg-[var(--glass-bg-muted)] text-[var(--glass-text-tertiary)]">
                 <TaskStatusInline state={initLoadingState} className="[&>span]:sr-only" />
               </div>
-              <h2 className="text-xl font-semibold text-[var(--pin-text-secondary)] mb-2">{tc('loading')}</h2>
+              <h2 className="text-xl font-semibold text-[var(--glass-text-secondary)] mb-2">{tc('loading')}</h2>
             </div>
           )}
         </div>

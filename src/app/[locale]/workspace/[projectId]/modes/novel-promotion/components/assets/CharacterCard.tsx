@@ -220,13 +220,13 @@ export default function CharacterCard({
         <ImageGenerationInlineCountButton
           prefix={isGroupTaskRunning ? (
             <>
-              <TaskStatusInline state={displayTaskPresentation} className="[&_span]:sr-only [&_svg]:text-[var(--pin-tone-info-fg)]" />
-              <span className="text-[10px] font-medium text-[var(--pin-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
+              <TaskStatusInline state={displayTaskPresentation} className="[&_span]:sr-only [&_svg]:text-[var(--glass-tone-info-fg)]" />
+              <span className="text-[10px] font-medium text-[var(--glass-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
             </>
           ) : (
             <>
-              <AppIcon name="refresh" className="w-4 h-4 text-[var(--pin-tone-info-fg)]" />
-              <span className="text-[10px] font-medium text-[var(--pin-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
+              <AppIcon name="refresh" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
+              <span className="text-[10px] font-medium text-[var(--glass-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
             </>
           )}
           value={generationCount}
@@ -236,25 +236,25 @@ export default function CharacterCard({
           disabled={isAppearanceTaskRunning || isAnyTaskRunning || uploadImage.isPending}
           showCountControl={false}
           ariaLabel={t('image.regenCountPrefix')}
-          className="inline-flex h-6 items-center justify-center rounded-md px-1.5 hover:bg-[var(--pin-tone-info-bg)] transition-colors disabled:opacity-50"
+          className="inline-flex h-6 items-center justify-center rounded-md px-1.5 hover:bg-[var(--glass-tone-info-bg)] transition-colors disabled:opacity-50"
         />
         {onUndo && (appearance.previousImageUrl || appearance.previousImageUrls.length > 0) && (
           <button
             onClick={onUndo}
             disabled={isAppearanceTaskRunning || isAnyTaskRunning}
-            className="w-6 h-6 rounded hover:bg-[var(--pin-tone-warning-bg)] flex items-center justify-center transition-colors disabled:opacity-50"
+            className="w-6 h-6 rounded hover:bg-[var(--glass-tone-warning-bg)] flex items-center justify-center transition-colors disabled:opacity-50"
             title={t('image.undo')}
           >
-            <AppIcon name="undo" className="w-4 h-4 text-[var(--pin-tone-warning-fg)]" />
+            <AppIcon name="undo" className="w-4 h-4 text-[var(--glass-tone-warning-fg)]" />
           </button>
         )}
         {showDeleteButton && (
           <button
             onClick={onDelete}
-            className="w-6 h-6 rounded hover:bg-[var(--pin-tone-danger-bg)] flex items-center justify-center transition-colors"
+            className="w-6 h-6 rounded hover:bg-[var(--glass-tone-danger-bg)] flex items-center justify-center transition-colors"
             title={t('character.delete')}
           >
-            <AppIcon name="trash" className="w-4 h-4 text-[var(--pin-tone-danger-fg)]" />
+            <AppIcon name="trash" className="w-4 h-4 text-[var(--glass-tone-danger-fg)]" />
           </button>
         )}
       </>
@@ -273,7 +273,7 @@ export default function CharacterCard({
     )
 
     return (
-      <div className="col-span-3 bg-[var(--pin-bg-surface)] rounded-lg border-2 border-[var(--pin-stroke-base)] p-4 shadow-sm transition-all">
+      <div className="col-span-3 bg-[var(--glass-bg-surface)] rounded-lg border-2 border-[var(--glass-stroke-base)] p-4 shadow-sm transition-all">
         <input
           ref={fileInputRef}
           type="file"
@@ -328,13 +328,13 @@ export default function CharacterCard({
         <button
           onClick={() => triggerUpload(selectedIndex !== null ? selectedIndex : 0)}
           disabled={uploadImage.isPending || isAppearanceTaskRunning || isAnyTaskRunning}
-          className="w-7 h-7 rounded-full bg-[var(--pin-bg-surface-strong)] hover:bg-[var(--pin-tone-success-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
+          className="w-7 h-7 rounded-full bg-[var(--glass-bg-surface-strong)] hover:bg-[var(--glass-tone-success-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
           title={currentImageUrl ? t('image.uploadReplace') : t('image.upload')}
         >
           {uploadImage.isPending ? (
             <TaskStatusInline state={uploadPendingState} className="[&_span]:sr-only [&_svg]:text-current" />
           ) : (
-            <AppIcon name="upload" className="w-4 h-4 text-[var(--pin-tone-success-fg)]" />
+            <AppIcon name="upload" className="w-4 h-4 text-[var(--glass-tone-success-fg)]" />
           )}
         </button>
       )}
@@ -351,25 +351,25 @@ export default function CharacterCard({
         onClick={() => onRegenerate()}
         disabled={uploadImage.isPending || isAppearanceTaskRunning}
         className={`w-7 h-7 rounded-full flex items-center justify-center transition-all shadow-sm active:scale-90 ${(isAppearanceTaskRunning || isAnyTaskRunning)
-          ? 'bg-[var(--pin-tone-success-fg)] hover:bg-[var(--pin-tone-success-fg)]'
-          : 'bg-[var(--pin-bg-surface-strong)] hover:bg-[var(--pin-bg-surface)]'
+          ? 'bg-[var(--glass-tone-success-fg)] hover:bg-[var(--glass-tone-success-fg)]'
+          : 'bg-[var(--glass-bg-surface-strong)] hover:bg-[var(--glass-bg-surface)]'
           }`}
         title={(isAppearanceTaskRunning || isAnyTaskRunning) ? t('image.regenerateStuck') : t('location.regenerateImage')}
       >
         {isGroupTaskRunning ? (
           <TaskStatusInline state={displayTaskPresentation} className="[&_span]:sr-only [&_svg]:text-white" />
         ) : (
-          <AppIcon name="refresh" className={`w-4 h-4 ${(isAppearanceTaskRunning || isAnyTaskRunning) ? 'text-white' : 'text-[var(--pin-text-secondary)]'}`} />
+          <AppIcon name="refresh" className={`w-4 h-4 ${(isAppearanceTaskRunning || isAnyTaskRunning) ? 'text-white' : 'text-[var(--glass-text-secondary)]'}`} />
         )}
       </button>
       {!isAppearanceTaskRunning && !isAnyTaskRunning && currentImageUrl && onUndo && (appearance.previousImageUrl || appearance.previousImageUrls.length > 0) && (
         <button
           onClick={onUndo}
           disabled={isAppearanceTaskRunning || isAnyTaskRunning}
-          className="w-7 h-7 rounded-full bg-[var(--pin-bg-surface-strong)] hover:bg-[var(--pin-tone-warning-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
+          className="w-7 h-7 rounded-full bg-[var(--glass-bg-surface-strong)] hover:bg-[var(--glass-tone-warning-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
           title={t('image.undo')}
         >
-          <AppIcon name="undo" className="w-4 h-4 text-[var(--pin-tone-warning-fg)] hover:text-white" />
+          <AppIcon name="undo" className="w-4 h-4 text-[var(--glass-tone-warning-fg)] hover:text-white" />
         </button>
       )}
     </>
@@ -379,19 +379,19 @@ export default function CharacterCard({
     <>
       <button
         onClick={onEdit}
-        className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--pin-bg-muted)] flex items-center justify-center transition-colors"
+        className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--glass-bg-muted)] flex items-center justify-center transition-colors"
         title={t('video.panelCard.editPrompt')}
       >
-        <AppIcon name="edit" className="w-3.5 h-3.5 text-[var(--pin-text-secondary)]" />
+        <AppIcon name="edit" className="w-3.5 h-3.5 text-[var(--glass-text-secondary)]" />
       </button>
       {showDeleteButton && (
         <div className="relative">
           <button
             onClick={handleDeleteClick}
-            className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--pin-tone-danger-bg)] flex items-center justify-center transition-colors"
+            className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--glass-tone-danger-bg)] flex items-center justify-center transition-colors"
             title={appearanceCount <= 1 ? t('character.delete') : t('character.deleteOptions')}
           >
-            <AppIcon name="trash" className="w-3.5 h-3.5 text-[var(--pin-tone-danger-fg)]" />
+            <AppIcon name="trash" className="w-3.5 h-3.5 text-[var(--glass-tone-danger-fg)]" />
           </button>
 
           {showDeleteMenu && appearanceCount > 1 && (
@@ -400,13 +400,13 @@ export default function CharacterCard({
                 className="fixed inset-0 z-10"
                 onClick={() => setShowDeleteMenu(false)}
               />
-              <div className="absolute right-0 top-full mt-1 z-20 bg-[var(--pin-bg-surface)] border border-[var(--pin-stroke-base)] rounded-lg shadow-lg py-1 min-w-[100px]">
+              <div className="absolute right-0 top-full mt-1 z-20 bg-[var(--glass-bg-surface)] border border-[var(--glass-stroke-base)] rounded-lg shadow-lg py-1 min-w-[100px]">
                 <button
                   onClick={() => {
                     setShowDeleteMenu(false)
                     onDeleteAppearance?.()
                   }}
-                  className="w-full px-3 py-1.5 text-left text-xs text-[var(--pin-text-secondary)] hover:bg-[var(--pin-bg-muted)] whitespace-nowrap"
+                  className="w-full px-3 py-1.5 text-left text-xs text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-muted)] whitespace-nowrap"
                 >
                   {t('image.deleteThis')}
                 </button>
@@ -415,7 +415,7 @@ export default function CharacterCard({
                     setShowDeleteMenu(false)
                     onDelete()
                   }}
-                  className="w-full px-3 py-1.5 text-left text-xs text-[var(--pin-tone-danger-fg)] hover:bg-[var(--pin-tone-danger-bg)] whitespace-nowrap"
+                  className="w-full px-3 py-1.5 text-left text-xs text-[var(--glass-tone-danger-fg)] hover:bg-[var(--glass-tone-danger-bg)] whitespace-nowrap"
                 >
                   {t('character.deleteWhole')}
                 </button>

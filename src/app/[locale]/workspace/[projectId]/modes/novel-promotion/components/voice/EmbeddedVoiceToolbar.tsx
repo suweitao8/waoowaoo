@@ -67,7 +67,7 @@ export default function EmbeddedVoiceToolbar({
     return (
         <div className="flex items-center justify-end mb-3 px-4">
             <div className="flex items-center gap-3">
-                <div className="text-xs text-[var(--pin-text-tertiary)]">
+                <div className="text-xs text-[var(--glass-text-tertiary)]">
                     {t("embedded.linesStats", { total: totalLines, audio: linesWithAudio })}
                 </div>
 
@@ -75,7 +75,7 @@ export default function EmbeddedVoiceToolbar({
                 <button
                     onClick={onAnalyze}
                     disabled={analyzing}
-                    className="pin-btn-base pin-btn-primary flex items-center gap-2 px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-primary flex items-center gap-2 px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     title={totalLines > 0 ? t("embedded.reanalyzeHint") : t("embedded.analyzeHint")}
                 >
                     {analyzing ? (
@@ -85,7 +85,7 @@ export default function EmbeddedVoiceToolbar({
 
                 <button
                     onClick={onAddLine}
-                    className="pin-btn-base pin-btn-secondary flex items-center gap-2 px-4 py-2 font-medium border border-[var(--pin-stroke-base)]"
+                    className="glass-btn-base glass-btn-secondary flex items-center gap-2 px-4 py-2 font-medium border border-[var(--glass-stroke-base)]"
                 >
                     {t("embedded.addLine")}
                 </button>
@@ -94,7 +94,7 @@ export default function EmbeddedVoiceToolbar({
                 <button
                     onClick={onDownloadAll}
                     disabled={linesWithAudio === 0 || isDownloading}
-                    className="pin-btn-base pin-btn-tone-info flex items-center gap-2 px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-tone-info flex items-center gap-2 px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     title={linesWithAudio === 0 ? t("toolbar.noDownload") : t("toolbar.downloadCount", { count: linesWithAudio })}
                 >
                     {isDownloading ? (
@@ -108,7 +108,7 @@ export default function EmbeddedVoiceToolbar({
                 <button
                     onClick={onGenerateAll}
                     disabled={isBatchSubmitting || !allSpeakersHaveVoice || totalLines === 0}
-                    className="pin-btn-base pin-btn-tone-success flex items-center gap-2 px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="glass-btn-base glass-btn-tone-success flex items-center gap-2 px-4 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     title={getGenerateButtonTitle()}
                 >
                     {isBatchSubmitting ? (

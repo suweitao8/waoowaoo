@@ -1,6 +1,6 @@
-export const DEFAULT_VOICE_SCHEME_COUNT = 1
+export const DEFAULT_VOICE_SCHEME_COUNT = 3
 export const MIN_VOICE_SCHEME_COUNT = 1
-export const MAX_VOICE_SCHEME_COUNT = 1
+export const MAX_VOICE_SCHEME_COUNT = 10
 
 export type VoiceDesignMutationPayload = {
   voicePrompt: string

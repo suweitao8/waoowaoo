@@ -166,18 +166,18 @@ export function CharacterCreationModal({
 
   return (
     <div
-      className="fixed inset-0 pin-overlay flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 glass-overlay flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="pin-surface-modal max-w-lg w-full max-h-[85vh] flex flex-col">
+      <div className="glass-surface-modal max-w-lg w-full max-h-[85vh] flex flex-col">
         <div className="p-6 overflow-y-auto flex-1">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">
+            <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">
               {t('character.title')}
             </h3>
             <button
               onClick={onClose}
-              className="pin-btn-base pin-btn-soft w-8 h-8 rounded-full flex items-center justify-center text-[var(--pin-text-tertiary)]"
+              className="glass-btn-base glass-btn-soft w-8 h-8 rounded-full flex items-center justify-center text-[var(--glass-text-tertiary)]"
             >
               <XMarkIcon className="w-5 h-5" />
             </button>
@@ -217,10 +217,10 @@ export function CharacterCreationModal({
           />
         </div>
 
-        <div className="flex items-center justify-end gap-2 p-4 border-t border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)] rounded-b-xl flex-shrink-0">
+        <div className="flex items-center justify-end gap-2 p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] rounded-b-xl flex-shrink-0">
           <button
             onClick={onClose}
-            className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg text-sm"
+            className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg text-sm"
             disabled={isSubmitting}
           >
             {t('common.cancel')}
@@ -236,14 +236,14 @@ export function CharacterCreationModal({
               actionDisabled={!name.trim() || referenceImagesBase64.length === 0}
               selectDisabled={isSubmitting}
               ariaLabel={t('character.selectReferenceGenerateCount')}
-              className="pin-btn-base pin-btn-primary flex items-center justify-center gap-1 rounded-lg px-4 py-2 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+              className="glass-btn-base glass-btn-primary flex items-center justify-center gap-1 rounded-lg px-4 py-2 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
               selectClassName="appearance-none bg-transparent border-0 pl-0 pr-3 text-sm font-semibold text-current outline-none cursor-pointer leading-none transition-colors"
             />
           ) : isSubAppearance ? (
             <button
               onClick={() => { void handleSubmit() }}
               disabled={isSubmitting || !selectedCharacterId.trim() || !changeReason.trim() || !description.trim()}
-              className="pin-btn-base pin-btn-primary px-4 py-2 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+              className="glass-btn-base glass-btn-primary px-4 py-2 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {isSubmitting ? t('common.adding') : t('common.add')}
             </button>
@@ -252,7 +252,7 @@ export function CharacterCreationModal({
               <button
                 onClick={() => { void handleSubmit() }}
                 disabled={isSubmitting || !name.trim() || !description.trim()}
-                className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? t('common.adding') : (mode === 'asset-hub' ? t('common.addOnlyToAssetHub') : t('common.addOnly'))}
               </button>
@@ -266,7 +266,7 @@ export function CharacterCreationModal({
                 actionDisabled={!name.trim() || !description.trim()}
                 selectDisabled={isSubmitting}
                 ariaLabel={t('common.selectGenerateCount')}
-                className="pin-btn-base pin-btn-primary flex items-center justify-center gap-1 rounded-lg px-4 py-2 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                className="glass-btn-base glass-btn-primary flex items-center justify-center gap-1 rounded-lg px-4 py-2 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 selectClassName="appearance-none bg-transparent border-0 pl-0 pr-3 text-sm font-semibold text-current outline-none cursor-pointer leading-none transition-colors"
               />
             </>

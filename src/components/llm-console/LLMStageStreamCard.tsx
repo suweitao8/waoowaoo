@@ -46,13 +46,13 @@ const REASONING_HEADER = '【思考过程】'
 const FINAL_HEADER = '【最终结果】'
 
 function statusClass(status: LLMStageViewStatus): string {
-  if (status === 'completed') return 'pin-badge pin-badge-success'
-  if (status === 'stale') return 'pin-badge pin-badge-warning'
-  if (status === 'blocked') return 'pin-badge pin-badge-warning'
-  if (status === 'failed') return 'pin-badge pin-badge-danger'
-  if (status === 'processing') return 'pin-badge pin-badge-info'
-  if (status === 'queued') return 'pin-badge pin-badge-warning'
-  return 'pin-badge pin-badge-neutral'
+  if (status === 'completed') return 'glass-chip glass-chip-success'
+  if (status === 'stale') return 'glass-chip glass-chip-warning'
+  if (status === 'blocked') return 'glass-chip glass-chip-warning'
+  if (status === 'failed') return 'glass-chip glass-chip-danger'
+  if (status === 'processing') return 'glass-chip glass-chip-info'
+  if (status === 'queued') return 'glass-chip glass-chip-warning'
+  return 'glass-chip glass-chip-neutral'
 }
 
 function clampProgress(value: number): number {
@@ -345,29 +345,29 @@ export default function LLMStageStreamCard({
   if (!activeStage) return null
 
   return (
-    <article className="pin-surface-modal flex h-full w-full flex-col overflow-hidden rounded-2xl text-[var(--pin-text-primary)]">
-      <header className="border-b border-[var(--pin-stroke-base)] px-5 py-5 md:px-6">
+    <article className="glass-surface-modal flex h-full w-full flex-col overflow-hidden rounded-2xl text-[var(--glass-text-primary)]">
+      <header className="border-b border-[var(--glass-stroke-base)] px-5 py-5 md:px-6">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-[15rem_minmax(0,1fr)_auto] md:items-center">
-          <div className="pin-surface-soft rounded-xl border border-[var(--pin-stroke-base)] p-3">
-            <p className="text-[11px] uppercase tracking-[0.12em] text-[var(--pin-text-tertiary)]">
+          <div className="glass-surface-soft rounded-xl border border-[var(--glass-stroke-base)] p-3">
+            <p className="text-[11px] uppercase tracking-[0.12em] text-[var(--glass-text-tertiary)]">
               {t('stageCard.stage')}
             </p>
-            <p className="mt-1 text-2xl font-semibold text-[var(--pin-text-primary)]">
+            <p className="mt-1 text-2xl font-semibold text-[var(--glass-text-primary)]">
               {currentStep}/{stageCount}
             </p>
-            <p className="mt-1 truncate text-sm text-[var(--pin-text-secondary)]">
+            <p className="mt-1 truncate text-sm text-[var(--glass-text-secondary)]">
               {resolveProgressText(activeStage.title, 'stageCard.currentStage')}
             </p>
           </div>
 
           <div className="min-w-0 text-center">
-            <p className="text-[11px] uppercase tracking-[0.12em] text-[var(--pin-text-tertiary)]">
+            <p className="text-[11px] uppercase tracking-[0.12em] text-[var(--glass-text-tertiary)]">
               {resolveProgressText(subtitle, 'stageCard.realtimeStream')}
             </p>
-            <h2 className="mt-1 text-xl font-semibold text-[var(--pin-text-primary)] md:text-2xl">
+            <h2 className="mt-1 text-xl font-semibold text-[var(--glass-text-primary)] md:text-2xl">
               {resolveProgressText(title, 'stageCard.currentStage')}
             </h2>
-            <p className="mt-2 truncate text-sm text-[var(--pin-text-secondary)]">
+            <p className="mt-2 truncate text-sm text-[var(--glass-text-secondary)]">
               {resolveProgressText(activeMessage || activeStage.subtitle, 'runtime.llm.processing')}
             </p>
           </div>
@@ -375,15 +375,15 @@ export default function LLMStageStreamCard({
           <div className="flex shrink-0 items-center justify-start whitespace-nowrap md:justify-end">{topRightAction || null}</div>
         </div>
 
-        <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--pin-bg-muted)]">
+        <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--glass-bg-muted)]">
           <div
-            className="h-full rounded-full bg-[linear-gradient(120deg,var(--pin-color-brand),var(--pin-color-brand-hover))] transition-[width] duration-200"
+            className="h-full rounded-full bg-[linear-gradient(120deg,var(--glass-accent-from),var(--glass-accent-to))] transition-[width] duration-200"
             style={{ width: `${Math.max(normalizedOverallProgress, 2)}%` }}
           />
         </div>
 
         {errorMessage && (
-          <div className="mt-3 flex flex-col gap-2 rounded-lg bg-[var(--pin-tone-danger-bg)] px-4 py-2.5 text-[var(--pin-tone-danger-fg)]">
+          <div className="mt-3 flex flex-col gap-2 rounded-lg bg-[var(--glass-tone-danger-bg)] px-4 py-2.5 text-[var(--glass-tone-danger-fg)]">
             <div className="flex items-center gap-2">
               <span className="text-base">⚠️</span>
               <span className="text-sm font-medium">{errorMessage}</span>
@@ -393,7 +393,7 @@ export default function LLMStageStreamCard({
       </header>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 p-5 md:grid-cols-[17rem_1fr] md:gap-5 md:p-6">
-        <aside className="pin-surface-soft min-h-0 rounded-xl border border-[var(--pin-stroke-base)] p-3">
+        <aside className="glass-surface-soft min-h-0 rounded-xl border border-[var(--glass-stroke-base)] p-3">
           <ul className="max-h-[40vh] space-y-2 overflow-y-auto pr-1 md:h-full md:max-h-none">
             {stages.map((stage, index) => {
               const isActive = stage.id === outputStageId
@@ -410,8 +410,8 @@ export default function LLMStageStreamCard({
                 <li key={stage.id}>
                   <div
                     className={`rounded-lg border p-2.5 ${isActive
-                      ? 'border-[var(--pin-stroke-focus)] bg-[var(--pin-tone-info-bg)]'
-                      : 'border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)]'
+                      ? 'border-[var(--glass-stroke-focus)] bg-[var(--glass-tone-info-bg)]'
+                      : 'border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)]'
                       }`}
                   >
                     <button
@@ -421,23 +421,23 @@ export default function LLMStageStreamCard({
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex min-w-0 items-center gap-2">
-                          <span className="pin-badge pin-badge-neutral min-w-6 justify-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none">
+                          <span className="glass-chip glass-chip-neutral min-w-6 justify-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none">
                             {index + 1}
                           </span>
                           {attempt > 1 && (
-                            <span className="pin-badge pin-badge-warning min-w-6 justify-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none">
+                            <span className="glass-chip glass-chip-warning min-w-6 justify-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none">
                               ×{attempt}
                             </span>
                           )}
-                          <p className="truncate text-sm font-medium text-[var(--pin-text-primary)]">
+                          <p className="truncate text-sm font-medium text-[var(--glass-text-primary)]">
                             {resolveProgressText(stage.title, 'stageCard.currentStage')}
                           </p>
                         </div>
                         <span className={statusClass(stage.status)}>{statusLabel(stage.status)}</span>
                       </div>
-                      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--pin-bg-muted)]">
+                      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--glass-bg-muted)]">
                         <div
-                          className="h-full rounded-full bg-[var(--pin-color-brand)] transition-[width] duration-200"
+                          className="h-full rounded-full bg-[var(--glass-accent-from)] transition-[width] duration-200"
                           style={{ width: `${Math.max(progress, stage.status === 'completed' ? 100 : 2)}%` }}
                         />
                       </div>
@@ -449,7 +449,7 @@ export default function LLMStageStreamCard({
                           onClick={() => {
                             void onRetryStage(stage.id)
                           }}
-                          className="pin-btn-base pin-btn-primary rounded-md px-2.5 py-1 text-[11px]"
+                          className="glass-btn-base glass-btn-primary rounded-md px-2.5 py-1 text-[11px]"
                         >
                           重试
                         </button>
@@ -462,8 +462,8 @@ export default function LLMStageStreamCard({
           </ul>
         </aside>
 
-        <section className="pin-surface-soft min-h-[320px] rounded-xl border border-[var(--pin-stroke-base)]">
-          <div className="border-b border-[var(--pin-stroke-base)] px-4 py-3 text-sm font-medium text-[var(--pin-text-primary)]">
+        <section className="glass-surface-soft min-h-[320px] rounded-xl border border-[var(--glass-stroke-base)]">
+          <div className="border-b border-[var(--glass-stroke-base)] px-4 py-3 text-sm font-medium text-[var(--glass-text-primary)]">
             {t('stageCard.outputTitle', {
               stage: resolveProgressText(outputStage?.title, 'stageCard.currentStage'),
             })}
@@ -475,32 +475,32 @@ export default function LLMStageStreamCard({
             {structuredOutput.hasStructured ? (
               <div className="space-y-4">
                 {structuredOutput.showReasoning ? (
-                  <div className="rounded-lg border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)]">
-                    <div className="border-b border-[var(--pin-stroke-base)] px-3 py-2 text-xs font-semibold text-[var(--pin-text-primary)]">
+                  <div className="rounded-lg border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)]">
+                    <div className="border-b border-[var(--glass-stroke-base)] px-3 py-2 text-xs font-semibold text-[var(--glass-text-primary)]">
                       {REASONING_HEADER}
                     </div>
-                    <pre className="min-h-[110px] whitespace-pre-wrap break-words px-3 py-3 font-mono text-[14px] leading-7 text-[var(--pin-text-secondary)]">
+                    <pre className="min-h-[110px] whitespace-pre-wrap break-words px-3 py-3 font-mono text-[14px] leading-7 text-[var(--glass-text-secondary)]">
                       {structuredOutput.reasoning || (structuredOutput.finalText ? t('stageCard.reasoningNotProvided') : t('stageCard.waitingModelOutput'))}
-                      {showCursor && !structuredOutput.finalText ? <span className="animate-pulse text-[var(--pin-color-brand)]">▋</span> : null}
+                      {showCursor && !structuredOutput.finalText ? <span className="animate-pulse text-[var(--glass-accent-from)]">▋</span> : null}
                     </pre>
                   </div>
                 ) : null}
                 {structuredOutput.showFinal ? (
-                  <div className="rounded-lg border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)]">
-                    <div className="border-b border-[var(--pin-stroke-base)] px-3 py-2 text-xs font-semibold text-[var(--pin-text-primary)]">
+                  <div className="rounded-lg border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)]">
+                    <div className="border-b border-[var(--glass-stroke-base)] px-3 py-2 text-xs font-semibold text-[var(--glass-text-primary)]">
                       {FINAL_HEADER}
                     </div>
-                    <pre className="min-h-[110px] whitespace-pre-wrap break-words px-3 py-3 font-mono text-[14px] leading-7 text-[var(--pin-text-secondary)]">
+                    <pre className="min-h-[110px] whitespace-pre-wrap break-words px-3 py-3 font-mono text-[14px] leading-7 text-[var(--glass-text-secondary)]">
                       {structuredOutput.finalText || t('stageCard.waitingModelOutput')}
-                      {showCursor && !!structuredOutput.finalText ? <span className="animate-pulse text-[var(--pin-color-brand)]">▋</span> : null}
+                      {showCursor && !!structuredOutput.finalText ? <span className="animate-pulse text-[var(--glass-accent-from)]">▋</span> : null}
                     </pre>
                   </div>
                 ) : null}
               </div>
             ) : (
-              <pre className="whitespace-pre-wrap break-words font-mono text-[14px] leading-7 text-[var(--pin-text-secondary)]">
+              <pre className="whitespace-pre-wrap break-words font-mono text-[14px] leading-7 text-[var(--glass-text-secondary)]">
                 {renderedOutputText || resolvedPlaceholderText}
-                {showCursor ? <span className="animate-pulse text-[var(--pin-color-brand)]">▋</span> : null}
+                {showCursor ? <span className="animate-pulse text-[var(--glass-accent-from)]">▋</span> : null}
               </pre>
             )}
           </div>

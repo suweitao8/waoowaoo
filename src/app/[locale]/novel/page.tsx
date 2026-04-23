@@ -103,10 +103,10 @@ export default function NovelWritingPage() {
 
   if (status === 'loading' || !session) {
     return (
-      <div className="pin-page min-h-screen flex items-center justify-center">
+      <div className="glass-page min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[var(--pin-color-brand)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[var(--pin-text-secondary)]">{tc('loading')}</p>
+          <div className="w-8 h-8 border-2 border-[var(--glass-accent-from)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[var(--glass-text-secondary)]">{tc('loading')}</p>
         </div>
       </div>
     )
@@ -115,13 +115,13 @@ export default function NovelWritingPage() {
   // 数据加载中，显示完整加载状态
   if (loading) {
     return (
-      <div className="pin-page min-h-screen">
+      <div className="glass-page min-h-screen">
         <Navbar />
         <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
           <div className="flex items-center justify-center h-[60vh]">
             <div className="text-center">
-              <div className="w-8 h-8 border-2 border-[var(--pin-color-brand)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-[var(--pin-text-secondary)]">{tc('loading')}</p>
+              <div className="w-8 h-8 border-2 border-[var(--glass-accent-from)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-[var(--glass-text-secondary)]">{tc('loading')}</p>
             </div>
           </div>
         </main>
@@ -130,17 +130,17 @@ export default function NovelWritingPage() {
   }
 
   return (
-    <div className="pin-page min-h-screen">
+    <div className="glass-page min-h-screen">
       <Navbar />
 
       <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
         {/* 标题区域 */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[var(--pin-text-primary)] mb-2">
+            <h1 className="text-3xl font-bold text-[var(--glass-text-primary)] mb-2">
               {t('title')}
             </h1>
-            <p className="text-[var(--pin-text-secondary)]">
+            <p className="text-[var(--glass-text-secondary)]">
               {t('subtitle')}
             </p>
           </div>
@@ -152,7 +152,7 @@ export default function NovelWritingPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t('searchPlaceholder')}
-              className="pin-input-base w-64 px-3 py-2"
+              className="glass-input-base w-64 px-3 py-2"
             />
           </div>
         </div>
@@ -162,13 +162,13 @@ export default function NovelWritingPage() {
           {/* 新建项目卡片 */}
           <div
             onClick={() => setShowCreateModal(true)}
-            className="pin-surface p-6 cursor-pointer group flex items-center justify-center bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-purple-600/5 hover:from-purple-500/10 hover:via-pink-500/10 hover:to-purple-600/10 transition-all duration-300"
+            className="glass-surface p-6 cursor-pointer group flex items-center justify-center bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-purple-600/5 hover:from-purple-500/10 hover:via-pink-500/10 hover:to-purple-600/10 transition-all duration-300"
           >
             <div className="flex flex-col items-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 group-hover:scale-110 transition-all duration-300">
                 <AppIcon name="plus" className="w-6 h-6 text-white" />
               </div>
-              <span className="text-sm font-medium text-[var(--pin-text-secondary)] group-hover:text-[var(--pin-text-primary)] transition-colors">
+              <span className="text-sm font-medium text-[var(--glass-text-secondary)] group-hover:text-[var(--glass-text-primary)] transition-colors">
                 {t('newProject')}
               </span>
             </div>
@@ -194,7 +194,7 @@ export default function NovelWritingPage() {
         {/* 空状态 - 仅在搜索无结果时显示 */}
         {projects.length === 0 && !loading && (
           <div className="col-span-full text-center py-8">
-            <p className="text-[var(--pin-text-secondary)]">
+            <p className="text-[var(--glass-text-secondary)]">
               点击左侧「新建小说项目」卡片开始创作
             </p>
           </div>
@@ -203,7 +203,7 @@ export default function NovelWritingPage() {
         {/* 搜索无结果 */}
         {projects.length > 0 && filteredProjects.length === 0 && (
           <div className="col-span-full text-center py-8">
-            <p className="text-[var(--pin-text-secondary)]">
+            <p className="text-[var(--glass-text-secondary)]">
               没有找到匹配的项目，请尝试其他搜索词
             </p>
           </div>

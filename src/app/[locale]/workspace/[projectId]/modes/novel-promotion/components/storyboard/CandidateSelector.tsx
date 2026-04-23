@@ -46,16 +46,16 @@ export default function CandidateSelector({
   const thumbWidth = 120
   const thumbHeight = Math.round(thumbWidth * h / w)
   return (
-    <div className="mb-4 p-4 pin-surface-soft border border-[var(--pin-stroke-focus)]">
+    <div className="mb-4 p-4 glass-surface-soft border border-[var(--glass-stroke-focus)]">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h4 className="font-bold text-[var(--pin-text-primary)] text-sm">{t('candidate.title')}</h4>
-          <p className="text-xs text-[var(--pin-text-tertiary)]">{t('image.clickToPreview')}</p>
+          <h4 className="font-bold text-[var(--glass-text-primary)] text-sm">{t('candidate.title')}</h4>
+          <p className="text-xs text-[var(--glass-text-tertiary)]">{t('image.clickToPreview')}</p>
         </div>
         <button
           onClick={onCancel}
           disabled={isConfirming}
-          className="text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <AppIcon name="close" className="w-5 h-5" />
         </button>
@@ -71,8 +71,8 @@ export default function CandidateSelector({
               if (originalImageUrl) onPreview(getImageUrl(originalImageUrl)!)
             }}
             className={`relative rounded-lg overflow-hidden border-3 transition-all hover:scale-105 ${selectedIndex === 0
-              ? 'border-[var(--pin-stroke-focus)] ring-2 ring-[var(--pin-focus-ring)] shadow-lg'
-              : 'border-[var(--pin-stroke-strong)] hover:border-[var(--pin-stroke-focus)]'
+              ? 'border-[var(--glass-stroke-focus)] ring-2 ring-[var(--glass-focus-ring)] shadow-lg'
+              : 'border-[var(--glass-stroke-strong)] hover:border-[var(--glass-stroke-focus)]'
               }`}
             style={{ width: `${thumbWidth}px`, height: `${thumbHeight}px` }}
           >
@@ -84,21 +84,21 @@ export default function CandidateSelector({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-[var(--pin-bg-muted)] flex items-center justify-center text-[var(--pin-text-tertiary)] text-xs">
+              <div className="w-full h-full bg-[var(--glass-bg-muted)] flex items-center justify-center text-[var(--glass-text-tertiary)] text-xs">
                 {t('image.noValidCandidates')}
               </div>
             )}
             {selectedIndex === 0 && (
-              <div className="absolute top-1 right-1 w-5 h-5 bg-[var(--pin-color-brand)] text-white rounded-full flex items-center justify-center shadow">
+              <div className="absolute top-1 right-1 w-5 h-5 bg-[var(--glass-accent-from)] text-white rounded-full flex items-center justify-center shadow">
                 <AppIcon name="checkSm" className="w-3 h-3" />
               </div>
             )}
             {/* 放大图标 */}
-            <div className="absolute bottom-1 right-1 w-5 h-5 bg-[var(--pin-overlay)] text-white rounded flex items-center justify-center">
+            <div className="absolute bottom-1 right-1 w-5 h-5 bg-[var(--glass-overlay)] text-white rounded flex items-center justify-center">
               <AppIcon name="searchPlus" className="w-3 h-3" />
             </div>
           </button>
-          <span className="text-xs text-[var(--pin-text-secondary)]">{t('candidate.original')}</span>
+          <span className="text-xs text-[var(--glass-text-secondary)]">{t('candidate.original')}</span>
         </div>
 
         {/* 候选图片 */}
@@ -110,8 +110,8 @@ export default function CandidateSelector({
                 onPreview(getImageUrl(url)!)
               }}
               className={`relative rounded-lg overflow-hidden border-3 transition-all hover:scale-105 ${selectedIndex === index + 1
-                ? 'border-[var(--pin-stroke-focus)] ring-2 ring-[var(--pin-focus-ring)] shadow-lg'
-                : 'border-[var(--pin-stroke-strong)] hover:border-[var(--pin-stroke-focus)]'
+                ? 'border-[var(--glass-stroke-focus)] ring-2 ring-[var(--glass-focus-ring)] shadow-lg'
+                : 'border-[var(--glass-stroke-strong)] hover:border-[var(--glass-stroke-focus)]'
                 }`}
               style={{ width: `${thumbWidth}px`, height: `${thumbHeight}px` }}
             >
@@ -122,30 +122,30 @@ export default function CandidateSelector({
                 className="w-full h-full object-cover"
               />
               {selectedIndex === index + 1 && (
-                <div className="absolute top-1 right-1 w-5 h-5 bg-[var(--pin-color-brand)] text-white rounded-full flex items-center justify-center shadow">
+                <div className="absolute top-1 right-1 w-5 h-5 bg-[var(--glass-accent-from)] text-white rounded-full flex items-center justify-center shadow">
                   <AppIcon name="checkSm" className="w-3 h-3" />
                 </div>
               )}
               {/* 放大图标 */}
-              <div className="absolute bottom-1 right-1 w-5 h-5 bg-[var(--pin-overlay)] text-white rounded flex items-center justify-center">
+              <div className="absolute bottom-1 right-1 w-5 h-5 bg-[var(--glass-overlay)] text-white rounded flex items-center justify-center">
                 <AppIcon name="searchPlus" className="w-3 h-3" />
               </div>
             </button>
-            <span className="text-xs text-[var(--pin-text-secondary)]">{t('image.candidateCount', { count: index + 1 })}</span>
+            <span className="text-xs text-[var(--glass-text-secondary)]">{t('image.candidateCount', { count: index + 1 })}</span>
           </div>
         ))}
       </div>
 
       {/* 底部按钮 */}
       <div className="mt-4 flex justify-between items-center">
-        <span className="text-sm text-[var(--pin-text-secondary)] font-medium">
-          {t('image.confirmCandidate')}: <span className="text-[var(--pin-tone-info-fg)]">{selectedIndex === 0 ? t('candidate.original') : t('image.candidateCount', { count: selectedIndex })}</span>
+        <span className="text-sm text-[var(--glass-text-secondary)] font-medium">
+          {t('image.confirmCandidate')}: <span className="text-[var(--glass-tone-info-fg)]">{selectedIndex === 0 ? t('candidate.original') : t('image.candidateCount', { count: selectedIndex })}</span>
         </span>
         <div className="flex gap-2">
           <button
             onClick={onCancel}
             disabled={isConfirming}
-            className="px-4 py-2 text-sm text-[var(--pin-text-secondary)] bg-[var(--pin-bg-muted)] rounded-lg hover:bg-[var(--pin-bg-muted)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm text-[var(--glass-text-secondary)] bg-[var(--glass-bg-muted)] rounded-lg hover:bg-[var(--glass-bg-muted)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t("candidate.cancel")}
           </button>
@@ -155,7 +155,7 @@ export default function CandidateSelector({
               onConfirm()
             }}
             disabled={isConfirming}
-            className="px-5 py-2 text-sm bg-[var(--pin-color-brand)] text-white rounded-lg hover:bg-[var(--pin-color-brand-hover)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-sm"
+            className="px-5 py-2 text-sm bg-[var(--glass-accent-from)] text-white rounded-lg hover:bg-[var(--glass-accent-to)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-sm"
           >
             {isConfirming ? (
               <TaskStatusInline state={confirmingState} className="text-white [&>span]:text-white [&_svg]:text-white" />

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
+import { getServerSession } from 'next-auth'
+import { signIn } from 'next-auth/react'
 import { authOptions } from '@/lib/auth'
 import { isSingleUserMode, ROOT_USER_NAME, ROOT_USER_PASSWORD } from '@/lib/single-user-mode'
 

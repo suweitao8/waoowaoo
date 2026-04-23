@@ -37,7 +37,7 @@ export default function AssetFilterBar({
     ]
 
     return (
-        <div className="px-4 py-3 pin-surface rounded-xl">
+        <div className="px-4 py-3 glass-surface rounded-xl">
             <div className="overflow-x-auto">
                 <SegmentedControl
                     options={segmentOptions}

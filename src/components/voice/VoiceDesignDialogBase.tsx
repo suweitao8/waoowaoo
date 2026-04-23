@@ -75,10 +75,6 @@ export default function VoiceDesignDialogBase({
         onDesignVoice,
       })
       setGeneratedVoices(voices)
-      // 当只有一个方案时自动选中
-      if (voices.length === 1) {
-        setSelectedIndex(0)
-      }
     } catch (err: unknown) {
       const status = err instanceof Error ? (err as Error & { status?: number }).status : undefined
       if (status === 402) {
@@ -152,20 +148,20 @@ export default function VoiceDesignDialogBase({
 
   const dialogContent = (
     <>
-      <div className="fixed inset-0 z-[9999] pin-overlay" onClick={handleClose} />
+      <div className="fixed inset-0 z-[9999] glass-overlay" onClick={handleClose} />
       <div
-        className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pin-surface-modal w-full max-w-xl overflow-hidden"
+        className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 glass-surface-modal w-full max-w-xl overflow-hidden"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)]">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)]">
           <div className="flex items-center gap-2">
-            <AppIcon name="mic" className="w-5 h-5 text-[var(--pin-tone-info-fg)]" />
-            <h2 className="font-semibold text-[var(--pin-text-primary)]">{tv('designVoiceFor', { speaker })}</h2>
+            <AppIcon name="mic" className="w-5 h-5 text-[var(--glass-tone-info-fg)]" />
+            <h2 className="font-semibold text-[var(--glass-text-primary)]">{tv('designVoiceFor', { speaker })}</h2>
             {hasExistingVoice && (
-              <span className="pin-badge pin-badge-warning text-xs px-1.5 py-0.5">{tv('hasExistingVoice')}</span>
+              <span className="glass-chip glass-chip-warning text-xs px-1.5 py-0.5">{tv('hasExistingVoice')}</span>
             )}
           </div>
-          <button onClick={handleClose} className="pin-btn-base pin-btn-soft p-1 text-[var(--pin-text-tertiary)]">
+          <button onClick={handleClose} className="glass-btn-base glass-btn-soft p-1 text-[var(--glass-text-tertiary)]">
             <AppIcon name="close" className="w-5 h-5" />
           </button>
         </div>
@@ -196,14 +192,14 @@ export default function VoiceDesignDialogBase({
                     void handleGenerate()
                   }}
                   disabled={isDesignSubmitting}
-                  className="pin-btn-base pin-btn-secondary flex-1 py-2 rounded-lg text-sm"
+                  className="glass-btn-base glass-btn-secondary flex-1 py-2 rounded-lg text-sm"
                 >
                   {tv('regenerate')}
                 </button>
                 <button
                   onClick={handleConfirmSelection}
                   disabled={selectedIndex === null}
-                  className="pin-btn-base pin-btn-tone-success flex-1 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                  className="glass-btn-base glass-btn-tone-success flex-1 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                 >
                   {tv('confirmUse')}
                 </button>
@@ -214,26 +210,26 @@ export default function VoiceDesignDialogBase({
       </div>
 
       {showConfirmDialog && (
-        <div className="fixed inset-0 z-[10001] flex items-center justify-center p-4 pin-overlay">
-          <div className="pin-surface-modal w-full max-w-sm p-5 text-center">
-            <div className="w-12 h-12 mx-auto pin-badge pin-badge-warning rounded-full flex items-center justify-center mb-3 p-0">
-              <AppIcon name="alert" className="w-6 h-6 text-[var(--pin-tone-warning-fg)]" />
+        <div className="fixed inset-0 z-[10001] flex items-center justify-center p-4 glass-overlay">
+          <div className="glass-surface-modal w-full max-w-sm p-5 text-center">
+            <div className="w-12 h-12 mx-auto glass-chip glass-chip-warning rounded-full flex items-center justify-center mb-3 p-0">
+              <AppIcon name="alert" className="w-6 h-6 text-[var(--glass-tone-warning-fg)]" />
             </div>
-            <h3 className="font-semibold text-[var(--pin-text-primary)] mb-1">{tv('confirmReplace')}</h3>
-            <p className="text-sm text-[var(--pin-text-secondary)] mb-4">
+            <h3 className="font-semibold text-[var(--glass-text-primary)] mb-1">{tv('confirmReplace')}</h3>
+            <p className="text-sm text-[var(--glass-text-secondary)] mb-4">
               {tv('replaceWarning')}
-              <span className="font-medium text-[var(--pin-text-primary)]">「{speaker}」</span>
+              <span className="font-medium text-[var(--glass-text-primary)]">「{speaker}」</span>
             </p>
             <div className="flex gap-2">
               <button
                 onClick={() => setShowConfirmDialog(false)}
-                className="pin-btn-base pin-btn-secondary flex-1 py-2 rounded-lg text-sm"
+                className="glass-btn-base glass-btn-secondary flex-1 py-2 rounded-lg text-sm"
               >
                 {t('cancel')}
               </button>
               <button
                 onClick={doSave}
-                className="pin-btn-base pin-btn-danger flex-1 py-2 rounded-lg text-sm"
+                className="glass-btn-base glass-btn-danger flex-1 py-2 rounded-lg text-sm"
               >
                 {tv('confirmReplaceBtn')}
               </button>

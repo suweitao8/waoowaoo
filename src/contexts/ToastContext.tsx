@@ -175,7 +175,7 @@ function ToastContainer({
                     {/* 关闭按钮 */}
                     <button
                         onClick={() => onDismiss(toast.id)}
-                        className="pin-btn-base pin-btn-ghost w-6 h-6 rounded-md p-0 opacity-70 hover:opacity-100 transition-opacity"
+                        className="glass-btn-base glass-btn-ghost w-6 h-6 rounded-md p-0 opacity-70 hover:opacity-100 transition-opacity"
                     >
                         <AppIcon name="close" className="w-4 h-4" />
                     </button>
@@ -192,14 +192,14 @@ function ToastContainer({
 function getToastStyle(type: Toast['type']): string {
     switch (type) {
         case 'success':
-            return 'bg-[var(--pin-tone-success-bg)] text-[var(--pin-tone-success-fg)] border-[color:color-mix(in_srgb,var(--pin-tone-success-fg)_22%,transparent)]'
+            return 'bg-[var(--glass-tone-success-bg)] text-[var(--glass-tone-success-fg)] border-[color:color-mix(in_srgb,var(--glass-tone-success-fg)_22%,transparent)]'
         case 'error':
-            return 'bg-[var(--pin-tone-danger-bg)] text-[var(--pin-tone-danger-fg)] border-[color:color-mix(in_srgb,var(--pin-tone-danger-fg)_22%,transparent)]'
+            return 'bg-[var(--glass-tone-danger-bg)] text-[var(--glass-tone-danger-fg)] border-[color:color-mix(in_srgb,var(--glass-tone-danger-fg)_22%,transparent)]'
         case 'warning':
-            return 'bg-[var(--pin-tone-warning-bg)] text-[var(--pin-tone-warning-fg)] border-[color:color-mix(in_srgb,var(--pin-tone-warning-fg)_22%,transparent)]'
+            return 'bg-[var(--glass-tone-warning-bg)] text-[var(--glass-tone-warning-fg)] border-[color:color-mix(in_srgb,var(--glass-tone-warning-fg)_22%,transparent)]'
         case 'info':
         default:
-            return 'bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] border-[color:color-mix(in_srgb,var(--pin-tone-info-fg)_22%,transparent)]'
+            return 'bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] border-[color:color-mix(in_srgb,var(--glass-tone-info-fg)_22%,transparent)]'
     }
 }
 
