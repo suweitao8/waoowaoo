@@ -9,7 +9,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslations } from 'next-intl'
-import { AppIcon } from '@/components/ui/icons'
+import { AppIcon, type AppIconName } from '@/components/ui/icons'
 import TaskStatusInline from '@/components/task/TaskStatusInline'
 import { resolveTaskPresentationState } from '@/lib/task/presentation'
 import { CharacterProfileData, RoleLevel, CostumeTier } from '@/types/character-profile'
@@ -326,7 +326,7 @@ export default function UnifiedCharacterPropertyPanel({
     const generationState = useMemo(() => {
         if (generationPhase === 'idle') return null
         return resolveTaskPresentationState({
-            phase: generationPhase === 'complete' ? 'complete' : 'processing',
+            phase: generationPhase === 'complete' ? 'completed' : 'processing',
             intent: 'generate',
             resource: generationPhase === 'generating-voice' ? 'audio' : 'image',
             hasOutput: generationPhase === 'complete',
@@ -772,7 +772,7 @@ export default function UnifiedCharacterPropertyPanel({
                                     </label>
                                     {isGeneratingImagePrompt && (
                                         <span className="text-xs text-[var(--glass-text-tertiary)] flex items-center gap-1">
-                                            <AppIcon name="loading" className="w-3 h-3 animate-spin" />
+                                            <AppIcon name="loader" className="w-3 h-3 animate-spin" />
                                             {t('unifiedPanel.generating')}
                                         </span>
                                     )}
@@ -795,12 +795,6 @@ export default function UnifiedCharacterPropertyPanel({
                                     <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
                                         {t('unifiedPanel.fields.voicePrompt')}
                                     </label>
-                                    {isGeneratingVoicePrompt && (
-                                        <span className="text-xs text-[var(--glass-text-tertiary)] flex items-center gap-1">
-                                            <AppIcon name="loading" className="w-3 h-3 animate-spin" />
-                                            {t('unifiedPanel.generating')}
-                                        </span>
-                                    )}
                                 </div>
                                 <textarea
                                     value={voicePrompt}
@@ -893,7 +887,7 @@ export default function UnifiedCharacterPropertyPanel({
 // ===== 折叠面板组件 =====
 interface PropertySectionProps {
     title: string
-    icon: string
+    icon: AppIconName
     isExpanded: boolean
     onToggle: () => void
     children: React.ReactNode

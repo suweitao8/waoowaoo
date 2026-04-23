@@ -24,6 +24,7 @@ import {
   Coins,
   Copy,
   Cpu,
+  Crown,
   Diamond,
   Download,
   ExternalLink,
@@ -51,6 +52,7 @@ import {
   Mic,
   Minus,
   Monitor,
+  Palette,
   Pause,
   Pencil,
   Play,
@@ -192,6 +194,8 @@ export const iconRegistry = {
   bold: Bold,
   italic: Italic,
   list: List,
+  crown: Crown,
+  palette: Palette,
 } as const satisfies Record<string, LucideIcon>
 
 export type AppIconName = keyof typeof iconRegistry

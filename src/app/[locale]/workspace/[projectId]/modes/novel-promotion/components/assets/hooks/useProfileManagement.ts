@@ -90,7 +90,7 @@ export function useProfileManagement({
 
         // 获取第一个形象的信息（如果存在）
         const firstAppearance = character.appearances?.[0]
-        const hasGeneratedImage = firstAppearance?.images && firstAppearance.images.length > 0
+        const hasGeneratedImage = firstAppearance?.imageUrls && firstAppearance.imageUrls.length > 0
 
         setEditingProfile({
             characterId,

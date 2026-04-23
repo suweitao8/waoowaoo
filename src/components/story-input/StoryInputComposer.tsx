@@ -55,6 +55,18 @@ interface StoryInputComposerProps {
   onCompositionEnd?: (event: React.CompositionEvent<HTMLTextAreaElement>) => void
   /** @deprecated 不再使用，保留仅为 API 兼容 */
   textareaClassName?: string
+  /** 视频比例 */
+  videoRatio?: string
+  /** 视频比例变更回调 */
+  onVideoRatioChange?: (ratio: string) => void
+  /** 比例选项 */
+  ratioOptions?: Array<{ value: string; label: string }>
+  /** 艺术风格 */
+  artStyle?: string
+  /** 艺术风格变更回调 */
+  onArtStyleChange?: (style: string) => void
+  /** 风格选项 */
+  styleOptions?: Array<{ value: string; label: string }>
 }
 
 /**
@@ -75,6 +87,13 @@ export default function StoryInputComposer({
   stylePresetValue,
   onStylePresetChange,
   stylePresetOptions,
+  // 以下属性保留用于向后兼容，但不实际使用
+  videoRatio,
+  onVideoRatioChange,
+  ratioOptions,
+  artStyle,
+  onArtStyleChange,
+  styleOptions,
 }: StoryInputComposerProps) {
   const editorRef = useRef<MDXEditorMethods>(null)
 

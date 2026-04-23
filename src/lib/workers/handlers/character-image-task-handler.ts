@@ -1,6 +1,6 @@
 import { type Job } from 'bullmq'
 import { prisma } from '@/lib/prisma'
-import { CHARACTER_ASSET_IMAGE_RATIO, addCharacterPromptSuffix, getArtStylePrompt, isArtStyleValue, PRIMARY_APPEARANCE_INDEX, type ArtStyleValue } from '@/lib/constants'
+import { CHARACTER_ASSET_IMAGE_RATIO, getArtStylePrompt, isArtStyleValue, PRIMARY_APPEARANCE_INDEX, type ArtStyleValue } from '@/lib/constants'
 import { type TaskJobData } from '@/lib/task/types'
 import { encodeImageUrls } from '@/lib/contracts/image-urls-contract'
 import { normalizeImageGenerationCount } from '@/lib/image-generation/count'
@@ -18,6 +18,11 @@ import {
   parseJsonStringArray,
   pickFirstString,
 } from './image-task-handler-shared'
+import {
+  getUserPromptTemplatesCached,
+  resolveCharacterTemplate,
+} from '@/lib/user-prompt-templates'
+import { buildCharacterPrompt } from '@/lib/prompt-templates'
 
 function resolvePayloadArtStyle(payload: AnyObj): ArtStyleValue | undefined {
   if (!Object.prototype.hasOwnProperty.call(payload, 'artStyle')) return undefined
@@ -132,6 +137,10 @@ export async function handleCharacterImageTask(job: Job<TaskJobData>) {
   }
   const primaryReferenceImages = await normalizeReferenceImagesForGeneration(primaryReferenceInputs)
 
+  // 获取用户自定义模板
+  const userTemplates = await getUserPromptTemplatesCached(userId)
+  const characterTemplate = resolveCharacterTemplate(userTemplates, payloadArtStyle ?? models.artStyle)
+
   const singleIndex = payload.imageIndex ?? payload.descriptionIndex
   const count = normalizeImageGenerationCount('character', payload.count)
   const indexes = singleIndex !== undefined
@@ -145,7 +154,8 @@ export async function handleCharacterImageTask(job: Job<TaskJobData>) {
   for (let i = 0; i < indexes.length; i++) {
     const index = indexes[i]
     const raw = baseDescriptions[index] || baseDescriptions[0]
-    const prompt = artStyle ? `${addCharacterPromptSuffix(raw)}，${artStyle}` : addCharacterPromptSuffix(raw)
+    const promptCore = buildCharacterPrompt(characterTemplate, { description: raw })
+    const prompt = artStyle ? `${promptCore}，${artStyle}` : promptCore
 
     await reportTaskProgress(job, 15 + Math.floor((i / Math.max(indexes.length, 1)) * 55), {
       stage: 'generate_character_image',

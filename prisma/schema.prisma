@@ -536,6 +536,8 @@ model UserPreference {
   qwenApiKey          String?  @db.Text
   customModels        String?  @db.Text
   customProviders     String?  @db.Text
+  // 用户自定义提示词模板（按风格存储）
+  promptStylePresets  String?  @db.Text
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_preferences")

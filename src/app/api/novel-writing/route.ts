@@ -147,7 +147,6 @@ export const POST = apiHandler(async (request: NextRequest) => {
       projectId: project.id,
       ...(userPreference && {
         analysisModel: userPreference.analysisModel,
-        imageModel: userPreference.imageModel,
         audioModel: userPreference.audioModel,
         videoRatio: userPreference.videoRatio || '16:9',
         artStyle: userPreference.artStyle || 'realistic',

@@ -295,8 +295,12 @@ export default function NovelProjectDetailPage() {
           {/* 章节侧边栏 */}
           <ChapterSidebar
             chapters={chapters}
-            selectedChapterId={selectedChapterId}
-            onChapterSelect={handleChapterSelect}
+            selectedChapterIds={selectedChapterId ? [selectedChapterId] : []}
+            onChapterSelect={(chapterIds: string[]) => {
+              if (chapterIds.length > 0) {
+                handleChapterSelect(chapterIds[0])
+              }
+            }}
             onNewChapter={handleNewChapter}
           />
 

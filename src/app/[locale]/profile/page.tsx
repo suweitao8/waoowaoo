@@ -5,11 +5,12 @@ import { useTranslations } from 'next-intl'
 import Navbar from '@/components/Navbar'
 import ApiConfigTab from './components/ApiConfigTab'
 import GeneralSettingsTab from './components/GeneralSettingsTab'
+import PromptTemplatesTab from './components/PromptTemplatesTab'
 import { AppIcon } from '@/components/ui/icons'
 import { useRouter } from '@/i18n/navigation'
 import { isSingleUserMode } from '@/lib/single-user-mode'
 
-type ActiveSection = 'apiConfig' | 'generalSettings'
+type ActiveSection = 'apiConfig' | 'generalSettings' | 'promptTemplates'
 
 export default function ProfilePage() {
   const { data: session, status } = useSession()
@@ -58,6 +59,16 @@ export default function ProfilePage() {
                   <span className="font-medium">{t('apiConfig')}</span>
                 </button>
                 <button
+                  onClick={() => setActiveSection('promptTemplates')}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${activeSection === 'promptTemplates'
+                    ? 'glass-btn-base glass-btn-tone-info'
+                    : 'text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-muted)]'
+                    }`}
+                >
+                  <AppIcon name="fileText" className="w-5 h-5" />
+                  <span className="font-medium">{t('promptTemplates')}</span>
+                </button>
+                <button
                   onClick={() => setActiveSection('generalSettings')}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${activeSection === 'generalSettings'
                     ? 'glass-btn-base glass-btn-tone-info'
@@ -78,6 +89,8 @@ export default function ProfilePage() {
             <div className="glass-surface-elevated h-full flex flex-col">
               {activeSection === 'apiConfig' ? (
                 <ApiConfigTab />
+              ) : activeSection === 'promptTemplates' ? (
+                <PromptTemplatesTab />
               ) : (
                 <GeneralSettingsTab />
               )}
