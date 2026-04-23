@@ -4,59 +4,63 @@ import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { AppIcon } from '@/components/ui/icons'
 import GlassTextarea from '@/components/ui/primitives/GlassTextarea'
-import { SelectVariantCard } from '@/components/ui/select-variants'
 import type { ArtStyleValue } from '@/lib/constants'
+import type { TemplateType } from '@/lib/prompt-templates'
 
-interface StyleTemplateGroup {
-  value: string
+// ========== 类型定义 ==========
+
+interface StylePromptItem {
+  value: ArtStyleValue
   label: string
-  templates: {
-    character: string
-    location: string
-    prop: string
-  }
-  variables: {
-    character: Array<{ name: string; description: string }>
-    location: Array<{ name: string; description: string }>
-    prop: Array<{ name: string; description: string }>
-  }
+  defaultPrompt: string
+  userPrompt?: string
 }
 
-interface UserPromptTemplates {
-  [style: string]: {
-    characterTemplate?: string
-    locationTemplate?: string
-    propTemplate?: string
-  }
+interface TemplateTypeItem {
+  value: TemplateType
+  label: string
+  defaultTemplate: string
+  userTemplate?: string
+  variables: Array<{ name: string; description: string }>
 }
 
 interface PromptTemplatesResponse {
-  styles: StyleTemplateGroup[]
-  userTemplates: UserPromptTemplates
+  styles: StylePromptItem[]
+  templateTypes: TemplateTypeItem[]
 }
 
-type TemplateType = 'character' | 'location' | 'prop'
+// 用户自定义配置
+interface UserPromptConfig {
+  stylePrompts: Partial<Record<ArtStyleValue, string>>
+  templateTypePrompts: Partial<Record<TemplateType, string>>
+}
+
+// 编辑模式
+type EditMode = 'style' | 'templateType'
 
 export default function PromptTemplatesTab() {
   const t = useTranslations('profile')
-  const [styles, setStyles] = useState<StyleTemplateGroup[]>([])
-  const [userTemplates, setUserTemplates] = useState<UserPromptTemplates>({})
-  const [selectedStyle, setSelectedStyle] = useState<string>('xianxia-3d') // 默认选择凡人修仙传
-  const [activeType, setActiveType] = useState<TemplateType>('character')
+
+  // 数据状态
+  const [styles, setStyles] = useState<StylePromptItem[]>([])
+  const [templateTypes, setTemplateTypes] = useState<TemplateTypeItem[]>([])
+  const [userConfig, setUserConfig] = useState<UserPromptConfig>({
+    stylePrompts: {},
+    templateTypePrompts: {},
+  })
+
+  // 选择状态
+  const [editMode, setEditMode] = useState<EditMode>('style')
+  const [selectedStyle, setSelectedStyle] = useState<ArtStyleValue>('xianxia-3d')
+  const [selectedTemplateType, setSelectedTemplateType] = useState<TemplateType>('character')
+
+  // UI 状态
   const [isSaving, setIsSaving] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [hasChanges, setHasChanges] = useState(false)
 
   // 本地编辑状态
-  const [editedTemplates, setEditedTemplates] = useState<{
-    character: string
-    location: string
-    prop: string
-  }>({
-    character: '',
-    location: '',
-    prop: '',
-  })
+  const [editedContent, setEditedContent] = useState('')
 
   // 加载数据
   useEffect(() => {
@@ -65,11 +69,30 @@ export default function PromptTemplatesTab() {
         const response = await fetch('/api/user/prompt-templates')
         if (!response.ok) throw new Error('Failed to load')
         const data: PromptTemplatesResponse = await response.json()
-        setStyles(data.styles)
-        setUserTemplates(data.userTemplates)
 
-        // 从 localStorage 恢复用户上次选择的风格
-        const savedStyle = localStorage.getItem('prompt-template-selected-style')
+        setStyles(data.styles)
+        setTemplateTypes(data.templateTypes)
+
+        // 解析用户配置
+        const stylePrompts: Partial<Record<ArtStyleValue, string>> = {}
+        const templateTypePrompts: Partial<Record<TemplateType, string>> = {}
+
+        for (const style of data.styles) {
+          if (style.userPrompt) {
+            stylePrompts[style.value] = style.userPrompt
+          }
+        }
+
+        for (const type of data.templateTypes) {
+          if (type.userTemplate) {
+            templateTypePrompts[type.value] = type.userTemplate
+          }
+        }
+
+        setUserConfig({ stylePrompts, templateTypePrompts })
+
+        // 从 localStorage 恢复用户上次选择
+        const savedStyle = localStorage.getItem('prompt-template-selected-style') as ArtStyleValue | null
         if (savedStyle && data.styles.some(s => s.value === savedStyle)) {
           setSelectedStyle(savedStyle)
         }
@@ -82,123 +105,136 @@ export default function PromptTemplatesTab() {
     loadData()
   }, [])
 
-  // 当切换风格时，更新编辑器内容
+  // 当选择变化时，同步编辑内容
   useEffect(() => {
-    const styleData = styles.find((s) => s.value === selectedStyle)
-    if (!styleData) return
-
-    const userOverride = userTemplates[selectedStyle]
-
-    setEditedTemplates({
-      character: userOverride?.characterTemplate || styleData.templates.character,
-      location: userOverride?.locationTemplate || styleData.templates.location,
-      prop: userOverride?.propTemplate || styleData.templates.prop,
-    })
+    if (editMode === 'style') {
+      const style = styles.find(s => s.value === selectedStyle)
+      if (style) {
+        setEditedContent(style.userPrompt || style.defaultPrompt)
+      }
+    } else {
+      const type = templateTypes.find(t => t.value === selectedTemplateType)
+      if (type) {
+        setEditedContent(type.userTemplate || type.defaultTemplate)
+      }
+    }
     setHasChanges(false)
-  }, [selectedStyle, styles, userTemplates])
+  }, [editMode, selectedStyle, selectedTemplateType, styles, templateTypes])
 
-  // 处理模板编辑
-  const handleTemplateChange = useCallback((value: string) => {
-    setEditedTemplates((prev) => ({
-      ...prev,
-      [activeType]: value,
-    }))
+  // 处理内容编辑
+  const handleContentChange = useCallback((value: string) => {
+    setEditedContent(value)
 
     // 检查是否有变更
-    const styleData = styles.find((s) => s.value === selectedStyle)
-    if (!styleData) return
+    if (editMode === 'style') {
+      const style = styles.find(s => s.value === selectedStyle)
+      if (style) {
+        const original = style.userPrompt || style.defaultPrompt
+        setHasChanges(value !== original)
+      }
+    } else {
+      const type = templateTypes.find(t => t.value === selectedTemplateType)
+      if (type) {
+        const original = type.userTemplate || type.defaultTemplate
+        setHasChanges(value !== original)
+      }
+    }
+  }, [editMode, selectedStyle, selectedTemplateType, styles, templateTypes])
 
-    const originalTemplate = styleData.templates[activeType]
-    const userOverride = userTemplates[selectedStyle]?.[`${activeType}Template` as const]
-    const currentBase = userOverride || originalTemplate
-
-    setHasChanges(value !== currentBase)
-  }, [activeType, selectedStyle, styles, userTemplates])
-
-  // 重置为默认模板
+  // 重置为默认
   const handleReset = useCallback(() => {
-    const styleData = styles.find((s) => s.value === selectedStyle)
-    if (!styleData) return
-
-    setEditedTemplates({
-      character: styleData.templates.character,
-      location: styleData.templates.location,
-      prop: styleData.templates.prop,
-    })
-
-    // 清除用户自定义
-    setUserTemplates((prev) => {
-      const next = { ...prev }
-      delete next[selectedStyle]
-      return next
-    })
+    if (editMode === 'style') {
+      const style = styles.find(s => s.value === selectedStyle)
+      if (style) {
+        setEditedContent(style.defaultPrompt)
+        setUserConfig(prev => {
+          const next = { ...prev }
+          if (next.stylePrompts) {
+            delete next.stylePrompts[selectedStyle]
+          }
+          return next
+        })
+      }
+    } else {
+      const type = templateTypes.find(t => t.value === selectedTemplateType)
+      if (type) {
+        setEditedContent(type.defaultTemplate)
+        setUserConfig(prev => {
+          const next = { ...prev }
+          if (next.templateTypePrompts) {
+            delete next.templateTypePrompts[selectedTemplateType]
+          }
+          return next
+        })
+      }
+    }
     setHasChanges(false)
-  }, [selectedStyle, styles])
+  }, [editMode, selectedStyle, selectedTemplateType, styles, templateTypes])
 
-  // 保存模板
+  // 保存
   const handleSave = useCallback(async () => {
-    if (isSaving) return
+    if (isSaving || !hasChanges) return
 
     setIsSaving(true)
     try {
-      // 构建新的用户模板配置
-      const newUserTemplates = { ...userTemplates }
-      const styleData = styles.find((s) => s.value === selectedStyle)
-      if (!styleData) return
-
-      // 检查哪些模板被修改了
-      const modified: {
-        characterTemplate?: string
-        locationTemplate?: string
-        propTemplate?: string
-      } = {}
-
-      for (const type of ['character', 'location', 'prop'] as const) {
-        const edited = editedTemplates[type]
-        const original = styleData.templates[type]
-        if (edited !== original) {
-          modified[`${type}Template`] = edited
-        }
+      const newConfig: UserPromptConfig = {
+        stylePrompts: { ...userConfig.stylePrompts },
+        templateTypePrompts: { ...userConfig.templateTypePrompts },
       }
 
-      if (Object.keys(modified).length > 0) {
-        newUserTemplates[selectedStyle] = modified
+      if (editMode === 'style') {
+        const style = styles.find(s => s.value === selectedStyle)
+        if (style && editedContent !== style.defaultPrompt) {
+          newConfig.stylePrompts = {
+            ...newConfig.stylePrompts,
+            [selectedStyle]: editedContent,
+          }
+        } else if (newConfig.stylePrompts) {
+          delete newConfig.stylePrompts[selectedStyle]
+        }
       } else {
-        delete newUserTemplates[selectedStyle]
+        const type = templateTypes.find(t => t.value === selectedTemplateType)
+        if (type && editedContent !== type.defaultTemplate) {
+          newConfig.templateTypePrompts = {
+            ...newConfig.templateTypePrompts,
+            [selectedTemplateType]: editedContent,
+          }
+        } else if (newConfig.templateTypePrompts) {
+          delete newConfig.templateTypePrompts[selectedTemplateType]
+        }
       }
 
       const response = await fetch('/api/user/prompt-templates', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ templates: newUserTemplates }),
+        body: JSON.stringify(newConfig),
       })
 
       if (!response.ok) throw new Error('Failed to save')
 
-      setUserTemplates(newUserTemplates)
+      setUserConfig(newConfig)
       setHasChanges(false)
     } catch (error) {
       console.error('Failed to save prompt templates:', error)
     } finally {
       setIsSaving(false)
     }
-  }, [editedTemplates, isSaving, selectedStyle, styles, userTemplates])
+  }, [editMode, editedContent, hasChanges, isSaving, selectedStyle, selectedTemplateType, styles, templateTypes, userConfig])
 
-  // 当前模板类型的变量说明
-  const currentVariables = styles
-    .find((s) => s.value === selectedStyle)
-    ?.variables[activeType] || []
+  // 获取当前变量说明
+  const currentVariables = editMode === 'style'
+    ? []
+    : templateTypes.find(t => t.value === selectedTemplateType)?.variables || []
 
-  // 风格选项
-  const styleOptions = styles.map((s) => ({
-    value: s.value,
-    label: s.label,
-  }))
+  // 获取当前编辑项的标题
+  const currentEditTitle = editMode === 'style'
+    ? styles.find(s => s.value === selectedStyle)?.label || ''
+    : templateTypes.find(t => t.value === selectedTemplateType)?.label || ''
 
-  // 处理风格切换，保存到 localStorage
-  const handleStyleChange = useCallback((newStyle: string) => {
-    setSelectedStyle(newStyle)
-    localStorage.setItem('prompt-template-selected-style', newStyle)
+  // 处理风格选择，保存到 localStorage
+  const handleStyleSelect = useCallback((style: ArtStyleValue) => {
+    setSelectedStyle(style)
+    localStorage.setItem('prompt-template-selected-style', style)
   }, [])
 
   if (isLoading) {
@@ -223,47 +259,63 @@ export default function PromptTemplatesTab() {
 
       {/* Content */}
       <div className="flex-1 overflow-hidden flex gap-4 p-6">
-        {/* 左侧：风格选择和类型切换 */}
-        <div className="w-64 flex-shrink-0 flex flex-col gap-4">
-          {/* 风格选择器 */}
+        {/* 左侧栏 */}
+        <div className="w-64 flex-shrink-0 flex flex-col gap-6">
+          {/* 风格提示词区 */}
           <div>
             <label className="block text-sm font-medium text-[var(--glass-text-primary)] mb-2">
-              {t('selectStyle')}
-            </label>
-            <SelectVariantCard
-              options={styleOptions}
-              value={selectedStyle}
-              onChange={handleStyleChange}
-              placeholder={t('selectStylePlaceholder')}
-            />
-          </div>
-
-          {/* 类型切换 */}
-          <div>
-            <label className="block text-sm font-medium text-[var(--glass-text-primary)] mb-2">
-              {t('templateType')}
+              {t('stylePrompts')}
             </label>
             <div className="flex flex-col gap-2">
-              {(['character', 'location', 'prop'] as const).map((type) => (
+              {styles.map((style) => (
                 <button
-                  key={type}
-                  onClick={() => setActiveType(type)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${activeType === type
-                    ? 'glass-btn-base glass-btn-tone-info'
-                    : 'text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-muted)] border border-[var(--glass-stroke-base)]'
-                    }`}
+                  key={style.value}
+                  onClick={() => {
+                    setEditMode('style')
+                    handleStyleSelect(style.value)
+                  }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${
+                    editMode === 'style' && selectedStyle === style.value
+                      ? 'glass-btn-base glass-btn-tone-info'
+                      : 'text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-muted)] border border-[var(--glass-stroke-base)]'
+                  }`}
+                >
+                  <span className="font-medium">{style.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 模板类型提示词区 */}
+          <div>
+            <label className="block text-sm font-medium text-[var(--glass-text-primary)] mb-2">
+              {t('templateTypePrompts')}
+            </label>
+            <div className="flex flex-col gap-2">
+              {templateTypes.map((type) => (
+                <button
+                  key={type.value}
+                  onClick={() => {
+                    setEditMode('templateType')
+                    setSelectedTemplateType(type.value)
+                  }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${
+                    editMode === 'templateType' && selectedTemplateType === type.value
+                      ? 'glass-btn-base glass-btn-tone-info'
+                      : 'text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-muted)] border border-[var(--glass-stroke-base)]'
+                  }`}
                 >
                   <AppIcon
                     name={
-                      type === 'character'
+                      type.value === 'character'
                         ? 'user'
-                        : type === 'location'
+                        : type.value === 'location'
                           ? 'globe'
                           : 'package'
                     }
                     className="w-5 h-5"
                   />
-                  <span className="font-medium">{t(`templateType_${type}`)}</span>
+                  <span className="font-medium">{type.label}</span>
                 </button>
               ))}
             </div>
@@ -295,12 +347,12 @@ export default function PromptTemplatesTab() {
           </div>
         </div>
 
-        {/* 右侧：模板编辑器 */}
+        {/* 右侧编辑区 */}
         <div className="flex-1 flex flex-col min-w-0">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <h3 className="font-medium text-[var(--glass-text-primary)]">
-                {t(`templateType_${activeType}`)}
+                {currentEditTitle}
               </h3>
               {hasChanges && (
                 <span className="text-xs px-2 py-1 rounded-full bg-[var(--glass-bg-warning)] text-[var(--glass-text-warning)]">
@@ -319,10 +371,11 @@ export default function PromptTemplatesTab() {
               <button
                 onClick={handleSave}
                 disabled={!hasChanges || isSaving}
-                className={`glass-btn-base px-3 py-1.5 text-sm rounded-lg flex items-center gap-2 ${hasChanges && !isSaving
-                  ? 'glass-btn-primary'
-                  : 'glass-btn-secondary opacity-50 cursor-not-allowed'
-                  }`}
+                className={`glass-btn-base px-3 py-1.5 text-sm rounded-lg flex items-center gap-2 ${
+                  hasChanges && !isSaving
+                    ? 'glass-btn-primary'
+                    : 'glass-btn-secondary opacity-50 cursor-not-allowed'
+                }`}
               >
                 <AppIcon name="check" className="w-4 h-4" />
                 {isSaving ? t('saving') : t('save')}
@@ -330,11 +383,11 @@ export default function PromptTemplatesTab() {
             </div>
           </div>
 
-          {/* 模板编辑区 */}
+          {/* 编辑区 */}
           <div className="flex-1 flex flex-col min-h-0">
             <GlassTextarea
-              value={editedTemplates[activeType]}
-              onChange={(e) => handleTemplateChange(e.target.value)}
+              value={editedContent}
+              onChange={(e) => handleContentChange(e.target.value)}
               className="flex-1 min-h-[300px] font-mono text-sm leading-relaxed"
               placeholder={t('templatePlaceholder')}
             />
