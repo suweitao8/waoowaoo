@@ -28,24 +28,6 @@ export const DEFAULT_PROP_TEMPLATE = `{description}
 // ========== 风格特定模板 ==========
 
 export const STYLE_CHARACTER_TEMPLATES: Record<ArtStyleValue, string> = {
-  'american-comic': `{description}
-
-日式动漫风格角色设定图，动漫风格人物设计。
-
-画面横向排列三个视图：正面全身、侧面全身、背面全身，三视图高度一致、比例相同。中间灰背景（RGB 128,128,128），无其他元素。`,
-
-  'chinese-comic': `{description}
-
-现代高质量漫画风格角色设定图，细节丰富精致，线条锐利干净，质感饱满，超清2D风格。
-
-画面横向排列三个视图：正面全身、侧面全身、背面全身，三视图高度一致、比例相同。中间灰背景（RGB 128,128,128），无其他元素。`,
-
-  'japanese-anime': `{description}
-
-现代日系动漫风格角色设定图，赛璐璐上色，视觉小说CG感。
-
-画面横向排列三个视图：正面全身、侧面全身、背面全身，三视图高度一致、比例相同。中间灰背景（RGB 128,128,128），无其他元素。`,
-
   'realistic': `{description}
 
 真实电影级画面质感角色设定图，真实电影质感，色彩饱满通透，画面干净精致。
@@ -60,30 +42,6 @@ UE5超写实3D仙侠风格角色设定图，电影级仙侠动画质感，真人
 }
 
 export const STYLE_LOCATION_TEMPLATES: Record<ArtStyleValue, string> = {
-  'american-comic': `{description}
-
-{availableSlots}
-
-日式动漫风格场景。
-
-全景构图，360度环绕视角，沉浸式体验。宽广完整的场景构图，清楚展示主要结构、前景/中景/背景和空间边界。`,
-
-  'chinese-comic': `{description}
-
-{availableSlots}
-
-现代高质量漫画风格场景，细节丰富精致，线条锐利干净，质感饱满，超清2D风格。
-
-全景构图，360度环绕视角，沉浸式体验。宽广完整的场景构图，清楚展示主要结构、前景/中景/背景和空间边界。`,
-
-  'japanese-anime': `{description}
-
-{availableSlots}
-
-现代日系动漫风格场景，赛璐璐上色，视觉小说CG感。
-
-全景构图，360度环绕视角，沉浸式体验。宽广完整的场景构图，清楚展示主要结构、前景/中景/背景和空间边界。`,
-
   'realistic': `{description}
 
 {availableSlots}
@@ -102,24 +60,6 @@ UE5超写实3D仙侠场景，电影级仙侠动画质感，东方水墨写意美
 }
 
 export const STYLE_PROP_TEMPLATES: Record<ArtStyleValue, string> = {
-  'american-comic': `{description}
-
-日式动漫风格道具设定图，动漫风格设计。
-
-画面横向排列两个视图：前视图、后视图，双视图高度一致、比例相同。中间灰背景（RGB 128,128,128），主体居中完整展示。图片比例16:9横版。`,
-
-  'chinese-comic': `{description}
-
-现代高质量漫画风格道具设定图，细节丰富精致，线条锐利干净，质感饱满。
-
-画面横向排列两个视图：前视图、后视图，双视图高度一致、比例相同。中间灰背景（RGB 128,128,128），主体居中完整展示。图片比例16:9横版。`,
-
-  'japanese-anime': `{description}
-
-现代日系动漫风格道具设定图，赛璐璐上色，视觉小说CG感。
-
-画面横向排列两个视图：前视图、后视图，双视图高度一致、比例相同。中间灰背景（RGB 128,128,128），主体居中完整展示。图片比例16:9横版。`,
-
   'realistic': `{description}
 
 真实电影级道具设定图，真实电影质感，色彩饱满通透，画面干净精致。
