@@ -10,84 +10,46 @@ import { prisma } from '@/lib/prisma'
 import { requireUserAuth, isErrorResponse } from '@/lib/api-auth'
 import { apiHandler, ApiError } from '@/lib/api-errors'
 import {
-  getUserPromptTemplates,
-  type UserPromptTemplates,
+  getUserPromptConfig,
+  type UserPromptConfig,
 } from '@/lib/user-prompt-templates'
 import {
-  STYLE_CHARACTER_TEMPLATES,
-  STYLE_LOCATION_TEMPLATES,
-  STYLE_PROP_TEMPLATES,
-  DEFAULT_CHARACTER_TEMPLATE,
-  DEFAULT_LOCATION_TEMPLATE,
-  DEFAULT_PROP_TEMPLATE,
-  PROMPT_TEMPLATE_VARIABLES,
+  DEFAULT_STYLE_PROMPTS,
+  DEFAULT_TEMPLATE_TYPE_PROMPTS,
+  TEMPLATE_TYPE_VARIABLES,
+  type TemplateType,
 } from '@/lib/prompt-templates'
 import { ART_STYLES, isArtStyleValue, type ArtStyleValue } from '@/lib/constants'
 
-interface StyleTemplateGroup {
+// ========== 响应类型 ==========
+
+interface StylePromptItem {
   value: ArtStyleValue
   label: string
-  templates: {
-    character: string
-    location: string
-    prop: string
-  }
-  variables: typeof PROMPT_TEMPLATE_VARIABLES
+  defaultPrompt: string
+  userPrompt?: string
+}
+
+interface TemplateTypeItem {
+  value: TemplateType
+  label: string
+  defaultTemplate: string
+  userTemplate?: string
+  variables: Array<{ name: string; description: string }>
 }
 
 interface PromptTemplatesResponse {
-  styles: StyleTemplateGroup[]
-  userTemplates: UserPromptTemplates
+  styles: StylePromptItem[]
+  templateTypes: TemplateTypeItem[]
 }
+
+// ========== 辅助函数 ==========
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value)
 }
 
-function isStyleTemplatePayload(
-  value: unknown,
-): value is { characterTemplate?: string; locationTemplate?: string; propTemplate?: string } {
-  if (!isRecord(value)) return false
-  const { characterTemplate, locationTemplate, propTemplate } = value
-  if (characterTemplate !== undefined && typeof characterTemplate !== 'string') return false
-  if (locationTemplate !== undefined && typeof locationTemplate !== 'string') return false
-  if (propTemplate !== undefined && typeof propTemplate !== 'string') return false
-  return true
-}
-
-function normalizeUserTemplatesInput(raw: unknown): UserPromptTemplates {
-  if (!isRecord(raw)) {
-    throw new ApiError('INVALID_PARAMS', {
-      code: 'TEMPLATE_PAYLOAD_INVALID',
-      field: 'templates',
-    })
-  }
-
-  const result: UserPromptTemplates = {}
-  for (const [style, templatePayload] of Object.entries(raw)) {
-    if (style !== 'default' && !isArtStyleValue(style)) {
-      throw new ApiError('INVALID_PARAMS', {
-        code: 'TEMPLATE_STYLE_INVALID',
-        field: `templates.${style}`,
-      })
-    }
-    if (!isStyleTemplatePayload(templatePayload)) {
-      throw new ApiError('INVALID_PARAMS', {
-        code: 'TEMPLATE_PAYLOAD_INVALID',
-        field: `templates.${style}`,
-      })
-    }
-    if (templatePayload.characterTemplate || templatePayload.locationTemplate || templatePayload.propTemplate) {
-      result[style] = {
-        characterTemplate: templatePayload.characterTemplate,
-        locationTemplate: templatePayload.locationTemplate,
-        propTemplate: templatePayload.propTemplate,
-      }
-    }
-  }
-
-  return result
-}
+// ========== GET 接口 ==========
 
 export const GET = apiHandler(async () => {
   const authResult = await requireUserAuth()
@@ -95,27 +57,42 @@ export const GET = apiHandler(async () => {
   const { session } = authResult
   const userId = session.user.id
 
-  const userTemplates = await getUserPromptTemplates(userId)
+  const userConfig = await getUserPromptConfig(userId)
 
-  const styles: StyleTemplateGroup[] = ART_STYLES.map((style) => ({
+  // 构建风格列表
+  const styles: StylePromptItem[] = ART_STYLES.map((style) => ({
     value: style.value,
     label: style.label,
-    templates: {
-      character: STYLE_CHARACTER_TEMPLATES[style.value] || DEFAULT_CHARACTER_TEMPLATE,
-      location: STYLE_LOCATION_TEMPLATES[style.value] || DEFAULT_LOCATION_TEMPLATE,
-      prop: STYLE_PROP_TEMPLATES[style.value] || DEFAULT_PROP_TEMPLATE,
-    },
-    variables: PROMPT_TEMPLATE_VARIABLES,
+    defaultPrompt: DEFAULT_STYLE_PROMPTS[style.value],
+    userPrompt: userConfig.stylePrompts?.[style.value],
   }))
 
-  // 不再添加默认模板分组
+  // 构建模板类型列表
+  const templateTypeLabels: Record<TemplateType, string> = {
+    character: '角色模板',
+    location: '场景模板',
+    prop: '道具模板',
+  }
+
+  const templateTypes: TemplateTypeItem[] = (['character', 'location', 'prop'] as const).map(
+    (type) => ({
+      value: type,
+      label: templateTypeLabels[type],
+      defaultTemplate: DEFAULT_TEMPLATE_TYPE_PROMPTS[type],
+      userTemplate: userConfig.templateTypePrompts?.[type],
+      variables: TEMPLATE_TYPE_VARIABLES[type],
+    })
+  )
+
   const response: PromptTemplatesResponse = {
     styles,
-    userTemplates,
+    templateTypes,
   }
 
   return NextResponse.json(response)
 })
+
+// ========== PUT 接口 ==========
 
 export const PUT = apiHandler(async (request: NextRequest) => {
   const authResult = await requireUserAuth()
@@ -140,19 +117,65 @@ export const PUT = apiHandler(async (request: NextRequest) => {
     })
   }
 
-  const userTemplates = normalizeUserTemplatesInput(body.templates)
+  // 验证 stylePrompts
+  const stylePrompts: Partial<Record<ArtStyleValue, string>> = {}
+  if (body.stylePrompts && isRecord(body.stylePrompts)) {
+    for (const [style, prompt] of Object.entries(body.stylePrompts)) {
+      if (!isArtStyleValue(style)) {
+        throw new ApiError('INVALID_PARAMS', {
+          code: 'TEMPLATE_STYLE_INVALID',
+          field: `stylePrompts.${style}`,
+        })
+      }
+      if (typeof prompt !== 'string') {
+        throw new ApiError('INVALID_PARAMS', {
+          code: 'TEMPLATE_PROMPT_INVALID',
+          field: `stylePrompts.${style}`,
+        })
+      }
+      stylePrompts[style] = prompt
+    }
+  }
+
+  // 验证 templateTypePrompts
+  const templateTypePrompts: Partial<Record<TemplateType, string>> = {}
+  if (body.templateTypePrompts && isRecord(body.templateTypePrompts)) {
+    for (const [type, template] of Object.entries(body.templateTypePrompts)) {
+      if (!['character', 'location', 'prop'].includes(type)) {
+        throw new ApiError('INVALID_PARAMS', {
+          code: 'TEMPLATE_TYPE_INVALID',
+          field: `templateTypePrompts.${type}`,
+        })
+      }
+      if (typeof template !== 'string') {
+        throw new ApiError('INVALID_PARAMS', {
+          code: 'TEMPLATE_PROMPT_INVALID',
+          field: `templateTypePrompts.${type}`,
+        })
+      }
+      templateTypePrompts[type as TemplateType] = template
+    }
+  }
+
+  const userConfig: UserPromptConfig = {}
+  if (Object.keys(stylePrompts).length > 0) {
+    userConfig.stylePrompts = stylePrompts
+  }
+  if (Object.keys(templateTypePrompts).length > 0) {
+    userConfig.templateTypePrompts = templateTypePrompts
+  }
 
   await prisma.userPreference.upsert({
     where: { userId },
     update: {
-      promptStylePresets: Object.keys(userTemplates).length > 0
-        ? JSON.stringify(userTemplates)
+      promptStylePresets: Object.keys(userConfig).length > 0
+        ? JSON.stringify(userConfig)
         : null,
     },
     create: {
       userId,
-      promptStylePresets: Object.keys(userTemplates).length > 0
-        ? JSON.stringify(userTemplates)
+      promptStylePresets: Object.keys(userConfig).length > 0
+        ? JSON.stringify(userConfig)
         : null,
     },
   })
