@@ -38,7 +38,11 @@ export const GET = apiHandler(async (request: NextRequest) => {
   const search = searchParams.get('search') || ''
 
   // 构建查询条件
-  const where: Record<string, unknown> = { userId: session.user.id }
+  // 排除写小说项目：只查询没有 novelWritingData 关联的项目
+  const where: Record<string, unknown> = {
+    userId: session.user.id,
+    novelWritingData: null
+  }
 
   // 如果有搜索关键词，搜索名称和描述
   // 注意：SQLite 不支持 mode: 'insensitive'，但 SQLite 的 LIKE 默认即大小写不敏感（ASCII 范围）
