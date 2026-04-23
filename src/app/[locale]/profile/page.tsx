@@ -6,11 +6,12 @@ import Navbar from '@/components/Navbar'
 import ApiConfigTab from './components/ApiConfigTab'
 import GeneralSettingsTab from './components/GeneralSettingsTab'
 import PromptTemplatesTab from './components/PromptTemplatesTab'
+import AssetHubTab from './components/AssetHubTab'
 import { AppIcon } from '@/components/ui/icons'
 import { useRouter } from '@/i18n/navigation'
 import { isSingleUserMode } from '@/lib/single-user-mode'
 
-type ActiveSection = 'apiConfig' | 'generalSettings' | 'promptTemplates'
+type ActiveSection = 'apiConfig' | 'generalSettings' | 'promptTemplates' | 'assetHub'
 
 export default function ProfilePage() {
   const { data: session, status } = useSession()
@@ -69,6 +70,16 @@ export default function ProfilePage() {
                   <span className="font-medium">{t('promptTemplates')}</span>
                 </button>
                 <button
+                  onClick={() => setActiveSection('assetHub')}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${activeSection === 'assetHub'
+                    ? 'glass-btn-base glass-btn-tone-info'
+                    : 'text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-muted)]'
+                    }`}
+                >
+                  <AppIcon name="folder" className="w-5 h-5" />
+                  <span className="font-medium">{t('assetHub')}</span>
+                </button>
+                <button
                   onClick={() => setActiveSection('generalSettings')}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all cursor-pointer ${activeSection === 'generalSettings'
                     ? 'glass-btn-base glass-btn-tone-info'
@@ -91,6 +102,8 @@ export default function ProfilePage() {
                 <ApiConfigTab />
               ) : activeSection === 'promptTemplates' ? (
                 <PromptTemplatesTab />
+              ) : activeSection === 'assetHub' ? (
+                <AssetHubTab />
               ) : (
                 <GeneralSettingsTab />
               )}

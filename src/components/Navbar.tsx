@@ -135,13 +135,7 @@ export default function Navbar() {
                     <AppIcon name="sparklesAlt" className="w-4 h-4" />
                     Nano Test
                   </Link> */}
-                  <Link
-                    href={{ pathname: '/workspace/asset-hub' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
-                  >
-                    <AppIcon name="folderHeart" className="w-4 h-4" />
-                    {t('assetHub')}
-                  </Link>
+                  {/* 资产中心已移至设置页面 */}
                   <Link
                     href={{ pathname: '/profile' }}
                     className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"

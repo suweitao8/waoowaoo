@@ -8,6 +8,7 @@
     "apiConfig": "API 配置",
     "promptTemplates": "提示词模板",
     "promptTemplatesDesc": "自定义不同风格的图片生成提示词模板",
+    "assetHub": "资产中心",
     "generalSettings": "通用设置",
     "generalSettingsDesc": "管理应用的基本设置",
     "languageSetting": "语言设置",

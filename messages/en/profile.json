@@ -8,6 +8,7 @@
   "apiConfig": "API Configuration",
   "promptTemplates": "Prompt Templates",
   "promptTemplatesDesc": "Customize image generation prompt templates for different styles",
+  "assetHub": "Asset Hub",
   "generalSettings": "General Settings",
   "generalSettingsDesc": "Manage basic application settings",
   "languageSetting": "Language",
