@@ -428,16 +428,16 @@ export default function ScriptViewAssetsPanel({
   return (
     <div className="col-span-12 lg:col-span-4 flex flex-col min-h-[300px] lg:h-full gap-4">
       <div className="relative z-20 flex flex-col gap-2 px-2">
-        <h2 className="text-xl font-bold text-[var(--glass-text-primary)] flex items-center gap-2">
-          <span className="w-1.5 h-6 bg-[var(--glass-accent-from)] rounded-full" /> {tScript('inSceneAssets')}
+        <h2 className="text-xl font-bold text-[var(--pin-text-primary)] flex items-center gap-2">
+          <span className="w-1.5 h-6 bg-[var(--pin-color-brand)] rounded-full" /> {tScript('inSceneAssets')}
         </h2>
         <div className="px-1 pt-2">
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setAssetViewMode('all')}
-              className={`glass-btn-base px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${assetViewMode === 'all'
-                ? 'bg-gradient-to-br from-[var(--glass-accent-from)] to-[var(--glass-accent-to)] text-white shadow-none'
-                : 'glass-btn-secondary text-[var(--glass-text-secondary)]'
+              className={`pin-btn-base px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${assetViewMode === 'all'
+                ? 'bg-gradient-to-br from-[var(--pin-color-brand)] to-[var(--pin-color-brand-hover)] text-white shadow-none'
+                : 'pin-btn-secondary text-[var(--pin-text-secondary)]'
                 }`}
             >
               {tScript('assetView.allClips')}
@@ -449,9 +449,9 @@ export default function ScriptViewAssetsPanel({
                   setAssetViewMode(clip.id)
                   setSelectedClipId(clip.id)
                 }}
-                className={`glass-btn-base px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${assetViewMode === clip.id
-                  ? 'bg-gradient-to-br from-[var(--glass-accent-from)] to-[var(--glass-accent-to)] text-white shadow-none'
-                  : 'glass-btn-secondary text-[var(--glass-text-secondary)]'
+                className={`pin-btn-base px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-all ${assetViewMode === clip.id
+                  ? 'bg-gradient-to-br from-[var(--pin-color-brand)] to-[var(--pin-color-brand-hover)] text-white shadow-none'
+                  : 'pin-btn-secondary text-[var(--pin-text-secondary)]'
                   }`}
               >
                 {tScript('segment.title', { index: idx + 1 })}
@@ -461,17 +461,17 @@ export default function ScriptViewAssetsPanel({
         </div>
       </div>
 
-      <div className="relative z-10 flex-1 min-h-0 glass-surface-modal overflow-hidden p-4 pr-3">
+      <div className="relative z-10 flex-1 min-h-0 pin-surface-modal overflow-hidden p-4 pr-3">
         <div className="flex h-full flex-col gap-6 overflow-y-auto pr-1 app-scrollbar">
           {assetsLoading && characters.length === 0 && locations.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-12 text-[var(--glass-text-tertiary)] animate-pulse">
+            <div className="flex flex-col items-center justify-center py-12 text-[var(--pin-text-tertiary)] animate-pulse">
               <TaskStatusInline state={assetsLoadingState} />
             </div>
           )}
 
           <div className="relative">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-sm font-bold text-[var(--glass-text-secondary)] flex items-center gap-2">
+              <h3 className="text-sm font-bold text-[var(--pin-text-secondary)] flex items-center gap-2">
                 {tScript('asset.activeCharacters')} ({characters.filter((c) => activeCharIds.includes(c.id)).reduce((sum, char) => sum + getSelectedAppearances(char).length, 0)})
               </h3>
               <button
@@ -481,18 +481,18 @@ export default function ScriptViewAssetsPanel({
                   setShowAddLoc(false)
                   setShowAddProp(false)
                 }}
-                className="inline-flex h-8 w-8 items-center justify-center text-[var(--glass-text-secondary)] hover:text-[var(--glass-tone-info-fg)] transition-colors"
+                className="inline-flex h-8 w-8 items-center justify-center text-[var(--pin-text-secondary)] hover:text-[var(--pin-tone-info-fg)] transition-colors"
               >
                 <AppIcon name="edit" className="h-4 w-4" />
               </button>
             </div>
 
           {showAddChar && mounted && createPortal(
-            <div ref={charEditorPopoverRef} className="fixed right-4 bottom-4 z-[80] glass-surface-modal w-[min(24rem,calc(100vw-2rem))] h-[min(560px,calc(100vh-2rem))] p-3 animate-fadeIn flex flex-col shadow-2xl">
-              <div className="shrink-0 text-xs text-[var(--glass-text-tertiary)]">{tCommon('edit')} · {tScript('asset.activeCharacters')}</div>
+            <div ref={charEditorPopoverRef} className="fixed right-4 bottom-4 z-[80] pin-surface-modal w-[min(24rem,calc(100vw-2rem))] h-[min(560px,calc(100vh-2rem))] p-3 animate-fadeIn flex flex-col shadow-2xl">
+              <div className="shrink-0 text-xs text-[var(--pin-text-tertiary)]">{tCommon('edit')} · {tScript('asset.activeCharacters')}</div>
               <div className="mt-3 flex-1 min-h-0 space-y-4 overflow-y-auto pr-1 app-scrollbar">
                 {isAllClipsMode && (
-                  <div className="rounded-lg border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-muted)]/40 p-2 text-[11px] text-[var(--glass-text-tertiary)]">
+                  <div className="rounded-lg border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-muted)]/40 p-2 text-[11px] text-[var(--pin-text-tertiary)]">
                     当前为“全部片段”视图，文案要求仅在单片段视图可编辑
                   </div>
                 )}
@@ -501,7 +501,7 @@ export default function ScriptViewAssetsPanel({
                   const sortedAppearances = [...appearances].sort((a, b) => a.appearanceIndex - b.appearanceIndex)
                   return (
                     <div key={c.id} className="space-y-2">
-                      <div className="text-xs font-semibold text-[var(--glass-text-primary)]">{c.name}</div>
+                      <div className="text-xs font-semibold text-[var(--pin-text-primary)]">{c.name}</div>
                       <div className="grid grid-cols-3 gap-2">
                         {sortedAppearances.map((appearance) => {
                           const currentAppearanceName = appearance.changeReason || tAssets('character.primary')
@@ -531,9 +531,9 @@ export default function ScriptViewAssetsPanel({
                                     return next
                                   })
                                 }}
-                                className={`relative w-full rounded-lg overflow-hidden border-2 ${isThisAppearanceSelected ? 'border-[var(--glass-stroke-success)]' : 'border-transparent hover:border-[var(--glass-stroke-focus)]'}`}
+                                className={`relative w-full rounded-lg overflow-hidden border-2 ${isThisAppearanceSelected ? 'border-[var(--pin-stroke-success)]' : 'border-transparent hover:border-[var(--pin-stroke-focus)]'}`}
                               >
-                                <div className="aspect-square bg-[var(--glass-bg-muted)]">
+                                <div className="aspect-square bg-[var(--pin-bg-muted)]">
                                   {previewUrl ? (
                                     <MediaImageWithLoading
                                       src={previewUrl}
@@ -544,7 +544,7 @@ export default function ScriptViewAssetsPanel({
                                   ) : null}
                                 </div>
                                 {isThisAppearanceSelected && (
-                                  <span className="absolute right-1.5 top-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--glass-tone-success-fg)] text-white shadow-md">
+                                  <span className="absolute right-1.5 top-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--pin-tone-success-fg)] text-white shadow-md">
                                     <AppIcon name="checkMicro" className="h-3 w-3" />
                                   </span>
                                 )}
@@ -557,7 +557,7 @@ export default function ScriptViewAssetsPanel({
                                     const value = event.target.value
                                     setPendingAppearanceLabels((prev) => ({ ...prev, [appearanceKey]: value }))
                                   }}
-                                  className="w-full rounded border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)] px-2 py-1 text-xs text-[var(--glass-text-secondary)] outline-none focus:border-[var(--glass-stroke-focus)] disabled:cursor-not-allowed disabled:opacity-60"
+                                  className="w-full rounded border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] px-2 py-1 text-xs text-[var(--pin-text-secondary)] outline-none focus:border-[var(--pin-stroke-focus)] disabled:cursor-not-allowed disabled:opacity-60"
                                 />
                               )}
                             </div>
@@ -568,18 +568,18 @@ export default function ScriptViewAssetsPanel({
                   )
                 })}
               </div>
-              <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[var(--glass-stroke-base)] pt-3">
+              <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[var(--pin-stroke-base)] pt-3">
                 <button
                   onClick={() => setShowAddChar(false)}
                   disabled={isSavingCharacterSelection}
-                  className="glass-btn-base glass-btn-secondary rounded-lg px-3 py-1.5 text-xs text-[var(--glass-text-secondary)]"
+                  className="pin-btn-base pin-btn-secondary rounded-lg px-3 py-1.5 text-xs text-[var(--pin-text-secondary)]"
                 >
                   {tCommon('cancel')}
                 </button>
                 <button
                   onClick={() => void handleConfirmCharacterSelection()}
                   disabled={isSavingCharacterSelection || !hasCharacterSelectionChanges}
-                  className="glass-btn-base glass-btn-primary rounded-lg px-3 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+                  className="pin-btn-base pin-btn-primary rounded-lg px-3 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {tCommon('confirm')}
                 </button>
@@ -589,7 +589,7 @@ export default function ScriptViewAssetsPanel({
           )}
 
             {activeCharIds.length === 0 ? (
-              <div className="text-center text-[var(--glass-text-tertiary)] text-sm py-4">{tScript('screenplay.noCharacter')}</div>
+              <div className="text-center text-[var(--pin-text-tertiary)] text-sm py-4">{tScript('screenplay.noCharacter')}</div>
             ) : (
               <div className="grid grid-cols-3 gap-3 px-1 py-1">
                 {characters
@@ -629,7 +629,7 @@ export default function ScriptViewAssetsPanel({
 
           <div className="relative">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-sm font-bold text-[var(--glass-text-secondary)]">{tScript('asset.activeLocations')} ({activeLocationIds.length})</h3>
+              <h3 className="text-sm font-bold text-[var(--pin-text-secondary)]">{tScript('asset.activeLocations')} ({activeLocationIds.length})</h3>
               <button
                 ref={locEditorTriggerRef}
                 onClick={() => {
@@ -637,18 +637,18 @@ export default function ScriptViewAssetsPanel({
                   setShowAddChar(false)
                   setShowAddProp(false)
                 }}
-                className="inline-flex h-8 w-8 items-center justify-center text-[var(--glass-text-secondary)] hover:text-[var(--glass-tone-info-fg)] transition-colors"
+                className="inline-flex h-8 w-8 items-center justify-center text-[var(--pin-text-secondary)] hover:text-[var(--pin-tone-info-fg)] transition-colors"
               >
                 <AppIcon name="edit" className="h-4 w-4" />
               </button>
             </div>
 
           {showAddLoc && mounted && createPortal(
-            <div ref={locEditorPopoverRef} className="fixed right-4 bottom-4 z-[80] glass-surface-modal w-[min(24rem,calc(100vw-2rem))] h-[min(560px,calc(100vh-2rem))] p-3 animate-fadeIn flex flex-col shadow-2xl">
-              <div className="shrink-0 text-xs text-[var(--glass-text-tertiary)]">{tCommon('edit')} · {tScript('asset.activeLocations')}</div>
+            <div ref={locEditorPopoverRef} className="fixed right-4 bottom-4 z-[80] pin-surface-modal w-[min(24rem,calc(100vw-2rem))] h-[min(560px,calc(100vh-2rem))] p-3 animate-fadeIn flex flex-col shadow-2xl">
+              <div className="shrink-0 text-xs text-[var(--pin-text-tertiary)]">{tCommon('edit')} · {tScript('asset.activeLocations')}</div>
               <div className="mt-3 flex-1 min-h-0 overflow-y-auto pr-1 app-scrollbar">
                 {isAllClipsMode && (
-                  <div className="mb-3 rounded-lg border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-muted)]/40 p-2 text-[11px] text-[var(--glass-text-tertiary)]">
+                  <div className="mb-3 rounded-lg border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-muted)]/40 p-2 text-[11px] text-[var(--pin-text-tertiary)]">
                     当前为“全部片段”视图，场景文案要求仅在单片段视图可编辑
                   </div>
                 )}
@@ -679,9 +679,9 @@ export default function ScriptViewAssetsPanel({
                               return next
                             })
                           }}
-                          className={`relative w-full overflow-hidden rounded-lg border-2 text-left transition-colors ${isSelected ? 'border-[var(--glass-stroke-success)]' : 'border-transparent hover:border-[var(--glass-stroke-focus)]'}`}
+                          className={`relative w-full overflow-hidden rounded-lg border-2 text-left transition-colors ${isSelected ? 'border-[var(--pin-stroke-success)]' : 'border-transparent hover:border-[var(--pin-stroke-focus)]'}`}
                         >
-                          <div className="aspect-video bg-[var(--glass-bg-muted)]">
+                          <div className="aspect-video bg-[var(--pin-bg-muted)]">
                             {previewImage ? (
                               <MediaImageWithLoading
                                 src={previewImage}
@@ -691,11 +691,11 @@ export default function ScriptViewAssetsPanel({
                               />
                             ) : null}
                           </div>
-                          <div className="truncate px-2 py-1 text-xs font-medium text-[var(--glass-text-secondary)]">
+                          <div className="truncate px-2 py-1 text-xs font-medium text-[var(--pin-text-secondary)]">
                             {location.name}
                           </div>
                           {isSelected && (
-                            <span className="absolute right-1.5 top-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--glass-tone-success-fg)] text-white shadow-md">
+                            <span className="absolute right-1.5 top-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--pin-tone-success-fg)] text-white shadow-md">
                               <AppIcon name="checkMicro" className="h-3 w-3" />
                             </span>
                           )}
@@ -708,7 +708,7 @@ export default function ScriptViewAssetsPanel({
                               const value = event.target.value
                               setPendingLocationLabels((prev) => ({ ...prev, [location.id]: value }))
                             }}
-                            className="w-full rounded border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)] px-2 py-1 text-xs text-[var(--glass-text-secondary)] outline-none focus:border-[var(--glass-stroke-focus)] disabled:cursor-not-allowed disabled:opacity-60"
+                            className="w-full rounded border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] px-2 py-1 text-xs text-[var(--pin-text-secondary)] outline-none focus:border-[var(--pin-stroke-focus)] disabled:cursor-not-allowed disabled:opacity-60"
                           />
                         )}
                       </div>
@@ -716,18 +716,18 @@ export default function ScriptViewAssetsPanel({
                   })}
                 </div>
               </div>
-              <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[var(--glass-stroke-base)] pt-3">
+              <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[var(--pin-stroke-base)] pt-3">
                 <button
                   onClick={() => setShowAddLoc(false)}
                   disabled={isSavingLocationSelection}
-                  className="glass-btn-base glass-btn-secondary rounded-lg px-3 py-1.5 text-xs text-[var(--glass-text-secondary)]"
+                  className="pin-btn-base pin-btn-secondary rounded-lg px-3 py-1.5 text-xs text-[var(--pin-text-secondary)]"
                 >
                   {tCommon('cancel')}
                 </button>
                 <button
                   onClick={() => void handleConfirmLocationSelection()}
                   disabled={isSavingLocationSelection || !hasLocationSelectionChanges}
-                  className="glass-btn-base glass-btn-primary rounded-lg px-3 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+                  className="pin-btn-base pin-btn-primary rounded-lg px-3 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {tCommon('confirm')}
                 </button>
@@ -737,7 +737,7 @@ export default function ScriptViewAssetsPanel({
           )}
 
             {activeLocationIds.length === 0 ? (
-              <div className="text-center text-[var(--glass-text-tertiary)] text-sm py-4">{tScript('screenplay.noLocation')}</div>
+              <div className="text-center text-[var(--pin-text-tertiary)] text-sm py-4">{tScript('screenplay.noLocation')}</div>
             ) : (
               <div className="grid grid-cols-2 gap-3 px-1 py-1">
                 {locations.filter((l) => activeLocationIds.includes(l.id)).map((loc) => (
@@ -758,7 +758,7 @@ export default function ScriptViewAssetsPanel({
           {hasProjectProps ? (
           <div className="relative">
             <div className="flex justify-between items-center mb-3">
-              <h3 className="text-sm font-bold text-[var(--glass-text-secondary)]">道具 ({activePropIds.length})</h3>
+              <h3 className="text-sm font-bold text-[var(--pin-text-secondary)]">道具 ({activePropIds.length})</h3>
               <button
                 ref={propEditorTriggerRef}
                 onClick={() => {
@@ -766,15 +766,15 @@ export default function ScriptViewAssetsPanel({
                   setShowAddChar(false)
                   setShowAddLoc(false)
                 }}
-                className="inline-flex h-8 w-8 items-center justify-center text-[var(--glass-text-secondary)] hover:text-[var(--glass-tone-info-fg)] transition-colors"
+                className="inline-flex h-8 w-8 items-center justify-center text-[var(--pin-text-secondary)] hover:text-[var(--pin-tone-info-fg)] transition-colors"
               >
                 <AppIcon name="edit" className="h-4 w-4" />
               </button>
             </div>
 
           {showAddProp && mounted && createPortal(
-            <div ref={propEditorPopoverRef} className="fixed right-4 bottom-4 z-[80] glass-surface-modal w-[min(24rem,calc(100vw-2rem))] h-[min(560px,calc(100vh-2rem))] p-3 animate-fadeIn flex flex-col shadow-2xl">
-              <div className="shrink-0 text-xs text-[var(--glass-text-tertiary)]">{tCommon('edit')} · 道具</div>
+            <div ref={propEditorPopoverRef} className="fixed right-4 bottom-4 z-[80] pin-surface-modal w-[min(24rem,calc(100vw-2rem))] h-[min(560px,calc(100vh-2rem))] p-3 animate-fadeIn flex flex-col shadow-2xl">
+              <div className="shrink-0 text-xs text-[var(--pin-text-tertiary)]">{tCommon('edit')} · 道具</div>
               <div className="mt-3 flex-1 min-h-0 overflow-y-auto pr-1 app-scrollbar">
                 <div className="grid grid-cols-2 gap-2">
                   {props.map((prop) => {
@@ -794,9 +794,9 @@ export default function ScriptViewAssetsPanel({
                             return next
                           })
                         }}
-                        className={`relative w-full overflow-hidden rounded-lg border-2 text-left transition-colors ${isSelected ? 'border-[var(--glass-stroke-success)]' : 'border-transparent hover:border-[var(--glass-stroke-focus)]'}`}
+                        className={`relative w-full overflow-hidden rounded-lg border-2 text-left transition-colors ${isSelected ? 'border-[var(--pin-stroke-success)]' : 'border-transparent hover:border-[var(--pin-stroke-focus)]'}`}
                       >
-                        <div className="aspect-video bg-[var(--glass-bg-muted)]">
+                        <div className="aspect-video bg-[var(--pin-bg-muted)]">
                           {previewImage ? (
                             <MediaImageWithLoading
                               src={previewImage}
@@ -806,11 +806,11 @@ export default function ScriptViewAssetsPanel({
                             />
                           ) : null}
                         </div>
-                        <div className="truncate px-2 py-1 text-xs font-medium text-[var(--glass-text-secondary)]">
+                        <div className="truncate px-2 py-1 text-xs font-medium text-[var(--pin-text-secondary)]">
                           {prop.name}
                         </div>
                         {isSelected && (
-                          <span className="absolute right-1.5 top-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--glass-tone-success-fg)] text-white shadow-md">
+                          <span className="absolute right-1.5 top-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--pin-tone-success-fg)] text-white shadow-md">
                             <AppIcon name="checkMicro" className="h-3 w-3" />
                           </span>
                         )}
@@ -819,18 +819,18 @@ export default function ScriptViewAssetsPanel({
                   })}
                 </div>
               </div>
-              <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[var(--glass-stroke-base)] pt-3">
+              <div className="mt-3 flex shrink-0 items-center justify-end gap-2 border-t border-[var(--pin-stroke-base)] pt-3">
                 <button
                   onClick={() => setShowAddProp(false)}
                   disabled={isSavingPropSelection}
-                  className="glass-btn-base glass-btn-secondary rounded-lg px-3 py-1.5 text-xs text-[var(--glass-text-secondary)]"
+                  className="pin-btn-base pin-btn-secondary rounded-lg px-3 py-1.5 text-xs text-[var(--pin-text-secondary)]"
                 >
                   {tCommon('cancel')}
                 </button>
                 <button
                   onClick={() => void handleConfirmPropSelection()}
                   disabled={isSavingPropSelection || !hasPropSelectionChanges}
-                  className="glass-btn-base glass-btn-primary rounded-lg px-3 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+                  className="pin-btn-base pin-btn-primary rounded-lg px-3 py-1.5 text-xs disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {tCommon('confirm')}
                 </button>
@@ -840,7 +840,7 @@ export default function ScriptViewAssetsPanel({
           )}
 
             {activePropIds.length === 0 ? (
-              <div className="text-center text-[var(--glass-text-tertiary)] text-sm py-4">当前片段未选择道具</div>
+              <div className="text-center text-[var(--pin-text-tertiary)] text-sm py-4">当前片段未选择道具</div>
             ) : (
               <div className="grid grid-cols-2 gap-3 px-1 py-1">
                 {props.filter((prop) => activePropIds.includes(prop.id)).map((prop) => (
@@ -863,11 +863,11 @@ export default function ScriptViewAssetsPanel({
 
       <div className="mt-4 mb-4">
         {!allAssetsHaveImages && globalCharIds.length + globalLocationIds.length + globalPropIds.length > 0 && (
-          <div className="mb-3 p-4 bg-[var(--glass-bg-surface)] border border-[var(--glass-stroke-base)] rounded-2xl shadow-sm">
-            <p className="text-sm font-medium text-[var(--glass-text-primary)]">{tScript('generate.missingAssets', { count: missingAssetsCount })}</p>
-            <p className="text-xs text-[var(--glass-text-tertiary)] mt-0.5">
+          <div className="mb-3 p-4 bg-[var(--pin-bg-surface)] border border-[var(--pin-stroke-base)] rounded-2xl shadow-sm">
+            <p className="text-sm font-medium text-[var(--pin-text-primary)]">{tScript('generate.missingAssets', { count: missingAssetsCount })}</p>
+            <p className="text-xs text-[var(--pin-text-tertiary)] mt-0.5">
               {tScript('generate.missingAssetsTip')}
-              <button onClick={onOpenAssetLibrary} className="text-[var(--glass-tone-info-fg)] hover:underline mx-1">
+              <button onClick={onOpenAssetLibrary} className="text-[var(--pin-tone-info-fg)] hover:underline mx-1">
                 {tNP('buttons.assetLibrary')}
               </button>
               {tScript('generate.missingAssetsTipLink')}
@@ -877,7 +877,7 @@ export default function ScriptViewAssetsPanel({
         <button
           onClick={onGenerateStoryboard}
           disabled={isSubmittingStoryboardBuild || clips.length === 0 || !allAssetsHaveImages}
-          className="glass-btn-base glass-btn-primary w-full py-4 text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="pin-btn-base pin-btn-primary w-full py-4 text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           {isSubmittingStoryboardBuild ? tScript('generate.generating') : tScript('generate.startGenerate')}
         </button>

@@ -3,10 +3,9 @@
 import { useTranslations } from 'next-intl'
 import type { PanelEditData } from '@/app/[locale]/workspace/[projectId]/modes/novel-promotion/components/PanelEditForm'
 import {
-  GlassChip,
-  GlassField,
-  GlassInput,
-  GlassTextarea
+  PinBadge,
+  PinField,
+  PinTextarea
 } from '@/components/ui/primitives'
 import type { UiPatternMode } from './types'
 import { AppIcon } from '@/components/ui/icons'
@@ -43,20 +42,20 @@ export default function PanelEditFormV2({
   return (
     <div className={`ui-pattern-form ui-pattern-form-${uiMode} space-y-2`}>
       {saveStatus === 'saving' || isSaving ? (
-        <GlassChip tone="info" icon={<span className="h-2 w-2 animate-pulse rounded-full bg-current" />}>
+        <PinBadge tone="info" icon={<span className="h-2 w-2 animate-pulse rounded-full bg-current" />}>
           {t('common.saving')}
-        </GlassChip>
+        </PinBadge>
       ) : null}
       {saveStatus === 'error' ? (
         <div className="flex flex-wrap items-center gap-2">
-          <GlassChip tone="danger">
+          <PinBadge tone="danger">
             {saveErrorMessage || t('common.saveFailed')}
-          </GlassChip>
+          </PinBadge>
           {onRetrySave ? (
             <button
               type="button"
               onClick={onRetrySave}
-              className="glass-btn-base glass-btn-soft px-2 py-1 text-xs"
+              className="pin-btn-base pin-btn-soft px-2 py-1 text-xs"
             >
               {t('common.retrySave')}
             </button>
@@ -65,30 +64,30 @@ export default function PanelEditFormV2({
       ) : null}
 
       {/* sourceText: 对话/旁白内容 - 必显示 */}
-      <GlassField label={t('panel.sourceText')}>
-        <div className="rounded-[var(--glass-radius-md)] bg-[var(--glass-bg-surface-strong)] px-3 py-2.5">
-          <p className="text-sm leading-6 text-[var(--glass-text-secondary)]">&ldquo;{panelData.sourceText || t('panel.noSourceText')}&rdquo;</p>
+      <PinField label={t('panel.sourceText')}>
+        <div className="rounded-[var(--pin-radius-md)] bg-[var(--pin-bg-surface-strong)] px-3 py-2.5">
+          <p className="text-sm leading-6 text-[var(--pin-text-secondary)]">&ldquo;{panelData.sourceText || t('panel.noSourceText')}&rdquo;</p>
         </div>
-      </GlassField>
+      </PinField>
 
-      <GlassField label={t('panel.sceneDescription')}>
-        <GlassTextarea
+      <PinField label={t('panel.sceneDescription')}>
+        <PinTextarea
           density="compact"
           rows={2}
           value={panelData.description || ''}
           onChange={(event) => onUpdate({ description: event.target.value })}
           placeholder={t('panel.sceneDescriptionPlaceholder')}
         />
-      </GlassField>
+      </PinField>
 
       <div className="grid grid-cols-1 gap-2 xl:grid-cols-2">
-        <GlassField
+        <PinField
           label={t('panel.locationLabel')}
           actions={
             <button
               type="button"
               onClick={onOpenLocationPicker}
-              className="inline-flex h-8 w-8 items-center justify-center text-[var(--glass-text-secondary)] hover:text-[var(--glass-tone-info-fg)] transition-colors"
+              className="inline-flex h-8 w-8 items-center justify-center text-[var(--pin-text-secondary)] hover:text-[var(--pin-tone-info-fg)] transition-colors"
               aria-label={t('panel.editLocation')}
               title={t('panel.editLocation')}
             >
@@ -98,20 +97,20 @@ export default function PanelEditFormV2({
         >
           {panelData.location ? (
             <div className="flex flex-wrap gap-1.5">
-              <GlassChip tone="success" onRemove={onRemoveLocation}>{panelData.location}</GlassChip>
+              <PinBadge tone="success" onRemove={onRemoveLocation}>{panelData.location}</PinBadge>
             </div>
           ) : (
-            <p className="text-xs text-[var(--glass-text-tertiary)]">{t('panel.locationNotEdited')}</p>
+            <p className="text-xs text-[var(--pin-text-tertiary)]">{t('panel.locationNotEdited')}</p>
           )}
-        </GlassField>
+        </PinField>
 
-        <GlassField
+        <PinField
           label={t('panel.characterLabelWithCount', { count: panelData.characters.length })}
           actions={
             <button
               type="button"
               onClick={onOpenCharacterPicker}
-              className="inline-flex h-8 w-8 items-center justify-center text-[var(--glass-text-secondary)] hover:text-[var(--glass-tone-info-fg)] transition-colors"
+              className="inline-flex h-8 w-8 items-center justify-center text-[var(--pin-text-secondary)] hover:text-[var(--pin-tone-info-fg)] transition-colors"
               aria-label={t('panel.editCharacter')}
               title={t('panel.editCharacter')}
             >
@@ -122,15 +121,15 @@ export default function PanelEditFormV2({
           {panelData.characters.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
               {panelData.characters.map((character, index) => (
-                <GlassChip key={`${character.name}-${index}`} tone="info" onRemove={() => onRemoveCharacter(index)}>
+                <PinBadge key={`${character.name}-${index}`} tone="info" onRemove={() => onRemoveCharacter(index)}>
                   {character.name}({character.appearance})
-                </GlassChip>
+                </PinBadge>
               ))}
             </div>
           ) : (
-            <p className="text-xs text-[var(--glass-text-tertiary)]">{t('panel.charactersNotEdited')}</p>
+            <p className="text-xs text-[var(--pin-text-tertiary)]">{t('panel.charactersNotEdited')}</p>
           )}
-        </GlassField>
+        </PinField>
       </div>
     </div>
   )

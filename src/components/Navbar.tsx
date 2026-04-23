@@ -42,7 +42,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="glass-nav sticky top-0 z-50">
+      <nav className="pin-nav sticky top-0 z-50">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* 左侧：Logo + 版本信息 */}
@@ -61,8 +61,8 @@ export default function Navbar() {
                 onClick={openModal}
                 disabled={!update}
                 className={`relative inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.02em] transition-all ${update
-                  ? 'border-[var(--glass-tone-warning-fg)]/40 bg-[linear-gradient(135deg,var(--glass-tone-warning-bg),var(--glass-bg-surface-strong))] text-[var(--glass-tone-warning-fg)] shadow-[0_8px_24px_-16px_rgba(245,158,11,0.9)] hover:brightness-105'
-                  : 'border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)] text-[var(--glass-text-secondary)] hover:border-[var(--glass-stroke-focus)] hover:text-[var(--glass-text-primary)] disabled:cursor-default'
+                  ? 'border-[var(--pin-tone-warning-fg)]/40 bg-[linear-gradient(135deg,var(--pin-tone-warning-bg),var(--pin-bg-surface-strong))] text-[var(--pin-tone-warning-fg)] shadow-[0_8px_24px_-16px_rgba(245,158,11,0.9)] hover:brightness-105'
+                  : 'border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] text-[var(--pin-text-secondary)] hover:border-[var(--pin-stroke-focus)] hover:text-[var(--pin-text-primary)] disabled:cursor-default'
                   }`}
                 aria-label={tc('updateNotice.openDialog')}
               >
@@ -71,8 +71,8 @@ export default function Navbar() {
                   {tc('betaVersion', { version: currentVersion })}
                   {update ? (
                     <span className="relative inline-flex items-center">
-                      {shouldPulse ? <span className="absolute -inset-1.5 animate-ping rounded-full bg-[var(--glass-tone-warning-fg)] opacity-20" /> : null}
-                      <span className="relative inline-flex items-center gap-1 rounded-full bg-[var(--glass-tone-warning-fg)]/16 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.04em]">
+                      {shouldPulse ? <span className="absolute -inset-1.5 animate-ping rounded-full bg-[var(--pin-tone-warning-fg)] opacity-20" /> : null}
+                      <span className="relative inline-flex items-center gap-1 rounded-full bg-[var(--pin-tone-warning-fg)]/16 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.04em]">
                         <AppIcon name="upload" className="h-3 w-3" />
                         {tc('updateNotice.updateTag')}
                       </span>
@@ -84,14 +84,14 @@ export default function Navbar() {
                 type="button"
                 onClick={() => void handleCheckUpdate()}
                 disabled={manualChecking}
-                className="rounded-full p-1.5 text-[var(--glass-text-tertiary)] hover:bg-[var(--glass-bg-muted)] hover:text-[var(--glass-text-secondary)] transition-colors disabled:opacity-40"
+                className="rounded-full p-1.5 text-[var(--pin-text-tertiary)] hover:bg-[var(--pin-bg-muted)] hover:text-[var(--pin-text-secondary)] transition-colors disabled:opacity-40"
                 title={tc('updateNotice.checkUpdate')}
               >
                 <AppIcon name="refresh" className={`h-3.5 w-3.5 ${manualChecking ? 'animate-spin' : ''}`} />
               </button>
               {checkMsg === 'upToDate' && !update && (
                 <span
-                  className="text-[11px] text-[var(--glass-tone-success-fg)] font-medium transition-opacity duration-1000"
+                  className="text-[11px] text-[var(--pin-tone-success-fg)] font-medium transition-opacity duration-1000"
                   style={{ opacity: checkMsgFading ? 0 : 1 }}
                 >
                   ✓ {tc('updateNotice.upToDate')}
@@ -104,22 +104,22 @@ export default function Navbar() {
               {status === 'loading' ? (
                 /* Session 加载中骨架屏 */
                 <div className="flex items-center space-x-4">
-                  <div className="h-4 w-16 rounded-full bg-[var(--glass-bg-muted)] animate-pulse" />
-                  <div className="h-4 w-16 rounded-full bg-[var(--glass-bg-muted)] animate-pulse" />
-                  <div className="h-8 w-20 rounded-lg bg-[var(--glass-bg-muted)] animate-pulse" />
+                  <div className="h-4 w-16 rounded-full bg-[var(--pin-bg-muted)] animate-pulse" />
+                  <div className="h-4 w-16 rounded-full bg-[var(--pin-bg-muted)] animate-pulse" />
+                  <div className="h-8 w-20 rounded-lg bg-[var(--pin-bg-muted)] animate-pulse" />
                 </div>
               ) : showAuthenticatedNav ? (
                 <>
                   <Link
                     href={{ pathname: '/novel' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                    className="text-sm text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] font-medium transition-colors flex items-center gap-1"
                   >
                     <AppIcon name="edit" className="w-4 h-4" />
                     {t('novelWriting')}
                   </Link>
                   <Link
                     href={{ pathname: '/workspace' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                    className="text-sm text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] font-medium transition-colors flex items-center gap-1"
                   >
                     <AppIcon name="monitor" className="w-4 h-4" />
                     {t('workspace')}
@@ -127,7 +127,7 @@ export default function Navbar() {
                   {/* ComfyUI 暂时隐藏 */}
                   {/* <Link
                     href={{ pathname: '/comfyui' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                    className="text-sm text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] font-medium transition-colors flex items-center gap-1"
                   >
                     <AppIcon name="image" className="w-4 h-4" />
                     {t('comfyui')}
@@ -135,21 +135,21 @@ export default function Navbar() {
                   {/* Nano Test 暂时隐藏 */}
                   {/* <Link
                     href={{ pathname: '/nano-test' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                    className="text-sm text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] font-medium transition-colors flex items-center gap-1"
                   >
                     <AppIcon name="sparklesAlt" className="w-4 h-4" />
                     Nano Test
                   </Link> */}
                   <Link
                     href={{ pathname: '/workspace/asset-hub' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                    className="text-sm text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] font-medium transition-colors flex items-center gap-1"
                   >
                     <AppIcon name="folderHeart" className="w-4 h-4" />
                     {t('assetHub')}
                   </Link>
                   <Link
                     href={{ pathname: '/profile' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors flex items-center gap-1"
+                    className="text-sm text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] font-medium transition-colors flex items-center gap-1"
                     title={t('profile')}
                   >
                     <AppIcon name="userRoundCog" className="w-5 h-5" />
@@ -161,13 +161,13 @@ export default function Navbar() {
                 <>
                   <Link
                     href={{ pathname: '/auth/signin' }}
-                    className="text-sm text-[var(--glass-text-secondary)] hover:text-[var(--glass-text-primary)] font-medium transition-colors"
+                    className="text-sm text-[var(--pin-text-secondary)] hover:text-[var(--pin-text-primary)] font-medium transition-colors"
                   >
                     {t('signin')}
                   </Link>
                   <Link
                     href={{ pathname: '/auth/signup' }}
-                    className="glass-btn-base glass-btn-primary px-4 py-2 text-sm font-medium"
+                    className="pin-btn-base pin-btn-primary px-4 py-2 text-sm font-medium"
                   >
                     {t('signup')}
                   </Link>

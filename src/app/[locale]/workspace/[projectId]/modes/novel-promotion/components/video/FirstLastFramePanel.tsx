@@ -93,19 +93,19 @@ export default function FirstLastFramePanel({
 
   return (
     <div className="mb-2 space-y-2">
-      <div className="p-2 bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)] rounded-lg">
-        <div className="flex items-center gap-2 text-xs text-[var(--glass-tone-info-fg)] mb-2">
+      <div className="p-2 bg-[var(--pin-tone-info-bg)] border border-[var(--pin-stroke-focus)] rounded-lg">
+        <div className="flex items-center gap-2 text-xs text-[var(--pin-tone-info-fg)] mb-2">
           <span>{t("firstLastFrame.title")}</span>
-          <span className="text-[var(--glass-tone-info-fg)]">{t("firstLastFrame.range", { from: panelIndex + 1, to: panelIndex + 2 })}</span>
+          <span className="text-[var(--pin-tone-info-fg)]">{t("firstLastFrame.range", { from: panelIndex + 1, to: panelIndex + 2 })}</span>
           <button
             onClick={() => onToggleLink(panelKey, panel.storyboardId, panel.panelIndex)}
-            className="ml-auto text-[var(--glass-tone-info-fg)] hover:text-[var(--glass-text-primary)] underline"
+            className="ml-auto text-[var(--pin-tone-info-fg)] hover:text-[var(--pin-text-primary)] underline"
           >
             {t("firstLastFrame.unlinkAction")}
           </button>
         </div>
         <div className="flex gap-2 items-center">
-          <div className="flex-1 bg-[var(--glass-bg-muted)] rounded overflow-hidden relative" style={{ aspectRatio: cssAspectRatio }}>
+          <div className="flex-1 bg-[var(--pin-bg-muted)] rounded overflow-hidden relative" style={{ aspectRatio: cssAspectRatio }}>
             {panel.imageUrl && (
               <MediaImageWithLoading
                 src={panel.imageUrl}
@@ -117,10 +117,10 @@ export default function FirstLastFramePanel({
                 }}
               />
             )}
-            <span className="absolute bottom-1 left-1 bg-[var(--glass-accent-from)] text-white text-[10px] px-1 rounded">{t("firstLastFrame.firstFrame")}</span>
+            <span className="absolute bottom-1 left-1 bg-[var(--pin-color-brand)] text-white text-[10px] px-1 rounded">{t("firstLastFrame.firstFrame")}</span>
           </div>
-          <AppIcon name="arrowRight" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
-          <div className="flex-1 bg-[var(--glass-bg-muted)] rounded overflow-hidden relative" style={{ aspectRatio: cssAspectRatio }}>
+          <AppIcon name="arrowRight" className="w-4 h-4 text-[var(--pin-tone-info-fg)]" />
+          <div className="flex-1 bg-[var(--pin-bg-muted)] rounded overflow-hidden relative" style={{ aspectRatio: cssAspectRatio }}>
             {nextPanel.imageUrl && (
               <MediaImageWithLoading
                 src={nextPanel.imageUrl}
@@ -132,17 +132,17 @@ export default function FirstLastFramePanel({
                 }}
               />
             )}
-            <span className="absolute bottom-1 left-1 bg-[var(--glass-tone-warning-fg)] text-white text-[10px] px-1 rounded">{t("firstLastFrame.lastFrame")}</span>
+            <span className="absolute bottom-1 left-1 bg-[var(--pin-tone-warning-fg)] text-white text-[10px] px-1 rounded">{t("firstLastFrame.lastFrame")}</span>
           </div>
         </div>
         {/* 首尾帧提示词编辑 */}
         <div className="mt-2">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-[var(--glass-tone-info-fg)] font-medium">{t("firstLastFrame.customPrompt")}</span>
+            <span className="text-xs text-[var(--pin-tone-info-fg)] font-medium">{t("firstLastFrame.customPrompt")}</span>
             {hasCustomPrompt && (
               <button
                 onClick={() => onResetPrompt(panelKey)}
-                className="text-xs text-[var(--glass-tone-info-fg)] hover:text-[var(--glass-tone-info-fg)] underline"
+                className="text-xs text-[var(--pin-tone-info-fg)] hover:text-[var(--pin-tone-info-fg)] underline"
               >
                 {t("firstLastFrame.useDefault")}
               </button>
@@ -151,7 +151,7 @@ export default function FirstLastFramePanel({
           <textarea
             value={currentPrompt}
             onChange={(e) => onCustomPromptChange(panelKey, e.target.value)}
-            className="w-full text-xs p-2 border border-[var(--glass-stroke-focus)] rounded bg-[var(--glass-bg-surface)] text-[var(--glass-text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--glass-tone-info-fg)] resize-none"
+            className="w-full text-xs p-2 border border-[var(--pin-stroke-focus)] rounded bg-[var(--pin-bg-surface)] text-[var(--pin-text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--pin-tone-info-fg)] resize-none"
             rows={3}
             placeholder={t("firstLastFrame.promptPlaceholder")}
           />
@@ -161,11 +161,11 @@ export default function FirstLastFramePanel({
         <button
           onClick={() => onGenerate(panel.storyboardId, panel.panelIndex, nextPanel.storyboardId, nextPanel.panelIndex, panelKey, flGenerationOptions, panel.panelId)}
           disabled={isVideoTaskRunning || !panel.imageUrl || !nextPanel.imageUrl || !flModel || hasMissingCapabilities}
-          className={`glass-btn-base flex-1 py-2 text-sm font-medium disabled:opacity-50 ${isFirstLastFrameGenerated
-            ? 'bg-[var(--glass-tone-success-fg)] text-white'
+          className={`pin-btn-base flex-1 py-2 text-sm font-medium disabled:opacity-50 ${isFirstLastFrameGenerated
+            ? 'bg-[var(--pin-tone-success-fg)] text-white'
             : isVideoTaskRunning
-              ? 'bg-[var(--glass-bg-muted)] text-[var(--glass-text-tertiary)]'
-              : 'bg-[var(--glass-accent-from)] text-white hover:bg-[var(--glass-accent-to)]'
+              ? 'bg-[var(--pin-bg-muted)] text-[var(--pin-text-tertiary)]'
+              : 'bg-[var(--pin-color-brand)] text-white hover:bg-[var(--pin-color-brand-hover)]'
             }`}
         >
           {isFirstLastFrameGenerated ? t("firstLastFrame.generated") : isVideoTaskRunning ? (

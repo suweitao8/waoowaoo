@@ -75,13 +75,13 @@ function NavItem({
                     ${disabled
                         ? 'cursor-not-allowed'
                         : active
-                            ? 'text-[var(--glass-tone-info-fg)]'
-                            : 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-primary)]'}
+                            ? 'text-[var(--pin-tone-info-fg)]'
+                            : 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-primary)]'}
                     ${!disabled && 'active:scale-[0.98]'}
                 `}
             >
                 {disabled ? (
-                    <span className="text-base font-medium text-[var(--glass-text-tertiary)] opacity-80">
+                    <span className="text-base font-medium text-[var(--pin-text-tertiary)] opacity-80">
                         {label}
                     </span>
                 ) : (
@@ -90,25 +90,25 @@ function NavItem({
                 {/* 底部指示条 */}
                 <span className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 h-[3px] rounded-full transition-all duration-300 ease-out
                     ${active
-                        ? 'w-6 bg-gradient-to-r from-[var(--glass-accent-from)] to-[var(--glass-accent-to)] shadow-[0_2px_8px_var(--glass-accent-shadow-soft)]'
+                        ? 'w-6 bg-gradient-to-r from-[var(--pin-color-brand)] to-[var(--pin-color-brand-hover)] shadow-[0_2px_8px_var(--pin-accent-shadow-soft)]'
                         : 'w-0 bg-transparent'
                     }`}
                 />
                 {status === 'ready' && !disabled && (
                     <span className={`absolute top-2 right-2 w-1.5 h-1.5 rounded-full transition-colors
-                        ${active ? 'bg-[var(--glass-tone-info-fg)]' : 'bg-[var(--glass-tone-success-fg)]'}`}
+                        ${active ? 'bg-[var(--pin-tone-info-fg)]' : 'bg-[var(--pin-tone-success-fg)]'}`}
                     />
                 )}
                 {status === 'processing' && !disabled && (
-                    <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[var(--glass-accent-from)] animate-pulse" />
+                    <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[var(--pin-color-brand)] animate-pulse" />
                 )}
             </button>
             {disabled && disabledLabel && (
                 <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
-                    <div className="glass-surface-soft text-xs px-3 py-2 whitespace-nowrap text-[var(--glass-text-primary)]">
+                    <div className="pin-surface-soft text-xs px-3 py-2 whitespace-nowrap text-[var(--pin-text-primary)]">
                         {disabledLabel}
                     </div>
-                    <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-[var(--glass-bg-surface-strong)] rotate-45 border-l border-t border-[var(--glass-stroke-base)]" />
+                    <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-2 h-2 bg-[var(--pin-bg-surface-strong)] rotate-45 border-l border-t border-[var(--pin-stroke-base)]" />
                 </div>
             )}
         </div>
@@ -234,25 +234,25 @@ export function EpisodeSelector({
         <div className="fixed top-20 left-6 z-40" ref={menuRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="glass-btn-base glass-btn-secondary flex items-center gap-3 px-4 py-3 transition-all group"
+                className="pin-btn-base pin-btn-secondary flex items-center gap-3 px-4 py-3 transition-all group"
                 style={{ borderRadius: '1.5rem' }}
             >
-                <div className="glass-surface-soft flex h-10 w-10 items-center justify-center rounded-xl text-xs font-bold text-[var(--glass-tone-info-fg)]">
+                <div className="pin-surface-soft flex h-10 w-10 items-center justify-center rounded-xl text-xs font-bold text-[var(--pin-tone-info-fg)]">
                     {t('episode')}
                 </div>
                 <div className="flex flex-col items-start text-left mr-2">
-                    <span className="text-sm font-bold text-[var(--glass-text-primary)] line-clamp-1 max-w-[160px]">
+                    <span className="text-sm font-bold text-[var(--pin-text-primary)] line-clamp-1 max-w-[160px]">
                         {projectName || t('project')}
                     </span>
-                    <span className="text-sm text-[var(--glass-text-secondary)] line-clamp-1 max-w-[160px]">
+                    <span className="text-sm text-[var(--pin-text-secondary)] line-clamp-1 max-w-[160px]">
                         {currentEp.title}
                     </span>
                 </div>
-                <AppIcon name="chevronDown" className={`w-4 h-4 text-[var(--glass-text-tertiary)] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                <AppIcon name="chevronDown" className={`w-4 h-4 text-[var(--pin-text-tertiary)] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isOpen && (
-                <div className="glass-surface-modal absolute left-0 top-full mt-2 w-72 origin-top-left p-2 animate-fadeIn overflow-hidden flex flex-col"
+                <div className="pin-surface-modal absolute left-0 top-full mt-2 w-72 origin-top-left p-2 animate-fadeIn overflow-hidden flex flex-col"
                     style={{ maxHeight: 'calc(100vh - 180px)' }}
                 >
                     {/* 搜索框 */}
@@ -263,14 +263,14 @@ export function EpisodeSelector({
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
                                 placeholder={t('searchEpisode')}
-                                className="w-full px-3 py-1.5 text-sm rounded-lg border border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)] text-[var(--glass-text-primary)] placeholder:text-[var(--glass-text-tertiary)] focus:outline-none focus:border-[var(--glass-stroke-focus)] pr-16"
+                                className="w-full px-3 py-1.5 text-sm rounded-lg border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] text-[var(--pin-text-primary)] placeholder:text-[var(--pin-text-tertiary)] focus:outline-none focus:border-[var(--pin-stroke-focus)] pr-16"
                             />
                             {/* 清空按钮 */}
                             {searchInput && (
                                 <button
                                     type="button"
                                     onClick={() => setSearchInput('')}
-                                    className="absolute right-8 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full hover:bg-[var(--glass-tone-danger-bg)] text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
+                                    className="absolute right-8 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full hover:bg-[var(--pin-tone-danger-bg)] text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-danger-fg)] transition-colors"
                                     title={t('clear')}
                                 >
                                     <AppIcon name="close" className="w-3.5 h-3.5" />
@@ -278,27 +278,27 @@ export function EpisodeSelector({
                             )}
                             <AppIcon
                                 name="search"
-                                className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--glass-text-tertiary)]"
+                                className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--pin-text-tertiary)]"
                             />
                         </div>
                     </div>
                     <div className="flex-1 overflow-y-auto app-scrollbar space-y-1">
                         {filteredEpisodes.length === 0 ? (
-                            <div className="text-center py-4 text-sm text-[var(--glass-text-tertiary)]">
+                            <div className="text-center py-4 text-sm text-[var(--pin-text-tertiary)]">
                                 {t('noResults')}
                             </div>
                         ) : (
                             filteredEpisodes.map(ep => {
                                 const statusColor = ep.status?.visual === 'ready'
-                                    ? 'bg-[var(--glass-tone-success-fg)]'
+                                    ? 'bg-[var(--pin-tone-success-fg)]'
                                     : ep.status?.script === 'ready'
-                                        ? 'bg-[var(--glass-accent-from)]'
-                                        : 'bg-[var(--glass-stroke-strong)]'
+                                        ? 'bg-[var(--pin-color-brand)]'
+                                        : 'bg-[var(--pin-stroke-strong)]'
 
                                 // 编辑模式
                                 if (editingId === ep.id) {
                                     return (
-                                        <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)]">
+                                        <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--pin-tone-info-bg)] border border-[var(--pin-stroke-focus)]">
                                             <div className={`w-2 h-10 rounded-full ${statusColor}`} />
                                             <input
                                                 type="text"
@@ -312,7 +312,7 @@ export function EpisodeSelector({
                                                         setEditingId(null)
                                                     }
                                                 }}
-                                                className="flex-1 px-2 py-1 text-sm border border-[var(--glass-stroke-focus)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--glass-focus-ring-strong)]"
+                                                className="flex-1 px-2 py-1 text-sm border border-[var(--pin-stroke-focus)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--pin-focus-ring-strong)]"
                                                 autoFocus
                                             />
                                             <button
@@ -322,13 +322,13 @@ export function EpisodeSelector({
                                                     }
                                                     setEditingId(null)
                                                 }}
-                                                className="w-7 h-7 rounded-lg bg-[var(--glass-accent-from)] text-white hover:bg-[var(--glass-accent-to)] flex items-center justify-center"
+                                                className="w-7 h-7 rounded-lg bg-[var(--pin-color-brand)] text-white hover:bg-[var(--pin-color-brand-hover)] flex items-center justify-center"
                                             >
                                                 <AppIcon name="check" className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => setEditingId(null)}
-                                                className="w-7 h-7 rounded-lg bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center"
+                                                className="w-7 h-7 rounded-lg bg-[var(--pin-bg-muted)] text-[var(--pin-text-secondary)] hover:bg-[var(--pin-bg-surface-strong)] flex items-center justify-center"
                                             >
                                                 <AppIcon name="close" className="w-4 h-4" />
                                             </button>
@@ -339,8 +339,8 @@ export function EpisodeSelector({
                                 // 删除确认模式
                                 if (deletingId === ep.id) {
                                     return (
-                                        <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--glass-tone-danger-bg)] border border-[var(--glass-tone-danger-fg)]/30">
-                                            <div className="flex-1 text-sm font-medium text-[var(--glass-tone-danger-fg)] truncate">
+                                        <div key={ep.id} className="flex items-center gap-2 p-3 rounded-xl bg-[var(--pin-tone-danger-bg)] border border-[var(--pin-tone-danger-fg)]/30">
+                                            <div className="flex-1 text-sm font-medium text-[var(--pin-tone-danger-fg)] truncate">
                                                 {t('deleteEpisode')}：{ep.title}
                                             </div>
                                             <button
@@ -349,13 +349,13 @@ export function EpisodeSelector({
                                                     setDeletingId(null)
                                                     setIsOpen(false)
                                                 }}
-                                                className="px-2 py-1 rounded-lg bg-[var(--glass-tone-danger-fg)] text-white text-xs font-medium hover:opacity-90 transition-opacity"
+                                                className="px-2 py-1 rounded-lg bg-[var(--pin-tone-danger-fg)] text-white text-xs font-medium hover:opacity-90 transition-opacity"
                                             >
                                                 {t('deleteEpisodeConfirm')}
                                             </button>
                                             <button
                                                 onClick={() => setDeletingId(null)}
-                                                className="w-7 h-7 rounded-lg bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center"
+                                                className="w-7 h-7 rounded-lg bg-[var(--pin-bg-muted)] text-[var(--pin-text-secondary)] hover:bg-[var(--pin-bg-surface-strong)] flex items-center justify-center"
                                             >
                                                 <AppIcon name="close" className="w-4 h-4" />
                                             </button>
@@ -367,8 +367,8 @@ export function EpisodeSelector({
                                     <div
                                         key={ep.id}
                                         className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${ep.id === currentId
-                                            ? 'bg-[var(--glass-tone-info-bg)] border border-[var(--glass-stroke-focus)]'
-                                            : 'hover:bg-[var(--glass-bg-muted)] border border-transparent'
+                                            ? 'bg-[var(--pin-tone-info-bg)] border border-[var(--pin-stroke-focus)]'
+                                            : 'hover:bg-[var(--pin-bg-muted)] border border-transparent'
                                             }`}
                                     >
                                         <button
@@ -377,13 +377,13 @@ export function EpisodeSelector({
                                         >
                                             <div className={`w-2 h-10 rounded-full ${statusColor}`} />
                                             <div className="flex-1">
-                                                <div className="font-bold text-[var(--glass-text-primary)] text-sm truncate">{ep.title}</div>
+                                                <div className="font-bold text-[var(--pin-text-primary)] text-sm truncate">{ep.title}</div>
                                                 {ep.summary && (
-                                                    <div className="text-xs text-[var(--glass-text-tertiary)] truncate">{ep.summary}</div>
+                                                    <div className="text-xs text-[var(--pin-text-tertiary)] truncate">{ep.summary}</div>
                                                 )}
                                             </div>
                                             {ep.id === currentId && (
-                                                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)]">
+                                                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)]">
                                                     <AppIcon name="checkDot" className="h-2.5 w-2.5" />
                                                 </span>
                                             )}
@@ -395,7 +395,7 @@ export function EpisodeSelector({
                                                     setEditingId(ep.id)
                                                     setEditingName(ep.title)
                                                 }}
-                                                className="w-7 h-7 rounded-lg hover:bg-[var(--glass-bg-surface-strong)] flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] transition-colors"
+                                                className="w-7 h-7 rounded-lg hover:bg-[var(--pin-bg-surface-strong)] flex items-center justify-center text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)] transition-colors"
                                                 title={t('editEpisodeName')}
                                             >
                                                 <AppIcon name="edit" className="w-4 h-4" />
@@ -407,7 +407,7 @@ export function EpisodeSelector({
                                                     e.stopPropagation()
                                                     setDeletingId(ep.id)
                                                 }}
-                                                className="w-7 h-7 rounded-lg hover:bg-[var(--glass-tone-danger-bg)] flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
+                                                className="w-7 h-7 rounded-lg hover:bg-[var(--pin-tone-danger-bg)] flex items-center justify-center text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-danger-fg)] transition-colors"
                                                 title={t('deleteEpisode')}
                                             >
                                                 <AppIcon name="trash" className="w-4 h-4" />
@@ -420,18 +420,18 @@ export function EpisodeSelector({
                     </div>
                     {onAdd && (
                         <>
-                            <div className="h-px bg-[var(--glass-bg-muted)] my-2 mx-2" />
+                            <div className="h-px bg-[var(--pin-bg-muted)] my-2 mx-2" />
                             <div className="flex gap-2 px-1">
                                 <button
                                     onClick={() => { onAdd(); setIsOpen(false); }}
-                                    className="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-info-fg)] hover:bg-[var(--glass-tone-info-bg)] font-medium text-sm transition-colors"
+                                    className="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-info-fg)] hover:bg-[var(--pin-tone-info-bg)] font-medium text-sm transition-colors"
                                 >
                                     <span className="text-lg">+</span> {t('newEpisode')}
                                 </button>
                                 {onImportNovel && (
                                     <button
                                         onClick={() => { onImportNovel(); setIsOpen(false); }}
-                                        className="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-info-fg)] hover:bg-[var(--glass-tone-info-bg)] font-medium text-sm transition-colors"
+                                        className="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-info-fg)] hover:bg-[var(--pin-tone-info-bg)] font-medium text-sm transition-colors"
                                     >
                                         <AppIcon name="upload" className="w-4 h-4" /> {t('importNovel')}
                                     </button>

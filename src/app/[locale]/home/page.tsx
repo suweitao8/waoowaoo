@@ -163,14 +163,14 @@ export default function HomePage() {
 
   if (status === 'loading' || !session) {
     return (
-      <div className="glass-page min-h-screen flex items-center justify-center">
-        <div className="text-[var(--glass-text-secondary)]">{tc('loading')}</div>
+      <div className="pin-page min-h-screen flex items-center justify-center">
+        <div className="text-[var(--pin-text-secondary)]">{tc('loading')}</div>
       </div>
     )
   }
 
   return (
-    <div className="glass-page min-h-screen">
+    <div className="pin-page min-h-screen">
       <Navbar />
 
       {/* 自定义呼吸动画 */}
@@ -204,10 +204,10 @@ export default function HomePage() {
         {/* ─── 取景器整体包裹：标题 + 输入框 ─── */}
         <div className="w-full relative p-5">
           {/* 四角校准线 */}
-          <span className="absolute top-0 left-0 w-5 h-5 border-t border-l border-[var(--glass-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
-          <span className="absolute top-0 right-0 w-5 h-5 border-t border-r border-[var(--glass-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
-          <span className="absolute bottom-0 left-0 w-5 h-5 border-b border-l border-[var(--glass-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
-          <span className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-[var(--glass-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
+          <span className="absolute top-0 left-0 w-5 h-5 border-t border-l border-[var(--pin-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
+          <span className="absolute top-0 right-0 w-5 h-5 border-t border-r border-[var(--pin-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
+          <span className="absolute bottom-0 left-0 w-5 h-5 border-b border-l border-[var(--pin-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
+          <span className="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-[var(--pin-text-primary)] pointer-events-none z-10" style={{ animation: 'bracket-breathe 8s ease-in-out infinite' }} />
 
           {/* REC 录制指示灯 */}
           <span
@@ -272,7 +272,7 @@ export default function HomePage() {
                 <button
                   onClick={() => void handleCreate()}
                   disabled={!inputValue.trim() || createLoading}
-                  className="glass-btn-base glass-btn-primary h-10 flex-shrink-0 px-5 text-sm disabled:opacity-50"
+                  className="pin-btn-base pin-btn-primary h-10 flex-shrink-0 px-5 text-sm disabled:opacity-50"
                 >
                   {createLoading ? tc('loading') : t('startCreation')}
                   <AppIcon name="arrowRight" className="w-4 h-4" />
@@ -282,7 +282,7 @@ export default function HomePage() {
                 <button
                   onClick={() => setAiWriteOpen(true)}
                   disabled={createLoading}
-                  className="glass-btn-base flex h-10 flex-shrink-0 items-center gap-1.5 border border-[var(--glass-stroke-strong)] px-3 text-sm transition-all hover:border-[var(--glass-tone-info-fg)]/40"
+                  className="pin-btn-base flex h-10 flex-shrink-0 items-center gap-1.5 border border-[var(--pin-stroke-strong)] px-3 text-sm transition-all hover:border-[var(--pin-tone-info-fg)]/40"
                 >
                   <AppIcon name="sparkles" className="w-4 h-4 text-[#7c3aed]" />
                   <span
@@ -318,10 +318,10 @@ export default function HomePage() {
       {/* 最近项目 */}
       <section className="px-4 sm:px-6 lg:px-10 pb-8 max-w-[1400px] mx-auto w-full">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-sm font-semibold text-[var(--glass-text-secondary)]">{t('recentProjects')}</h2>
+          <h2 className="text-sm font-semibold text-[var(--pin-text-secondary)]">{t('recentProjects')}</h2>
           <Link
             href={{ pathname: '/workspace' }}
-            className="text-xs text-[var(--glass-tone-info-fg)] hover:underline font-medium"
+            className="text-xs text-[var(--pin-tone-info-fg)] hover:underline font-medium"
           >
             {t('viewAll')}
           </Link>
@@ -330,19 +330,19 @@ export default function HomePage() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="glass-surface p-5 animate-pulse">
-                <div className="h-4 bg-[var(--glass-bg-muted)] rounded mb-3" />
-                <div className="h-3 bg-[var(--glass-bg-muted)] rounded mb-2" />
-                <div className="h-3 bg-[var(--glass-bg-muted)] rounded w-2/3" />
+              <div key={i} className="pin-surface p-5 animate-pulse">
+                <div className="h-4 bg-[var(--pin-bg-muted)] rounded mb-3" />
+                <div className="h-3 bg-[var(--pin-bg-muted)] rounded mb-2" />
+                <div className="h-3 bg-[var(--pin-bg-muted)] rounded w-2/3" />
               </div>
             ))}
           </div>
         ) : projects.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-12 h-12 bg-[var(--glass-bg-muted)] rounded-xl flex items-center justify-center mx-auto mb-3">
-              <AppIcon name="folderCards" className="w-6 h-6 text-[var(--glass-text-tertiary)]" />
+            <div className="w-12 h-12 bg-[var(--pin-bg-muted)] rounded-xl flex items-center justify-center mx-auto mb-3">
+              <AppIcon name="folderCards" className="w-6 h-6 text-[var(--pin-text-tertiary)]" />
             </div>
-            <p className="text-sm text-[var(--glass-text-tertiary)]">{t('noProjects')}</p>
+            <p className="text-sm text-[var(--pin-text-tertiary)]">{t('noProjects')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
@@ -350,17 +350,17 @@ export default function HomePage() {
               <Link
                 key={project.id}
                 href={{ pathname: `/workspace/${project.id}` }}
-                className="glass-surface cursor-pointer group hover:border-[var(--glass-tone-info-fg)]/40 transition-all duration-300 overflow-hidden relative block"
+                className="pin-surface cursor-pointer group hover:border-[var(--pin-tone-info-fg)]/40 transition-all duration-300 overflow-hidden relative block"
               >
                 <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <div className="p-5 relative z-10">
-                  <h3 className="text-sm font-bold text-[var(--glass-text-primary)] mb-2 group-hover:text-[var(--glass-tone-info-fg)] transition-colors line-clamp-1">
+                  <h3 className="text-sm font-bold text-[var(--pin-text-primary)] mb-2 group-hover:text-[var(--pin-tone-info-fg)] transition-colors line-clamp-1">
                     {project.name}
                   </h3>
                   {(project.description || project.stats?.firstEpisodePreview) && (
                     <div className="flex items-start gap-2 mb-3">
-                      <AppIcon name="fileText" className="w-3.5 h-3.5 text-[var(--glass-text-tertiary)] mt-0.5 flex-shrink-0" />
-                      <p className="text-xs text-[var(--glass-text-secondary)] line-clamp-2 leading-relaxed">
+                      <AppIcon name="fileText" className="w-3.5 h-3.5 text-[var(--pin-text-tertiary)] mt-0.5 flex-shrink-0" />
+                      <p className="text-xs text-[var(--pin-text-secondary)] line-clamp-2 leading-relaxed">
                         {project.description || project.stats?.firstEpisodePreview}
                       </p>
                     </div>
@@ -391,7 +391,7 @@ export default function HomePage() {
                       </div>
                     </div>
                   )}
-                  <div className="flex items-center gap-1 text-[10px] text-[var(--glass-text-tertiary)]">
+                  <div className="flex items-center gap-1 text-[10px] text-[var(--pin-text-tertiary)]">
                     <AppIcon name="clock" className="w-3 h-3" />
                     {formatTimeAgo(project.updatedAt)}
                   </div>

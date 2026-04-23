@@ -32,17 +32,17 @@ export function FolderModal({ folder, onClose, onSave }: FolderModalProps) {
     }
 
     return (
-        <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 p-4">
-            <div className="glass-surface-modal max-w-sm w-full">
+        <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 p-4">
+            <div className="pin-surface-modal max-w-sm w-full">
                 <div className="p-5">
                     {/* 标题 */}
                     <div className="flex items-center justify-between mb-5">
-                        <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">
+                        <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">
                             {folder ? t('editFolder') : t('newFolder')}
                         </h3>
                         <button
                             onClick={onClose}
-                            className="glass-btn-base glass-btn-soft h-8 w-8 rounded-full flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]"
+                            className="pin-btn-base pin-btn-soft h-8 w-8 rounded-full flex items-center justify-center text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]"
                         >
                             <XMarkIcon className="w-5 h-5" />
                         </button>
@@ -50,7 +50,7 @@ export function FolderModal({ folder, onClose, onSave }: FolderModalProps) {
 
                     <form onSubmit={handleSubmit}>
                         <div className="mb-5">
-                            <label className="block text-sm font-medium text-[var(--glass-text-secondary)] mb-2">
+                            <label className="block text-sm font-medium text-[var(--pin-text-secondary)] mb-2">
                                 {t('folderName')}
                             </label>
                             <input
@@ -58,7 +58,7 @@ export function FolderModal({ folder, onClose, onSave }: FolderModalProps) {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder={t('folderNamePlaceholder')}
-                                className="glass-input-base w-full px-3 py-2 text-sm"
+                                className="pin-input-base w-full px-3 py-2 text-sm"
                                 autoFocus
                             />
                         </div>
@@ -67,14 +67,14 @@ export function FolderModal({ folder, onClose, onSave }: FolderModalProps) {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg text-sm"
+                                className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg text-sm"
                             >
                                 {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 disabled={!name.trim()}
-                                className="glass-btn-base glass-btn-primary px-4 py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="pin-btn-base pin-btn-primary px-4 py-2 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {folder ? t('save') : t('create')}
                             </button>

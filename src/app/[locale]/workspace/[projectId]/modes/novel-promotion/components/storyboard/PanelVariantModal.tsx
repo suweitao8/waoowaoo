@@ -143,23 +143,23 @@ export default function PanelVariantModal({
 
   const modalContent = (
     <div
-      className="fixed inset-0 glass-overlay flex items-center justify-center p-4"
+      className="fixed inset-0 pin-overlay flex items-center justify-center p-4"
       style={{ zIndex: 9999 }}
       onClick={handleClose}
     >
       <div
-        className="glass-surface-modal w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="pin-surface-modal w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="px-5 py-3 border-b border-[var(--glass-stroke-base)] flex items-center justify-between">
-          <h2 className="text-base font-bold text-[var(--glass-text-primary)] flex items-center gap-2">
-            <AppIcon name="videoWide" className="h-4 w-4 text-[var(--glass-text-secondary)]" />
+        <div className="px-5 py-3 border-b border-[var(--pin-stroke-base)] flex items-center justify-between">
+          <h2 className="text-base font-bold text-[var(--pin-text-primary)] flex items-center gap-2">
+            <AppIcon name="videoWide" className="h-4 w-4 text-[var(--pin-text-secondary)]" />
             {t('variant.shotTitle', { number: panel.panelNumber ?? '' })}
           </h2>
           <button
             onClick={handleClose}
             disabled={isSubmittingVariantTask || isAnalyzing}
-            className="glass-btn-base glass-btn-soft p-1.5 disabled:opacity-50"
+            className="pin-btn-base pin-btn-soft p-1.5 disabled:opacity-50"
           >
             <AppIcon name="close" className="w-5 h-5" />
           </button>
@@ -172,26 +172,26 @@ export default function PanelVariantModal({
                 <MediaImageWithLoading
                   src={panel.imageUrl}
                   alt={t('variant.shotNum', { number: panel.panelNumber ?? '' })}
-                  containerClassName="w-full aspect-[9/16] rounded-lg shadow-[var(--glass-shadow-sm)]"
-                  className="w-full aspect-[9/16] object-cover rounded-lg shadow-[var(--glass-shadow-sm)]"
+                  containerClassName="w-full aspect-[9/16] rounded-lg shadow-[var(--pin-shadow-sm)]"
+                  className="w-full aspect-[9/16] object-cover rounded-lg shadow-[var(--pin-shadow-sm)]"
                   width={256}
                   height={456}
                   sizes="128px"
                 />
               ) : (
-                <div className="w-full aspect-[9/16] bg-[var(--glass-bg-muted)] rounded-lg flex items-center justify-center text-[var(--glass-text-tertiary)] text-xs">
+                <div className="w-full aspect-[9/16] bg-[var(--pin-bg-muted)] rounded-lg flex items-center justify-center text-[var(--pin-text-tertiary)] text-xs">
                   {t('variant.noImage')}
                 </div>
               )}
-              <div className="text-xs text-[var(--glass-text-tertiary)] mt-1 text-center">#{panel.panelNumber}</div>
+              <div className="text-xs text-[var(--pin-text-tertiary)] mt-1 text-center">#{panel.panelNumber}</div>
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-medium text-[var(--glass-text-primary)] mb-1">{t('variant.originalDescription')}</h3>
-              <p className="text-sm text-[var(--glass-text-secondary)]">{panel.description || t('variant.noDescription')}</p>
+              <h3 className="text-sm font-medium text-[var(--pin-text-primary)] mb-1">{t('variant.originalDescription')}</h3>
+              <p className="text-sm text-[var(--pin-text-secondary)]">{panel.description || t('variant.noDescription')}</p>
             </div>
           </div>
 
-          <div className="glass-divider" />
+          <div className="pin-divider" />
 
           <PanelVariantModalSuggestionList
             isAnalyzing={isAnalyzing}
@@ -207,7 +207,7 @@ export default function PanelVariantModal({
             }}
           />
 
-          <div className="glass-divider" />
+          <div className="pin-divider" />
 
           <PanelVariantModalCustomOptions
             customInput={customInput}
@@ -220,11 +220,11 @@ export default function PanelVariantModal({
           />
         </div>
 
-        <div className="px-5 py-3 border-t border-[var(--glass-stroke-base)] flex justify-end gap-3">
+        <div className="px-5 py-3 border-t border-[var(--pin-stroke-base)] flex justify-end gap-3">
           <button
             onClick={handleClose}
             disabled={isSubmittingVariantTask || isAnalyzing}
-            className="glass-btn-base glass-btn-secondary px-4 py-2 text-sm disabled:opacity-50"
+            className="pin-btn-base pin-btn-secondary px-4 py-2 text-sm disabled:opacity-50"
           >
             {t('candidate.cancel')}
           </button>
@@ -233,12 +233,12 @@ export default function PanelVariantModal({
               void handleCustomVariant()
             }}
             disabled={isSubmittingVariantTask || !customInput.trim()}
-            className={`glass-btn-base px-4 py-2 text-sm rounded-lg ${isSubmittingVariantTask || !customInput.trim() ? 'glass-btn-soft text-[var(--glass-text-tertiary)] cursor-not-allowed' : 'glass-btn-primary text-white'}`}
+            className={`pin-btn-base px-4 py-2 text-sm rounded-lg ${isSubmittingVariantTask || !customInput.trim() ? 'pin-btn-soft text-[var(--pin-text-tertiary)] cursor-not-allowed' : 'pin-btn-primary text-white'}`}
           >
             {isSubmittingVariantTask ? (
               <TaskStatusInline
                 state={variantTaskRunningState}
-                className="text-[var(--glass-text-tertiary)] [&>span]:text-[var(--glass-text-tertiary)] [&_svg]:text-[var(--glass-text-tertiary)]"
+                className="text-[var(--pin-text-tertiary)] [&>span]:text-[var(--pin-text-tertiary)] [&_svg]:text-[var(--pin-text-tertiary)]"
               />
             ) : t('variant.useCustomGenerate')}
           </button>

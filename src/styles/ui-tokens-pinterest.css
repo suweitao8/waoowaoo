@@ -1,0 +1,122 @@
+:root {
+  /* ===== 核心颜色 ===== */
+
+  /* 品牌主色 */
+  --pin-color-brand: #e60023;                    /* Pinterest Red */
+  --pin-color-brand-hover: #ad081b;              /* 深红，hover 状态 */
+  --pin-color-brand-pressed: #8a0615;            /* 更深红，pressed 状态 */
+
+  /* 背景色 - 暖白色调 */
+  --pin-bg-canvas: #ffffff;                      /* 页面背景 */
+  --pin-bg-surface: rgba(255, 255, 255, 0.94);   /* 卡片背景 */
+  --pin-bg-surface-strong: rgba(255, 255, 255, 0.97);
+  --pin-bg-surface-modal: rgba(255, 255, 255, 0.98);
+  --pin-bg-muted: #e5e5e0;                       /* 沙灰色，次级按钮背景 */
+  --pin-bg-warm-wash: hsla(60, 20%, 98%, 0.5);   /* 暖色徽章背景 */
+  --pin-bg-fog: #f6f6f3;                         /* 雾白色 */
+  --pin-bg-dark: #33332e;                        /* 深色区域背景 */
+  --pin-bg-nav: rgba(255, 255, 255, 0.98);
+
+  /* 文字色 */
+  --pin-text-primary: #211922;                   /* Plum Black，主文字 */
+  --pin-text-secondary: #62625b;                 /* Olive Gray，次级文字 */
+  --pin-text-tertiary: #91918c;                  /* Warm Silver，辅助文字 */
+  --pin-text-on-accent: #000000;                 /* 品牌色上的文字 */
+  --pin-text-on-dark: #ffffff;                   /* 深色背景上的文字 */
+
+  /* 边框色 */
+  --pin-stroke-soft: rgba(255, 255, 255, 0.22);
+  --pin-stroke-base: rgba(145, 145, 140, 0.32);
+  --pin-stroke-strong: rgba(98, 98, 91, 0.48);
+  --pin-stroke-focus: #435ee5;                   /* Focus Blue */
+  --pin-stroke-danger: rgba(158, 10, 10, 0.64);
+  --pin-stroke-warning: rgba(184, 100, 0, 0.62);
+  --pin-stroke-success: rgba(16, 60, 37, 0.62);
+  --pin-stroke-disabled: #c8c8c1;
+
+  /* 语义色 */
+  --pin-color-success: #103c25;                  /* Green 700 */
+  --pin-color-success-hover: #0b2819;
+  --pin-color-error: #9e0a0a;                    /* Error Red */
+  --pin-color-info: #2b48d4;                     /* Link Blue */
+  --pin-color-warning: #b86400;                  /* Warning */
+
+  /* ===== 圆角系统 ===== */
+  --pin-radius-xs: 8px;
+  --pin-radius-sm: 12px;                         /* 小元素 */
+  --pin-radius-md: 16px;                         /* 按钮、输入框 */
+  --pin-radius-lg: 20px;                         /* 卡片 */
+  --pin-radius-xl: 28px;                         /* 大容器 */
+  --pin-radius-hero: 40px;                       /* Hero 区域 */
+  --pin-radius-full: 50%;                        /* 圆形按钮 */
+
+  /* ===== 阴影系统 ===== */
+  --pin-shadow-sm: 0 2px 8px rgba(33, 25, 34, 0.04);
+  --pin-shadow-md: 0 4px 12px rgba(33, 25, 34, 0.06);
+  --pin-shadow-lg: 0 8px 20px rgba(33, 25, 34, 0.08);
+  --pin-shadow-modal: 0 14px 34px rgba(33, 25, 34, 0.1);
+  --pin-shadow-nav: 0 8px 18px rgba(33, 25, 34, 0.08);
+  --pin-shadow-brand: 0 8px 20px rgba(230, 0, 35, 0.24);
+
+  /* ===== 间距系统 ===== */
+  --pin-space-1: 4px;
+  --pin-space-2: 8px;
+  --pin-space-3: 12px;
+  --pin-space-4: 16px;
+  --pin-space-5: 20px;
+  --pin-space-6: 24px;
+  --pin-space-7: 28px;
+  --pin-space-8: 32px;
+
+  /* ===== 密度系统 ===== */
+  --pin-density-compact-scale: 0.86;
+  --pin-density-default-scale: 1;
+
+  /* ===== 色调系统 (Tone) ===== */
+  --pin-tone-neutral-bg: rgba(100, 116, 139, 0.18);
+  --pin-tone-neutral-fg: #374151;
+  --pin-tone-info-bg: rgba(43, 72, 212, 0.12);
+  --pin-tone-info-fg: #1d4ed8;
+  --pin-tone-success-bg: rgba(16, 60, 37, 0.12);
+  --pin-tone-success-fg: #103c25;
+  --pin-tone-warning-bg: rgba(184, 100, 0, 0.14);
+  --pin-tone-warning-fg: #b86400;
+  --pin-tone-danger-bg: rgba(158, 10, 10, 0.12);
+  --pin-tone-danger-fg: #9e0a0a;
+
+  /* ===== 遮罩层 ===== */
+  --pin-overlay-soft: rgba(33, 25, 34, 0.34);
+  --pin-overlay: rgba(33, 25, 34, 0.46);
+  --pin-overlay-strong: rgba(33, 25, 34, 0.58);
+
+  /* ===== 品牌色相关 ===== */
+  --pin-accent-shadow-soft: rgba(230, 0, 35, 0.24);
+  --pin-accent-shadow-strong: rgba(230, 0, 35, 0.32);
+  --pin-focus-ring: rgba(67, 94, 229, 0.16);
+  --pin-focus-ring-strong: rgba(67, 94, 229, 0.22);
+  --pin-danger-ring: rgba(158, 10, 10, 0.14);
+  --pin-ghost-hover-bg: rgba(246, 246, 243, 0.8);
+
+  /* ===== 模糊系统 ===== */
+  --pin-blur-sm: 4px;
+  --pin-blur-md: 8px;
+  --pin-blur-lg: 12px;
+  --pin-blur-nav: 16px;
+}
+
+/* Low-cost preset for performance-sensitive environments */
+[data-pin-preset='subtle'] {
+  --pin-bg-surface: rgba(255, 255, 255, 0.96);
+  --pin-bg-surface-strong: rgba(255, 255, 255, 0.98);
+  --pin-bg-surface-modal: rgba(255, 255, 255, 0.99);
+  --pin-bg-nav: rgba(255, 255, 255, 0.99);
+  --pin-blur-sm: 2px;
+  --pin-blur-md: 4px;
+  --pin-blur-lg: 8px;
+  --pin-shadow-sm: 0 1px 4px rgba(33, 25, 34, 0.03);
+  --pin-shadow-md: 0 2px 8px rgba(33, 25, 34, 0.05);
+  --pin-shadow-lg: 0 4px 12px rgba(33, 25, 34, 0.06);
+  --pin-shadow-modal: 0 6px 16px rgba(33, 25, 34, 0.08);
+  --pin-shadow-nav: 0 4px 10px rgba(33, 25, 34, 0.06);
+  --pin-blur-nav: 12px;
+}

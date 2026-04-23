@@ -1,0 +1,533 @@
+/* ===== 页面与容器 ===== */
+
+.pin-page {
+  background: var(--pin-bg-canvas);
+  color: var(--pin-text-primary);
+}
+
+.pin-surface {
+  background: var(--pin-bg-surface);
+  border: 1px solid var(--pin-stroke-soft);
+  box-shadow: var(--pin-shadow-sm);
+  backdrop-filter: blur(var(--pin-blur-md));
+  -webkit-backdrop-filter: blur(var(--pin-blur-md));
+  border-radius: var(--pin-radius-lg);
+}
+
+.pin-surface-elevated {
+  background: var(--pin-bg-surface-strong);
+  border: 1px solid var(--pin-stroke-soft);
+  box-shadow: var(--pin-shadow-lg);
+  backdrop-filter: blur(var(--pin-blur-lg));
+  -webkit-backdrop-filter: blur(var(--pin-blur-lg));
+  border-radius: var(--pin-radius-lg);
+}
+
+.pin-surface-modal {
+  background: var(--pin-bg-surface-modal);
+  border: 1px solid var(--pin-stroke-soft);
+  box-shadow: var(--pin-shadow-modal);
+  backdrop-filter: blur(var(--pin-blur-lg));
+  -webkit-backdrop-filter: blur(var(--pin-blur-lg));
+  border-radius: var(--pin-radius-xl);
+}
+
+.pin-surface-nav {
+  background: var(--pin-bg-nav);
+  border: 1px solid var(--pin-stroke-soft);
+  box-shadow: var(--pin-shadow-nav);
+  backdrop-filter: blur(var(--pin-blur-nav));
+  -webkit-backdrop-filter: blur(var(--pin-blur-nav));
+  border-radius: 999px;
+}
+
+.pin-surface-soft {
+  background: var(--pin-bg-surface-strong);
+  box-shadow: var(--pin-shadow-sm);
+  backdrop-filter: blur(var(--pin-blur-md));
+  -webkit-backdrop-filter: blur(var(--pin-blur-md));
+  border-radius: var(--pin-radius-lg);
+}
+
+.pin-divider {
+  border-top: 1px solid var(--pin-stroke-base);
+}
+
+/* ===== 表单标签 ===== */
+
+.pin-field-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--pin-text-primary);
+  letter-spacing: 0.01em;
+}
+
+.pin-field-hint {
+  font-size: 12px;
+  color: var(--pin-text-secondary);
+}
+
+/* ===== 输入框 ===== */
+
+.pin-input-base,
+.pin-textarea-base,
+.pin-select-base {
+  width: 100%;
+  border-radius: var(--pin-radius-md);
+  border: 1px solid var(--pin-text-tertiary);
+  background: var(--pin-bg-canvas);
+  color: var(--pin-text-primary);
+  outline: none;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.pin-input-base::placeholder,
+.pin-textarea-base::placeholder {
+  color: var(--pin-text-tertiary);
+  opacity: 0.85;
+}
+
+.pin-input-base:hover,
+.pin-textarea-base:hover,
+.pin-select-base:hover {
+  border-color: var(--pin-stroke-strong);
+}
+
+.pin-input-base:focus-visible,
+.pin-textarea-base:focus-visible,
+.pin-select-base:focus-visible {
+  border-color: var(--pin-stroke-focus);
+  box-shadow: 0 0 0 3px var(--pin-focus-ring);
+  background: var(--pin-bg-surface-strong);
+}
+
+.pin-input-base[aria-invalid='true'],
+.pin-textarea-base[aria-invalid='true'] {
+  border-color: var(--pin-stroke-danger);
+  box-shadow: 0 0 0 2px var(--pin-danger-ring);
+}
+
+.pin-input-base:disabled,
+.pin-textarea-base:disabled,
+.pin-select-base:disabled {
+  background: var(--pin-bg-fog);
+  border-color: var(--pin-stroke-disabled);
+  color: var(--pin-text-tertiary);
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* ===== 按钮系统 ===== */
+
+.pin-btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: var(--pin-radius-md);
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.pin-btn-base:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--pin-focus-ring-strong);
+}
+
+.pin-btn-base:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pin-btn-primary {
+  background: var(--pin-color-brand);
+  border: none;
+  color: #000000;
+  box-shadow: 0 8px 20px var(--pin-accent-shadow-soft);
+}
+
+.pin-btn-primary:hover:not(:disabled) {
+  background: var(--pin-color-brand-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px var(--pin-accent-shadow-strong);
+}
+
+.pin-btn-primary:active:not(:disabled) {
+  background: var(--pin-color-brand-pressed);
+  transform: translateY(0);
+}
+
+.pin-btn-secondary {
+  background: var(--pin-bg-muted);
+  color: var(--pin-text-primary);
+  border-color: transparent;
+  box-shadow: var(--pin-shadow-sm);
+}
+
+.pin-btn-secondary:hover:not(:disabled) {
+  background: #d9d9d4;
+  box-shadow: var(--pin-shadow-md);
+}
+
+.pin-btn-soft {
+  background: var(--pin-bg-fog);
+  color: var(--pin-text-primary);
+  box-shadow: none;
+}
+
+.pin-btn-soft:hover:not(:disabled) {
+  background: var(--pin-bg-surface-strong);
+  transform: translateY(-1px);
+}
+
+.pin-btn-ghost {
+  background: transparent;
+  color: var(--pin-text-secondary);
+}
+
+.pin-btn-ghost:hover:not(:disabled) {
+  background: var(--pin-ghost-hover-bg);
+}
+
+.pin-btn-danger {
+  background: rgba(158, 10, 10, 0.14);
+  color: var(--pin-tone-danger-fg);
+  box-shadow: inset 0 0 0 1px rgba(158, 10, 10, 0.32);
+}
+
+.pin-btn-danger:hover:not(:disabled) {
+  background: rgba(158, 10, 10, 0.22);
+}
+
+/* 圆形操作按钮 - Pinterest 特有 */
+.pin-btn-circular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--pin-radius-full);
+  background: var(--pin-bg-muted);
+  color: var(--pin-text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.pin-btn-circular:hover {
+  background: #d9d9d4;
+}
+
+/* ===== 色调按钮 ===== */
+
+.pin-btn-tone-info {
+  background: var(--pin-tone-info-bg);
+  color: var(--pin-tone-info-fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pin-tone-info-fg) 24%, transparent);
+}
+
+.pin-btn-tone-info:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pin-tone-info-bg) 85%, white);
+}
+
+.pin-btn-tone-success {
+  background: var(--pin-tone-success-bg);
+  color: var(--pin-tone-success-fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pin-tone-success-fg) 24%, transparent);
+}
+
+.pin-btn-tone-success:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pin-tone-success-bg) 85%, white);
+}
+
+.pin-btn-tone-warning {
+  background: var(--pin-tone-warning-bg);
+  color: var(--pin-tone-warning-fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pin-tone-warning-fg) 24%, transparent);
+}
+
+.pin-btn-tone-warning:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pin-tone-warning-bg) 85%, white);
+}
+
+.pin-btn-tone-danger {
+  background: var(--pin-tone-danger-bg);
+  color: var(--pin-tone-danger-fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pin-tone-danger-fg) 24%, transparent);
+}
+
+.pin-btn-tone-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pin-tone-danger-bg) 85%, white);
+}
+
+/* ===== 徽章/标签 ===== */
+
+.pin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pin-badge-warm {
+  background: var(--pin-bg-warm-wash);
+  color: var(--pin-text-primary);
+}
+
+.pin-badge-neutral {
+  background: var(--pin-tone-neutral-bg);
+  color: var(--pin-tone-neutral-fg);
+}
+
+.pin-badge-info {
+  background: var(--pin-tone-info-bg);
+  color: var(--pin-tone-info-fg);
+}
+
+.pin-badge-success {
+  background: var(--pin-tone-success-bg);
+  color: var(--pin-tone-success-fg);
+}
+
+.pin-badge-warning {
+  background: var(--pin-tone-warning-bg);
+  color: var(--pin-tone-warning-fg);
+}
+
+.pin-badge-danger {
+  background: var(--pin-tone-danger-bg);
+  color: var(--pin-tone-danger-fg);
+}
+
+/* 兼容旧类名 */
+.pin-chip { }
+.pin-chip-neutral { background: var(--pin-tone-neutral-bg); color: var(--pin-tone-neutral-fg); }
+.pin-chip-info { background: var(--pin-tone-info-bg); color: var(--pin-tone-info-fg); }
+.pin-chip-success { background: var(--pin-tone-success-bg); color: var(--pin-tone-success-fg); }
+.pin-chip-warning { background: var(--pin-tone-warning-bg); color: var(--pin-tone-warning-fg); }
+.pin-chip-danger { background: var(--pin-tone-danger-bg); color: var(--pin-tone-danger-fg); }
+
+/* ===== 密度系统 ===== */
+
+.pin-density-compact {
+  --pin-density-scale: var(--pin-density-compact-scale);
+}
+
+.pin-density-default {
+  --pin-density-scale: var(--pin-density-default-scale);
+}
+
+/* ===== 遮罩层 ===== */
+
+.pin-overlay {
+  background: var(--pin-overlay);
+  backdrop-filter: blur(var(--pin-blur-sm));
+  -webkit-backdrop-filter: blur(var(--pin-blur-sm));
+}
+
+.pin-overlay-soft {
+  background: var(--pin-overlay-soft);
+  backdrop-filter: blur(var(--pin-blur-sm));
+  -webkit-backdrop-filter: blur(var(--pin-blur-sm));
+}
+
+.pin-overlay-strong {
+  background: var(--pin-overlay-strong);
+  backdrop-filter: blur(var(--pin-blur-sm));
+  -webkit-backdrop-filter: blur(var(--pin-blur-sm));
+}
+
+/* ===== 图标按钮 ===== */
+
+.pin-icon-btn-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--pin-radius-xs);
+  color: var(--pin-text-tertiary);
+  transition: all 0.2s ease;
+}
+
+.pin-icon-btn-sm:hover {
+  color: var(--pin-text-secondary);
+  background: var(--pin-bg-fog);
+}
+
+/* ===== 列表行 ===== */
+
+.pin-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--pin-radius-xs);
+  border: 1px solid var(--pin-stroke-base);
+  background: var(--pin-bg-surface);
+  transition: all 0.2s ease;
+}
+
+.pin-list-row:hover {
+  border-color: var(--pin-stroke-focus);
+}
+
+.pin-list-row[data-disabled='true'] {
+  opacity: 0.5;
+  background: var(--pin-bg-fog);
+  border-color: transparent;
+}
+
+/* ===== 分段控件 ===== */
+
+.pin-segmented {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: var(--pin-radius-xs);
+  background: var(--pin-bg-fog);
+}
+
+.pin-segmented-item {
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--pin-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.pin-segmented-item:hover {
+  color: var(--pin-text-primary);
+}
+
+.pin-segmented-item[data-active='true'] {
+  background: var(--pin-color-brand);
+  color: #000000;
+}
+
+/* ===== 开关 ===== */
+
+.pin-toggle {
+  width: 28px;
+  height: 16px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px;
+  transition: all 0.2s ease;
+  background: var(--pin-stroke-strong);
+  justify-content: flex-start;
+}
+
+.pin-toggle[data-active='true'] {
+  background: var(--pin-color-brand);
+  justify-content: flex-end;
+}
+
+.pin-toggle-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--pin-bg-canvas);
+  box-shadow: var(--pin-shadow-sm);
+}
+
+/* ===== 迷你复选框 ===== */
+
+.pin-check-mini {
+  display: inline-flex;
+  width: 12px;
+  height: 12px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid var(--pin-stroke-strong);
+  background: var(--pin-bg-canvas);
+  transition: all 0.2s ease;
+}
+
+.pin-check-mini[data-active='true'] {
+  border-color: var(--pin-color-brand);
+  background: var(--pin-color-brand);
+}
+
+/* ===== 滚动条 ===== */
+
+:where(
+  .app-scrollbar,
+  .overflow-auto,
+  .overflow-scroll,
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-x-scroll,
+  .overflow-y-scroll
+) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pin-stroke-strong) transparent;
+  scrollbar-gutter: stable;
+}
+
+:where(
+  .app-scrollbar,
+  .overflow-auto,
+  .overflow-scroll,
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-x-scroll,
+  .overflow-y-scroll
+)::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+:where(
+  .app-scrollbar,
+  .overflow-auto,
+  .overflow-scroll,
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-x-scroll,
+  .overflow-y-scroll
+)::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:where(
+  .app-scrollbar,
+  .overflow-auto,
+  .overflow-scroll,
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-x-scroll,
+  .overflow-y-scroll
+)::-webkit-scrollbar-thumb {
+  background: var(--pin-stroke-strong);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+:where(
+  .app-scrollbar,
+  .overflow-auto,
+  .overflow-scroll,
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-x-scroll,
+  .overflow-y-scroll
+)::-webkit-scrollbar-thumb:hover {
+  background: var(--pin-stroke-focus);
+  background-clip: content-box;
+}

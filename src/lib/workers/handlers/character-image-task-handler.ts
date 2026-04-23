@@ -1,6 +1,6 @@
 import { type Job } from 'bullmq'
 import { prisma } from '@/lib/prisma'
-import { CHARACTER_ASSET_IMAGE_RATIO, addCharacterPromptSuffix, getArtStylePrompt, isArtStyleValue, PRIMARY_APPEARANCE_INDEX, type ArtStyleValue } from '@/lib/constants'
+import { CHARACTER_ASSET_IMAGE_RATIO, getArtStylePrompt, isArtStyleValue, PRIMARY_APPEARANCE_INDEX, type ArtStyleValue } from '@/lib/constants'
 import { type TaskJobData } from '@/lib/task/types'
 import { encodeImageUrls } from '@/lib/contracts/image-urls-contract'
 import { normalizeImageGenerationCount } from '@/lib/image-generation/count'
@@ -18,6 +18,8 @@ import {
   parseJsonStringArray,
   pickFirstString,
 } from './image-task-handler-shared'
+import { getUserPromptTemplatesCached } from '@/lib/user-prompt-templates'
+import { buildCharacterPrompt } from '@/lib/prompt-templates'
 
 function resolvePayloadArtStyle(payload: AnyObj): ArtStyleValue | undefined {
   if (!Object.prototype.hasOwnProperty.call(payload, 'artStyle')) return undefined
@@ -76,6 +78,9 @@ export async function handleCharacterImageTask(job: Job<TaskJobData>) {
   const models = await getProjectModels(projectId, userId)
   const modelId = models.characterModel
   if (!modelId) throw new Error('Character model not configured')
+
+  // 获取用户提示词模板配置
+  const userTemplates = await getUserPromptTemplatesCached(userId)
 
   const appearanceId = pickFirstString(job.data.targetId, payload.appearanceId)
   let appearance: CharacterAppearanceRecord | null = null
@@ -145,7 +150,11 @@ export async function handleCharacterImageTask(job: Job<TaskJobData>) {
   for (let i = 0; i < indexes.length; i++) {
     const index = indexes[i]
     const raw = baseDescriptions[index] || baseDescriptions[0]
-    const prompt = artStyle ? `${addCharacterPromptSuffix(raw)}，${artStyle}` : addCharacterPromptSuffix(raw)
+    // 使用用户配置的模板生成提示词
+    const promptCore = buildCharacterPrompt(userTemplates.characterPromptTemplate, {
+      description: raw,
+    })
+    const prompt = artStyle ? `${promptCore}，${artStyle}` : promptCore
 
     await reportTaskProgress(job, 15 + Math.floor((i / Math.max(indexes.length, 1)) * 55), {
       stage: 'generate_character_image',

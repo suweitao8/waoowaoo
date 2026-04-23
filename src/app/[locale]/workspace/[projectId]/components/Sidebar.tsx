@@ -218,25 +218,25 @@ export default function Sidebar({
                 <div className="flex flex-col items-center">
                     {/* 拖动手柄 */}
                     <div
-                        className="w-6 h-4 bg-[var(--glass-bg-muted)] rounded-t cursor-ns-resize flex items-center justify-center hover:bg-[var(--glass-bg-surface-strong)] transition-colors"
+                        className="w-6 h-4 bg-[var(--pin-bg-muted)] rounded-t cursor-ns-resize flex items-center justify-center hover:bg-[var(--pin-bg-surface-strong)] transition-colors"
                         onMouseDown={handleDragStart}
                         title={t('sidebar.dragToMove')}
                     >
                         <div className="flex gap-0.5">
-                            <div className="w-0.5 h-1.5 bg-[var(--glass-text-tertiary)] rounded-full" />
-                            <div className="w-0.5 h-1.5 bg-[var(--glass-text-tertiary)] rounded-full" />
-                            <div className="w-0.5 h-1.5 bg-[var(--glass-text-tertiary)] rounded-full" />
+                            <div className="w-0.5 h-1.5 bg-[var(--pin-text-tertiary)] rounded-full" />
+                            <div className="w-0.5 h-1.5 bg-[var(--pin-text-tertiary)] rounded-full" />
+                            <div className="w-0.5 h-1.5 bg-[var(--pin-text-tertiary)] rounded-full" />
                         </div>
                     </div>
 
                     {/* 展开按钮 */}
                     <div
-                        className={`glass-surface rounded-r-xl cursor-pointer transition-all flex items-center gap-1 px-2 py-3 ${isExpanded ? 'bg-[var(--glass-tone-info-bg)] border-[var(--glass-stroke-focus)]' : ''
+                        className={`pin-surface rounded-r-xl cursor-pointer transition-all flex items-center gap-1 px-2 py-3 ${isExpanded ? 'bg-[var(--pin-tone-info-bg)] border-[var(--pin-stroke-focus)]' : ''
                             }`}
                         onClick={() => setIsExpanded(!isExpanded)}
                     >
-                        <AppIcon name="chevronRight" className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180 text-[var(--glass-tone-info-fg)]' : 'text-[var(--glass-text-tertiary)]'}`} />
-                        <span className={`text-xs font-medium whitespace-nowrap ${isExpanded ? 'text-[var(--glass-tone-info-fg)]' : 'text-[var(--glass-text-secondary)]'}`}>
+                        <AppIcon name="chevronRight" className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180 text-[var(--pin-tone-info-fg)]' : 'text-[var(--pin-text-tertiary)]'}`} />
+                        <span className={`text-xs font-medium whitespace-nowrap ${isExpanded ? 'text-[var(--pin-tone-info-fg)]' : 'text-[var(--pin-text-secondary)]'}`}>
                             {t('episode')}
                         </span>
                     </div>
@@ -248,43 +248,43 @@ export default function Sidebar({
                 <>
                     {/* 背景遮罩 */}
                     <div
-                        className="fixed inset-0 glass-overlay z-40"
+                        className="fixed inset-0 pin-overlay z-40"
                         onClick={() => setIsExpanded(false)}
                     />
 
                     {/* 侧边面板 */}
                     <div
-                        className="fixed left-12 glass-surface-modal rounded-r-xl z-50 w-64 overflow-hidden flex flex-col"
+                        className="fixed left-12 pin-surface-modal rounded-r-xl z-50 w-64 overflow-hidden flex flex-col"
                         style={{ top: position.y - 50, bottom: 100 }}
                     >
                         {/* 标题栏 */}
-                        <div className="p-4 border-b border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)]">
+                        <div className="p-4 border-b border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)]">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h3 className="font-bold text-[var(--glass-text-primary)] text-sm flex items-center gap-1.5">
-                                        <AppIcon name="monitor" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
+                                    <h3 className="font-bold text-[var(--pin-text-primary)] text-sm flex items-center gap-1.5">
+                                        <AppIcon name="monitor" className="w-4 h-4 text-[var(--pin-tone-info-fg)]" />
                                         <span>{t('sidebar.listTitle')}</span>
                                     </h3>
-                                    <p className="text-xs text-[var(--glass-text-secondary)] mt-0.5 truncate" title={projectName}>
+                                    <p className="text-xs text-[var(--pin-text-secondary)] mt-0.5 truncate" title={projectName}>
                                         {projectName}
                                     </p>
                                 </div>
-                                <span className="text-xs text-[var(--glass-text-tertiary)] bg-[var(--glass-bg-muted)] px-2 py-0.5 rounded">
+                                <span className="text-xs text-[var(--pin-text-tertiary)] bg-[var(--pin-bg-muted)] px-2 py-0.5 rounded">
                                     {t('sidebar.episodeCount', { count: episodes.length })}
                                 </span>
                             </div>
                         </div>
 
                         {/* 全局资产入口 */}
-                        <div className="px-3 py-2 border-b border-[var(--glass-stroke-base)]">
+                        <div className="px-3 py-2 border-b border-[var(--pin-stroke-base)]">
                             <button
                                 onClick={() => {
                                     onGlobalAssetsClick()
                                     setIsExpanded(false)
                                 }}
-                                className={`glass-btn-base w-full py-2 px-3 rounded-lg text-left text-sm transition-colors flex items-center justify-start gap-2 ${isGlobalAssetsView
-                                        ? 'glass-btn-tone-info'
-                                        : 'glass-btn-soft text-[var(--glass-text-secondary)]'
+                                className={`pin-btn-base w-full py-2 px-3 rounded-lg text-left text-sm transition-colors flex items-center justify-start gap-2 ${isGlobalAssetsView
+                                        ? 'pin-btn-tone-info'
+                                        : 'pin-btn-soft text-[var(--pin-text-secondary)]'
                                     }`}
                             >
                                 <AppIcon name="coins" className="w-4 h-4" />
@@ -295,7 +295,7 @@ export default function Sidebar({
                         {/* 剧集列表 */}
                         <div className="flex-1 overflow-y-auto p-3 space-y-1">
                             {episodes.length === 0 ? (
-                                <div className="text-center py-6 text-[var(--glass-text-tertiary)] text-sm">
+                                <div className="text-center py-6 text-[var(--pin-text-tertiary)] text-sm">
                                     {t('sidebar.empty')}
                                 </div>
                             ) : (
@@ -318,7 +318,7 @@ export default function Sidebar({
                                                     type="text"
                                                     value={editingName}
                                                     onChange={(e) => setEditingName(e.target.value)}
-                                                    className="glass-input-base flex-1 px-2 py-1.5 text-sm"
+                                                    className="pin-input-base flex-1 px-2 py-1.5 text-sm"
                                                     autoFocus
                                                     onKeyDown={(e) => {
                                                         if (e.key === 'Enter') handleRename(ep.id)
@@ -327,25 +327,25 @@ export default function Sidebar({
                                                 />
                                                 <button
                                                     onClick={() => handleRename(ep.id)}
-                                                    className="glass-btn-base glass-btn-tone-info px-2 py-1 text-xs rounded"
+                                                    className="pin-btn-base pin-btn-tone-info px-2 py-1 text-xs rounded"
                                                 >
                                                     {t('sidebar.save')}
                                                 </button>
                                             </div>
                                         ) : deleteConfirmId === ep.id ? (
                                             // 删除确认
-                                            <div className="bg-[var(--glass-tone-danger-bg)] p-2 rounded-lg">
-                                                <p className="text-xs text-[var(--glass-tone-danger-fg)] mb-2">{t('sidebar.deleteConfirm', { name: ep.name })}</p>
+                                            <div className="bg-[var(--pin-tone-danger-bg)] p-2 rounded-lg">
+                                                <p className="text-xs text-[var(--pin-tone-danger-fg)] mb-2">{t('sidebar.deleteConfirm', { name: ep.name })}</p>
                                                 <div className="flex gap-1">
                                                     <button
                                                         onClick={() => handleDelete(ep.id)}
-                                                        className="glass-btn-base glass-btn-tone-danger flex-1 py-1 text-xs rounded"
+                                                        className="pin-btn-base pin-btn-tone-danger flex-1 py-1 text-xs rounded"
                                                     >
                                                         {t('sidebar.delete')}
                                                     </button>
                                                     <button
                                                         onClick={() => setDeleteConfirmId(null)}
-                                                        className="glass-btn-base glass-btn-secondary flex-1 py-1 text-xs rounded"
+                                                        className="pin-btn-base pin-btn-secondary flex-1 py-1 text-xs rounded"
                                                     >
                                                         {t('sidebar.cancel')}
                                                     </button>
@@ -359,22 +359,22 @@ export default function Sidebar({
                                                     setIsExpanded(false)
                                                 }}
                                                 className={`w-full py-2 px-3 rounded-lg text-left text-sm transition-colors flex items-center gap-2 ${currentEpisodeId === ep.id && !isGlobalAssetsView
-                                                        ? 'glass-btn-tone-info'
-                                                        : 'hover:bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)]'
+                                                        ? 'pin-btn-tone-info'
+                                                        : 'hover:bg-[var(--pin-bg-muted)] text-[var(--pin-text-secondary)]'
                                                     }`}
                                             >
-                                                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${currentEpisodeId === ep.id && !isGlobalAssetsView ? 'bg-[var(--glass-bg-surface)]/25' : 'bg-[var(--glass-bg-muted)]'
+                                                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${currentEpisodeId === ep.id && !isGlobalAssetsView ? 'bg-[var(--pin-bg-surface)]/25' : 'bg-[var(--pin-bg-muted)]'
                                                     }`}>
                                                     {ep.episodeNumber}
                                                 </span>
                                                 <span className="truncate flex-1">{ep.name}</span>
 
                                                 {/* 操作按钮 */}
-                                                <div className={`flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity ${currentEpisodeId === ep.id && !isGlobalAssetsView ? 'text-white/80' : 'text-[var(--glass-text-tertiary)]'
+                                                <div className={`flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity ${currentEpisodeId === ep.id && !isGlobalAssetsView ? 'text-white/80' : 'text-[var(--pin-text-tertiary)]'
                                                     }`}>
                                                     <button
                                                         type="button"
-                                                        className="glass-btn-base glass-btn-ghost w-6 h-6 rounded-md p-0 hover:scale-110 transition-transform"
+                                                        className="pin-btn-base pin-btn-ghost w-6 h-6 rounded-md p-0 hover:scale-110 transition-transform"
                                                         onClick={(e) => {
                                                             e.stopPropagation()
                                                             setEditingId(ep.id)
@@ -386,7 +386,7 @@ export default function Sidebar({
                                                     </button>
                                                     <button
                                                         type="button"
-                                                        className="glass-btn-base glass-btn-ghost w-6 h-6 rounded-md p-0 hover:scale-110 transition-transform"
+                                                        className="pin-btn-base pin-btn-ghost w-6 h-6 rounded-md p-0 hover:scale-110 transition-transform"
                                                         onClick={(e) => {
                                                             e.stopPropagation()
                                                             setDeleteConfirmId(ep.id)
@@ -404,7 +404,7 @@ export default function Sidebar({
                         </div>
 
                         {/* 添加剧集 */}
-                        <div className="p-3 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)]">
+                        <div className="p-3 border-t border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)]">
                             {isCreating ? (
                                 <div className="space-y-2">
                                     <input
@@ -412,7 +412,7 @@ export default function Sidebar({
                                         value={newEpisodeName}
                                         onChange={(e) => setNewEpisodeName(e.target.value)}
                                         placeholder={t('sidebar.newEpisodePlaceholder')}
-                                        className="glass-input-base w-full px-3 py-2 text-sm rounded-lg"
+                                        className="pin-input-base w-full px-3 py-2 text-sm rounded-lg"
                                         autoFocus
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') handleCreate()
@@ -426,7 +426,7 @@ export default function Sidebar({
                                         <button
                                             onClick={handleCreate}
                                             disabled={!newEpisodeName.trim()}
-                                            className="glass-btn-base glass-btn-primary flex-1 py-1.5 text-sm rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="pin-btn-base pin-btn-primary flex-1 py-1.5 text-sm rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             {t('sidebar.create')}
                                         </button>
@@ -435,7 +435,7 @@ export default function Sidebar({
                                                 setIsCreating(false)
                                                 setNewEpisodeName('')
                                             }}
-                                            className="glass-btn-base glass-btn-secondary flex-1 py-1.5 text-sm rounded-lg"
+                                            className="pin-btn-base pin-btn-secondary flex-1 py-1.5 text-sm rounded-lg"
                                         >
                                             {t('sidebar.cancel')}
                                         </button>
@@ -444,7 +444,7 @@ export default function Sidebar({
                             ) : (
                                 <button
                                     onClick={() => setIsCreating(true)}
-                                    className="glass-btn-base glass-btn-tone-success w-full py-2 px-3 rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
+                                    className="pin-btn-base pin-btn-tone-success w-full py-2 px-3 rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
                                 >
                                     <span>+</span>
                                     <span>{t('sidebar.addEpisode')}</span>
@@ -461,16 +461,16 @@ export default function Sidebar({
                                     onChange={(e) => setSearchInput(e.target.value)}
                                     onKeyDown={handleSearchKeyDown}
                                     placeholder={t('sidebar.searchPlaceholder')}
-                                    className="glass-input-base w-full px-3 py-1.5 text-sm rounded-lg pr-8"
+                                    className="pin-input-base w-full px-3 py-1.5 text-sm rounded-lg pr-8"
                                     disabled={episodes.length === 0}
                                 />
                                 <AppIcon
                                     name="search"
-                                    className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--glass-text-tertiary)]"
+                                    className="w-4 h-4 absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--pin-text-tertiary)]"
                                 />
                             </div>
                             {searchError && (
-                                <span className="text-xs text-[var(--glass-tone-danger-fg)] mt-1 block animate-fadeIn">
+                                <span className="text-xs text-[var(--pin-tone-danger-fg)] mt-1 block animate-fadeIn">
                                     {searchError}
                                 </span>
                             )}

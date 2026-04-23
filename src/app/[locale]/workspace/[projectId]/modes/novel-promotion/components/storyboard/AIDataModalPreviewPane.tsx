@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { useTranslations } from 'next-intl'
 import { AppIcon } from '@/components/ui/icons'
-import GlassButton from '@/components/ui/primitives/GlassButton'
+import PinButton from '@/components/ui/primitives/PinButton'
 
 interface AIDataModalPreviewPaneProps {
   t: ReturnType<typeof useTranslations<'storyboard'>>
@@ -61,26 +61,26 @@ export default function AIDataModalPreviewPane({
   const copyIconName = copyState === 'success' ? 'clipboardCheck' : copyState === 'error' ? 'alert' : 'copy'
 
   return (
-    <div className="w-[45%] flex flex-col overflow-hidden bg-[var(--glass-bg-muted)]">
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface)] flex-shrink-0">
+    <div className="w-[45%] flex flex-col overflow-hidden bg-[var(--pin-bg-muted)]">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] flex-shrink-0">
         <div className="flex items-center gap-2">
-          <AppIcon name="fileText" className="h-3.5 w-3.5 text-[var(--glass-tone-info-fg)]" />
-          <span className="text-xs font-medium text-[var(--glass-text-tertiary)]">
+          <AppIcon name="fileText" className="h-3.5 w-3.5 text-[var(--pin-tone-info-fg)]" />
+          <span className="text-xs font-medium text-[var(--pin-text-tertiary)]">
             {t('aiData.jsonCheck')}
           </span>
         </div>
-        <GlassButton
+        <PinButton
           size="sm"
           variant="ghost"
           onClick={handleCopy}
           iconLeft={<AppIcon name={copyIconName} className="h-3 w-3" />}
         >
           {copyLabel}
-        </GlassButton>
+        </PinButton>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
-        <pre className="text-[11px] font-mono leading-relaxed text-[var(--glass-text-secondary)] whitespace-pre-wrap break-all">
+        <pre className="text-[11px] font-mono leading-relaxed text-[var(--pin-text-secondary)] whitespace-pre-wrap break-all">
           {JSON.stringify(previewJson, null, 2)}
         </pre>
       </div>

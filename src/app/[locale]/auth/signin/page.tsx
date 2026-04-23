@@ -26,8 +26,8 @@ export default function SignIn() {
   // 单用户模式下不渲染登录表单
   if (isSingleUserMode()) {
     return (
-      <div className="glass-page min-h-screen flex items-center justify-center">
-        <div className="text-[var(--glass-text-secondary)]">Redirecting...</div>
+      <div className="pin-page min-h-screen flex items-center justify-center">
+        <div className="text-[var(--pin-text-secondary)]">Redirecting...</div>
       </div>
     )
   }
@@ -60,21 +60,21 @@ export default function SignIn() {
   }
 
   return (
-    <div className="glass-page min-h-screen">
+    <div className="pin-page min-h-screen">
       <Navbar />
       <div className="flex items-center justify-center px-4 py-12">
         <div className="max-w-md w-full">
-          <div className="glass-surface-modal p-8">
+          <div className="pin-surface-modal p-8">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-[var(--glass-text-primary)] mb-2">
+              <h1 className="text-3xl font-bold text-[var(--pin-text-primary)] mb-2">
                 {t('welcomeBack')}
               </h1>
-              <p className="text-[var(--glass-text-secondary)]">{t('loginTo')}</p>
+              <p className="text-[var(--pin-text-secondary)]">{t('loginTo')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="username" className="glass-field-label block mb-2">
+                <label htmlFor="username" className="pin-field-label block mb-2">
                   {t('phoneNumber')}
                 </label>
                 <input
@@ -85,13 +85,13 @@ export default function SignIn() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="glass-input-base w-full px-4 py-3"
+                  className="pin-input-base w-full px-4 py-3"
                   placeholder={t('phoneNumberPlaceholder')}
                 />
               </div>
 
               <div>
-                <label htmlFor="password" className="glass-field-label block mb-2">
+                <label htmlFor="password" className="pin-field-label block mb-2">
                   {t('password')}
                 </label>
                 <input
@@ -102,13 +102,13 @@ export default function SignIn() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="glass-input-base w-full px-4 py-3"
+                  className="pin-input-base w-full px-4 py-3"
                   placeholder={t('passwordPlaceholder')}
                 />
               </div>
 
               {error && (
-                <div className="bg-[var(--glass-tone-danger-bg)] border border-[color:color-mix(in_srgb,var(--glass-tone-danger-fg)_22%,transparent)] text-[var(--glass-tone-danger-fg)] px-4 py-3 rounded-lg text-sm">
+                <div className="bg-[var(--pin-tone-danger-bg)] border border-[color:color-mix(in_srgb,var(--pin-tone-danger-fg)_22%,transparent)] text-[var(--pin-tone-danger-fg)] px-4 py-3 rounded-lg text-sm">
                   {error}
                 </div>
               )}
@@ -116,23 +116,23 @@ export default function SignIn() {
               <button
                 type="submit"
                 disabled={loading}
-                className="glass-btn-base glass-btn-primary w-full py-3 px-4 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="pin-btn-base pin-btn-primary w-full py-3 px-4 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? t('loginButtonLoading') : t('loginButton')}
               </button>
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-[var(--glass-text-secondary)]">
+              <p className="text-[var(--pin-text-secondary)]">
                 {t('noAccount')}{" "}
-                <Link href={{ pathname: '/auth/signup' }} className="text-[var(--glass-tone-info-fg)] hover:underline font-medium">
+                <Link href={{ pathname: '/auth/signup' }} className="text-[var(--pin-tone-info-fg)] hover:underline font-medium">
                   {t('signupNow')}
                 </Link>
               </p>
             </div>
 
             <div className="mt-6 text-center">
-              <Link href={{ pathname: '/' }} className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)] text-sm">
+              <Link href={{ pathname: '/' }} className="text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)] text-sm">
                 {t('backToHome')}
               </Link>
             </div>

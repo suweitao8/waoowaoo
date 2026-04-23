@@ -33,24 +33,24 @@ export default function ConfirmDialog({
   const typeStyles = {
     danger: {
       icon: (
-        <AppIcon name="alert" className="w-6 h-6 text-[var(--glass-tone-danger-fg)]" />
+        <AppIcon name="alert" className="w-6 h-6 text-[var(--pin-tone-danger-fg)]" />
       ),
-      confirmBg: 'glass-btn-tone-danger',
-      iconBg: 'bg-[var(--glass-tone-danger-bg)]'
+      confirmBg: 'pin-btn-tone-danger',
+      iconBg: 'bg-[var(--pin-tone-danger-bg)]'
     },
     warning: {
       icon: (
-        <AppIcon name="alert" className="w-6 h-6 text-[var(--glass-tone-warning-fg)]" />
+        <AppIcon name="alert" className="w-6 h-6 text-[var(--pin-tone-warning-fg)]" />
       ),
-      confirmBg: 'glass-btn-tone-warning',
-      iconBg: 'bg-[var(--glass-tone-warning-bg)]'
+      confirmBg: 'pin-btn-tone-warning',
+      iconBg: 'bg-[var(--pin-tone-warning-bg)]'
     },
     info: {
       icon: (
-        <AppIcon name="info" className="w-6 h-6 text-[var(--glass-tone-info-fg)]" />
+        <AppIcon name="info" className="w-6 h-6 text-[var(--pin-tone-info-fg)]" />
       ),
-      confirmBg: 'glass-btn-tone-info',
-      iconBg: 'bg-[var(--glass-tone-info-bg)]'
+      confirmBg: 'pin-btn-tone-info',
+      iconBg: 'bg-[var(--pin-tone-info-bg)]'
     }
   }
 
@@ -60,14 +60,14 @@ export default function ConfirmDialog({
     <>
       {/* 背景遮罩 */}
       <div
-        className="fixed inset-0 z-50 glass-overlay animate-fade-in"
+        className="fixed inset-0 z-50 pin-overlay animate-fade-in"
         onClick={onCancel}
       />
 
       {/* 对话框 */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
         <div
-          className="glass-surface-modal max-w-md w-full p-6 pointer-events-auto animate-scale-in"
+          className="pin-surface-modal max-w-md w-full p-6 pointer-events-auto animate-scale-in"
           onClick={(e) => e.stopPropagation()}
         >
           {/* 图标 */}
@@ -76,12 +76,12 @@ export default function ConfirmDialog({
           </div>
 
           {/* 标题 */}
-          <h3 className="mb-2 text-xl font-semibold text-[var(--glass-text-primary)]">
+          <h3 className="mb-2 text-xl font-semibold text-[var(--pin-text-primary)]">
             {title}
           </h3>
 
           {/* 消息 */}
-          <p className="mb-6 text-[var(--glass-text-secondary)]">
+          <p className="mb-6 text-[var(--pin-text-secondary)]">
             {message}
           </p>
 
@@ -89,13 +89,13 @@ export default function ConfirmDialog({
           <div className="flex gap-3">
             <button
               onClick={onCancel}
-              className="glass-btn-base glass-btn-secondary flex-1 px-4 py-2.5 font-medium rounded-xl"
+              className="pin-btn-base pin-btn-secondary flex-1 px-4 py-2.5 font-medium rounded-xl"
             >
               {finalCancelText}
             </button>
             <button
               onClick={onConfirm}
-              className={`glass-btn-base flex-1 px-4 py-2.5 font-medium rounded-xl ${currentStyle.confirmBg}`}
+              className={`pin-btn-base flex-1 px-4 py-2.5 font-medium rounded-xl ${currentStyle.confirmBg}`}
             >
               {finalConfirmText}
             </button>

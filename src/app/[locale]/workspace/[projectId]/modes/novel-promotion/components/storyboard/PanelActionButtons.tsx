@@ -25,17 +25,17 @@ export default function PanelActionButtons({
     const t = useTranslations('storyboard')
     const baseButtonClass = `
         group relative h-7 w-7 rounded-full
-        glass-btn-base border border-[var(--glass-stroke-base)]
-        bg-[var(--glass-bg-surface)] text-[var(--glass-text-secondary)]
-        shadow-[var(--glass-shadow-sm)] transition-all duration-200 ease-out
+        pin-btn-base border border-[var(--pin-stroke-base)]
+        bg-[var(--pin-bg-surface)] text-[var(--pin-text-secondary)]
+        shadow-[var(--pin-shadow-sm)] transition-all duration-200 ease-out
         flex items-center justify-center
     `
     const enabledButtonClass = `
-        hover:-translate-y-0.5 hover:shadow-[var(--glass-shadow-md)]
-        hover:border-[var(--glass-stroke-focus)] hover:bg-[var(--glass-tone-info-bg)]
+        hover:-translate-y-0.5 hover:shadow-[var(--pin-shadow-md)]
+        hover:border-[var(--pin-stroke-focus)] hover:bg-[var(--pin-tone-info-bg)]
     `
     const disabledButtonClass = `
-        bg-[var(--glass-bg-muted)] text-[var(--glass-text-tertiary)] cursor-not-allowed
+        bg-[var(--pin-bg-muted)] text-[var(--pin-text-tertiary)] cursor-not-allowed
     `
 
     return (
@@ -55,7 +55,7 @@ export default function PanelActionButtons({
                 {/* Hover 时显示提示 */}
                 <span className={`
                     absolute -top-8 left-1/2 -translate-x-1/2
-                    px-2 py-1 text-xs text-white bg-[var(--glass-overlay)] rounded
+                    px-2 py-1 text-xs text-white bg-[var(--pin-overlay)] rounded
                     opacity-0 group-hover:opacity-100
                     transition-opacity duration-200
                     whitespace-nowrap pointer-events-none
@@ -80,7 +80,7 @@ export default function PanelActionButtons({
                 {/* Hover 时显示提示 */}
                 <span className={`
                     absolute -top-8 left-1/2 -translate-x-1/2
-                    px-2 py-1 text-xs text-white bg-[var(--glass-overlay)] rounded
+                    px-2 py-1 text-xs text-white bg-[var(--pin-overlay)] rounded
                     opacity-0 group-hover:opacity-100
                     transition-opacity duration-200
                     whitespace-nowrap pointer-events-none

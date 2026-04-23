@@ -89,8 +89,8 @@ function EpisodeChip({
                 onClick={() => setOpen((prev) => !prev)}
                 className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[13px] font-medium transition-all duration-200 cursor-pointer border ${
                     episodeId
-                        ? 'bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] border-[var(--glass-tone-info-fg)]/20'
-                        : 'bg-[#f2f2f7] dark:bg-[#2c2c2e] text-[var(--glass-text-secondary)] border-[var(--glass-stroke-base)] hover:bg-[#e8e8ed] dark:hover:bg-[#3a3a3c]'
+                        ? 'bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] border-[var(--pin-tone-info-fg)]/20'
+                        : 'bg-[#f2f2f7] dark:bg-[#2c2c2e] text-[var(--pin-text-secondary)] border-[var(--pin-stroke-base)] hover:bg-[#e8e8ed] dark:hover:bg-[#3a3a3c]'
                 }`}
             >
                 <AppIcon name="film" className="w-3.5 h-3.5" />
@@ -99,7 +99,7 @@ function EpisodeChip({
                     <span
                         role="button"
                         onClick={(e) => { e.stopPropagation(); onEpisodeChange(null) }}
-                        className="ml-0.5 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-[var(--glass-tone-info-fg)]/20 transition-colors"
+                        className="ml-0.5 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-[var(--pin-tone-info-fg)]/20 transition-colors"
                     >
                         <AppIcon name="close" className="w-3 h-3" />
                     </span>
@@ -113,7 +113,7 @@ function EpisodeChip({
             {open && menuPos && createPortal(
                 <div
                     ref={menuRef}
-                    className="fixed z-[9999] min-w-[180px] max-h-[320px] overflow-y-auto py-1.5 rounded-xl bg-white dark:bg-[#2c2c2e] shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08)] border border-[var(--glass-stroke-base)] animate-in fade-in-0 zoom-in-95 duration-150"
+                    className="fixed z-[9999] min-w-[180px] max-h-[320px] overflow-y-auto py-1.5 rounded-xl bg-white dark:bg-[#2c2c2e] shadow-[0_8px_32px_rgba(0,0,0,0.12),0_2px_8px_rgba(0,0,0,0.08)] border border-[var(--pin-stroke-base)] animate-in fade-in-0 zoom-in-95 duration-150"
                     style={{ top: menuPos.top, left: menuPos.left }}
                 >
                     {/* All episodes option */}
@@ -121,15 +121,15 @@ function EpisodeChip({
                         onClick={() => handleSelect(null)}
                         className={`w-full flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors cursor-pointer ${
                             !episodeId
-                                ? 'text-[var(--glass-tone-info-fg)] bg-[var(--glass-tone-info-bg)] font-medium'
-                                : 'text-[var(--glass-text-primary)] hover:bg-[var(--glass-bg-muted)]'
+                                ? 'text-[var(--pin-tone-info-fg)] bg-[var(--pin-tone-info-bg)] font-medium'
+                                : 'text-[var(--pin-text-primary)] hover:bg-[var(--pin-bg-muted)]'
                         }`}
                     >
-                        <AppIcon name="folderOpen" className="w-4 h-4 text-[var(--glass-text-tertiary)]" />
+                        <AppIcon name="folderOpen" className="w-4 h-4 text-[var(--pin-text-tertiary)]" />
                         <span>{t('filterBar.allEpisodes')}</span>
                     </button>
                     {/* Divider */}
-                    <div className="mx-3 my-1 border-t border-[var(--glass-stroke-base)]" />
+                    <div className="mx-3 my-1 border-t border-[var(--pin-stroke-base)]" />
                     {/* Episode list */}
                     {episodes.map((ep) => (
                         <button
@@ -137,11 +137,11 @@ function EpisodeChip({
                             onClick={() => handleSelect(ep.id)}
                             className={`w-full flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors cursor-pointer ${
                                 episodeId === ep.id
-                                    ? 'text-[var(--glass-tone-info-fg)] bg-[var(--glass-tone-info-bg)] font-medium'
-                                    : 'text-[var(--glass-text-primary)] hover:bg-[var(--glass-bg-muted)]'
+                                    ? 'text-[var(--pin-tone-info-fg)] bg-[var(--pin-tone-info-bg)] font-medium'
+                                    : 'text-[var(--pin-text-primary)] hover:bg-[var(--pin-bg-muted)]'
                             }`}
                         >
-                            <AppIcon name="film" className="w-4 h-4 text-[var(--glass-text-tertiary)]" />
+                            <AppIcon name="film" className="w-4 h-4 text-[var(--pin-text-tertiary)]" />
                             <span>{ep.name}</span>
                         </button>
                     ))}
@@ -247,11 +247,11 @@ export default function AssetToolbar({
     }
 
     return (
-        <div className="glass-surface p-4">
+        <div className="pin-surface p-4">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <span className="text-sm font-semibold text-[var(--glass-text-secondary)] inline-flex items-center gap-2">
-                        <AppIcon name="diamond" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
+                    <span className="text-sm font-semibold text-[var(--pin-text-secondary)] inline-flex items-center gap-2">
+                        <AppIcon name="diamond" className="w-4 h-4 text-[var(--pin-tone-info-fg)]" />
                         {t("toolbar.assetManagement")}
                     </span>
                     {/* 剧集筛选 chip */}
@@ -262,7 +262,7 @@ export default function AssetToolbar({
                             episodes={episodes}
                         />
                     )}
-                    <span className="text-sm text-[var(--glass-text-tertiary)]">
+                    <span className="text-sm text-[var(--pin-text-tertiary)]">
                         {t("toolbar.assetCount", { total: totalAssets, appearances: totalAppearances, locations: totalLocations, props: totalProps })}
                     </span>
                     {/* 全局资产分析按钮 */}
@@ -270,7 +270,7 @@ export default function AssetToolbar({
                         <button
                             onClick={onGlobalAnalyze}
                             disabled={isGlobalAnalyzing || isBatchSubmitting || isAnalyzingAssets}
-                            className="glass-btn-base glass-btn-primary flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="pin-btn-base pin-btn-primary flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                             title={t("toolbar.globalAnalyzeHint")}
                         >
                             <AppIcon name="idea" className="w-3.5 h-3.5" />
@@ -284,7 +284,7 @@ export default function AssetToolbar({
                         onClick={handleDownloadAll}
                         disabled={isDownloading || totalAssets === 0}
                         title={t("toolbar.downloadAll")}
-                        className="glass-btn-base glass-btn-secondary flex items-center justify-center w-9 h-9 disabled:opacity-50 disabled:cursor-not-allowed border border-[var(--glass-stroke-base)]"
+                        className="pin-btn-base pin-btn-secondary flex items-center justify-center w-9 h-9 disabled:opacity-50 disabled:cursor-not-allowed border border-[var(--pin-stroke-base)]"
                     >
                         <AppIcon
                             name={isDownloading ? 'refresh' : 'download'}

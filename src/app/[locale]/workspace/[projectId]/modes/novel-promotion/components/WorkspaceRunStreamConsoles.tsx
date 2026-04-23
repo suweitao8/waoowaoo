@@ -143,14 +143,14 @@ export default function WorkspaceRunStreamConsoles({
         <button
           type="button"
           onClick={() => onStoryToScriptMinimizedChange(false)}
-          className="fixed right-6 bottom-6 z-120 glass-surface-modal rounded-2xl px-4 py-3 text-sm font-medium text-(--glass-tone-info-fg)"
+          className="fixed right-6 bottom-6 z-120 pin-surface-modal rounded-2xl px-4 py-3 text-sm font-medium text-(--pin-tone-info-fg)"
         >
           {t('runConsole.storyToScriptRunning')}
         </button>
       )}
 
       {showStoryToScriptConsole && !storyToScriptConsoleMinimized && (
-        <div className="fixed inset-0 z-120 glass-overlay backdrop-blur-sm">
+        <div className="fixed inset-0 z-120 pin-overlay backdrop-blur-sm">
           <div className="mx-auto mt-4 h-[calc(100vh-2rem)] w-[min(96vw,1400px)]">
             <LLMStageStreamCard
               title={storyToScriptCardTitle}
@@ -173,14 +173,14 @@ export default function WorkspaceRunStreamConsoles({
                   <button
                     type="button"
                     onClick={storyToScriptStream.reset}
-                    className="glass-btn-base glass-btn-secondary rounded-lg px-3 py-1.5 text-xs"
+                    className="pin-btn-base pin-btn-secondary rounded-lg px-3 py-1.5 text-xs"
                   >
                     {t('runConsole.stop')}
                   </button>
                   <button
                     type="button"
                     onClick={() => onStoryToScriptMinimizedChange(true)}
-                    className="glass-btn-base glass-btn-secondary rounded-lg px-3 py-1.5 text-xs"
+                    className="pin-btn-base pin-btn-secondary rounded-lg px-3 py-1.5 text-xs"
                   >
                     {t('runConsole.minimize')}
                   </button>
@@ -195,14 +195,14 @@ export default function WorkspaceRunStreamConsoles({
         <button
           type="button"
           onClick={() => onScriptToStoryboardMinimizedChange(false)}
-          className="fixed right-6 bottom-20 z-120 glass-surface-modal rounded-2xl px-4 py-3 text-sm font-medium text-(--glass-tone-info-fg)"
+          className="fixed right-6 bottom-20 z-120 pin-surface-modal rounded-2xl px-4 py-3 text-sm font-medium text-(--pin-tone-info-fg)"
         >
           {t('runConsole.scriptToStoryboardRunning')}
         </button>
       )}
 
       {showScriptToStoryboardConsole && !scriptToStoryboardConsoleMinimized && (
-        <div className="fixed inset-0 z-120 glass-overlay backdrop-blur-sm">
+        <div className="fixed inset-0 z-120 pin-overlay backdrop-blur-sm">
           <div className="mx-auto mt-4 h-[calc(100vh-2rem)] w-[min(96vw,1400px)]">
             <LLMStageStreamCard
               title={scriptToStoryboardCardTitle}
@@ -225,14 +225,14 @@ export default function WorkspaceRunStreamConsoles({
                   <button
                     type="button"
                     onClick={scriptToStoryboardStream.reset}
-                    className="glass-btn-base glass-btn-secondary rounded-lg px-3 py-1.5 text-xs"
+                    className="pin-btn-base pin-btn-secondary rounded-lg px-3 py-1.5 text-xs"
                   >
                     {t('runConsole.stop')}
                   </button>
                   <button
                     type="button"
                     onClick={() => onScriptToStoryboardMinimizedChange(true)}
-                    className="glass-btn-base glass-btn-secondary rounded-lg px-3 py-1.5 text-xs"
+                    className="pin-btn-base pin-btn-secondary rounded-lg px-3 py-1.5 text-xs"
                   >
                     {t('runConsole.minimize')}
                   </button>

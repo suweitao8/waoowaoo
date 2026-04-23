@@ -189,25 +189,25 @@ export default function CharacterSection({
     }, [characters, focusCharacterId, focusCharacterRequestId])
 
     return (
-        <div className="glass-surface p-6">
+        <div className="pin-surface p-6">
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)]">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--pin-bg-muted)] text-[var(--pin-text-secondary)]">
                         <AppIcon name="user" className="h-5 w-5" />
                     </span>
-                    <h3 className="text-lg font-bold text-[var(--glass-text-primary)]">{t("stage.characterAssets")}</h3>
+                    <h3 className="text-lg font-bold text-[var(--pin-text-primary)]">{t("stage.characterAssets")}</h3>
                     {isAnalyzingAssets && (
-                        <span className="px-2 py-1 text-xs bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] rounded-lg flex items-center gap-1">
+                        <span className="px-2 py-1 text-xs bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] rounded-lg flex items-center gap-1">
                             <TaskStatusInline state={analyzingAssetsState} />
                         </span>
                     )}
-                    <span className="text-sm text-[var(--glass-text-tertiary)] bg-[var(--glass-bg-muted)]/50 px-2 py-1 rounded-lg">
+                    <span className="text-sm text-[var(--pin-text-tertiary)] bg-[var(--pin-bg-muted)]/50 px-2 py-1 rounded-lg">
                         {t("stage.counts", { characterCount: characters.length, appearanceCount: totalAppearances })}
                     </span>
                 </div>
                 <button
                     onClick={onAddCharacter}
-                    className="glass-btn-base glass-btn-primary flex items-center gap-2 px-4 py-2 font-medium"
+                    className="pin-btn-base pin-btn-primary flex items-center gap-2 px-4 py-2 font-medium"
                 >
                     + {t("character.add")}
                 </button>
@@ -219,16 +219,16 @@ export default function CharacterSection({
                     {/* 引导横幅 */}
                     <div className="flex items-center justify-between mb-3 px-1">
                         <div className="flex items-center gap-2">
-                            <span className="inline-flex h-5 w-5 items-center justify-center rounded-md bg-[var(--glass-tone-info-bg)]">
-                                <AppIcon name="sparkles" className="h-3 w-3 text-[var(--glass-tone-info-fg)]" />
+                            <span className="inline-flex h-5 w-5 items-center justify-center rounded-md bg-[var(--pin-tone-info-bg)]">
+                                <AppIcon name="sparkles" className="h-3 w-3 text-[var(--pin-tone-info-fg)]" />
                             </span>
-                            <span className="text-sm font-semibold text-[var(--glass-text-primary)]">{t('stage.pendingProfilesBanner')}</span>
-                            <span className="text-xs text-[var(--glass-text-tertiary)]">{t('stage.pendingProfilesHint')}</span>
+                            <span className="text-sm font-semibold text-[var(--pin-text-primary)]">{t('stage.pendingProfilesBanner')}</span>
+                            <span className="text-xs text-[var(--pin-text-tertiary)]">{t('stage.pendingProfilesHint')}</span>
                         </div>
                         <button
                             onClick={onBatchConfirm}
                             disabled={batchConfirming}
-                            className="glass-btn-base glass-btn-primary px-3 py-1.5 text-sm disabled:opacity-50 flex items-center gap-1.5"
+                            className="pin-btn-base pin-btn-primary px-3 py-1.5 text-sm disabled:opacity-50 flex items-center gap-1.5"
                         >
                             {batchConfirming ? (
                                 <TaskStatusInline state={batchConfirmingState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -277,13 +277,13 @@ export default function CharacterSection({
                         <div
                             key={character.id}
                             id={`project-character-${character.id}`}
-                            className={`glass-surface rounded-xl p-4 scroll-mt-24 transition-all duration-700 ${highlightedCharacterId === character.id ? 'ring-2 ring-[var(--glass-focus-ring)] bg-[var(--glass-tone-info-bg)]/40' : ''}`}
+                            className={`pin-surface rounded-xl p-4 scroll-mt-24 transition-all duration-700 ${highlightedCharacterId === character.id ? 'ring-2 ring-[var(--pin-focus-ring)] bg-[var(--pin-tone-info-bg)]/40' : ''}`}
                         >
                             {/* 角色标题 */}
                             <div className="flex items-center justify-between pb-2">
                                 <div className="flex items-center gap-3">
-                                    <h3 className="text-base font-semibold text-[var(--glass-text-primary)]">{character.name}</h3>
-                                    <span className="text-xs text-[var(--glass-text-tertiary)]">
+                                    <h3 className="text-base font-semibold text-[var(--pin-text-primary)]">{character.name}</h3>
+                                    <span className="text-xs text-[var(--pin-text-tertiary)]">
                                         {t("character.assetCount", { count: sortedAppearances.length })}
                                     </span>
                                 </div>
@@ -291,14 +291,14 @@ export default function CharacterSection({
                                     {/* 从资产中心导入按钮 - 暂时隐藏 */}
                                     {/* <button
                                         onClick={() => onCopyFromGlobal(character.id)}
-                                        className="text-xs text-[var(--glass-tone-info-fg)] hover:text-[var(--glass-tone-info-fg)] flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[var(--glass-tone-info-bg)] transition-colors"
+                                        className="text-xs text-[var(--pin-tone-info-fg)] hover:text-[var(--pin-tone-info-fg)] flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[var(--pin-tone-info-bg)] transition-colors"
                                     >
                                         <AppIcon name="arrowDownCircle" className="w-4 h-4" />
                                         {t("character.copyFromGlobal")}
                                     </button> */}
                                     <button
                                         onClick={() => onDeleteCharacter(character.id)}
-                                        className="text-xs text-[var(--glass-tone-danger-fg)] hover:text-[var(--glass-tone-danger-fg)] flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[var(--glass-tone-danger-bg)] transition-colors"
+                                        className="text-xs text-[var(--pin-tone-danger-fg)] hover:text-[var(--pin-tone-danger-fg)] flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-[var(--pin-tone-danger-bg)] transition-colors"
                                     >
                                         <AppIcon name="trash" className="w-4 h-4" />
                                         {t("character.delete")}

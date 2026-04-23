@@ -106,13 +106,13 @@ export const RemotionPreview: React.FC<RemotionPreviewProps> = ({
                 width: '100%',
                 aspectRatio: `${project.config.width} / ${project.config.height}`,
                 maxHeight: '100%',
-                background: 'var(--glass-bg-surface)',
-                border: '1px solid var(--glass-stroke-base)',
+                background: 'var(--pin-bg-surface)',
+                border: '1px solid var(--pin-stroke-base)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: '8px',
-                color: 'var(--glass-text-tertiary)'
+                color: 'var(--pin-text-tertiary)'
             }}>
                 <div style={{ textAlign: 'center' }}>
                     <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center' }}>
@@ -129,7 +129,7 @@ export const RemotionPreview: React.FC<RemotionPreviewProps> = ({
             width: '100%',
             aspectRatio: `${project.config.width} / ${project.config.height}`,
             maxHeight: '100%',
-            background: 'var(--glass-overlay-strong)',
+            background: 'var(--pin-overlay-strong)',
             borderRadius: '8px',
             overflow: 'hidden'
         }}>

@@ -197,13 +197,13 @@ export default function LocationCard({
         <ImageGenerationInlineCountButton
           prefix={isGroupTaskRunning ? (
             <>
-              <TaskStatusInline state={displayTaskPresentation} className="[&_span]:sr-only [&_svg]:text-[var(--glass-tone-info-fg)]" />
-              <span className="text-[10px] font-medium text-[var(--glass-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
+              <TaskStatusInline state={displayTaskPresentation} className="[&_span]:sr-only [&_svg]:text-[var(--pin-tone-info-fg)]" />
+              <span className="text-[10px] font-medium text-[var(--pin-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
             </>
           ) : (
             <>
-              <AppIcon name="refresh" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
-              <span className="text-[10px] font-medium text-[var(--glass-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
+              <AppIcon name="refresh" className="w-4 h-4 text-[var(--pin-tone-info-fg)]" />
+              <span className="text-[10px] font-medium text-[var(--pin-tone-info-fg)] ml-0.5">{t('image.regenCountPrefix')}</span>
             </>
           )}
           value={generationCount}
@@ -213,30 +213,30 @@ export default function LocationCard({
           disabled={isTaskRunning || isAnyTaskRunning || uploadImage.isPending}
           showCountControl={false}
           ariaLabel={t('image.regenCountPrefix')}
-          className="inline-flex h-6 items-center justify-center rounded-md px-1.5 hover:bg-[var(--glass-tone-info-bg)] transition-colors disabled:opacity-50"
+          className="inline-flex h-6 items-center justify-center rounded-md px-1.5 hover:bg-[var(--pin-tone-info-bg)] transition-colors disabled:opacity-50"
         />
         {onUndo && hasPreviousVersion && (
           <button
             onClick={onUndo}
             disabled={isTaskRunning || isAnyTaskRunning}
-            className="w-6 h-6 rounded hover:bg-[var(--glass-tone-warning-bg)] flex items-center justify-center transition-colors disabled:opacity-50"
+            className="w-6 h-6 rounded hover:bg-[var(--pin-tone-warning-bg)] flex items-center justify-center transition-colors disabled:opacity-50"
             title={t('image.undo')}
           >
-            <AppIcon name="undo" className="w-4 h-4 text-[var(--glass-tone-warning-fg)]" />
+            <AppIcon name="undo" className="w-4 h-4 text-[var(--pin-tone-warning-fg)]" />
           </button>
         )}
         <button
           onClick={onDelete}
-          className="w-6 h-6 rounded hover:bg-[var(--glass-tone-danger-bg)] flex items-center justify-center transition-colors"
+          className="w-6 h-6 rounded hover:bg-[var(--pin-tone-danger-bg)] flex items-center justify-center transition-colors"
           title={t(`${assetKey}.delete`)}
         >
-          <AppIcon name="trash" className="w-4 h-4 text-[var(--glass-tone-danger-fg)]" />
+          <AppIcon name="trash" className="w-4 h-4 text-[var(--pin-tone-danger-fg)]" />
         </button>
       </>
     )
 
     return (
-      <div className="col-span-3 glass-surface-elevated p-4 transition-all">
+      <div className="col-span-3 pin-surface-elevated p-4 transition-all">
         <input
           ref={fileInputRef}
           type="file"
@@ -291,13 +291,13 @@ export default function LocationCard({
       <button
         onClick={() => triggerUpload(selectedIndex !== null ? selectedIndex : 0)}
         disabled={uploadImage.isPending || isTaskRunning || isAnyTaskRunning}
-        className="w-7 h-7 rounded-full bg-[var(--glass-bg-surface-strong)] hover:bg-[var(--glass-tone-success-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
+        className="w-7 h-7 rounded-full bg-[var(--pin-bg-surface-strong)] hover:bg-[var(--pin-tone-success-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
         title={currentImageUrl ? t('image.uploadReplace') : t('image.upload')}
       >
         {uploadImage.isPending ? (
           <TaskStatusInline state={uploadPendingState} className="[&_span]:sr-only [&_svg]:text-current" />
         ) : (
-          <AppIcon name="upload" className="w-4 h-4 text-[var(--glass-tone-success-fg)]" />
+          <AppIcon name="upload" className="w-4 h-4 text-[var(--pin-tone-success-fg)]" />
         )}
       </button>
       {!isTaskRunning && currentImageUrl && onImageEdit && (
@@ -313,25 +313,25 @@ export default function LocationCard({
         onClick={() => onRegenerate()}
         disabled={uploadImage.isPending || isTaskRunning}
         className={`w-7 h-7 rounded-full flex items-center justify-center transition-all shadow-sm active:scale-90 ${isTaskRunning
-          ? 'bg-[var(--glass-tone-success-fg)] hover:bg-[var(--glass-tone-success-fg)]'
-          : 'bg-[var(--glass-bg-surface-strong)] hover:bg-[var(--glass-bg-surface)]'
+          ? 'bg-[var(--pin-tone-success-fg)] hover:bg-[var(--pin-tone-success-fg)]'
+          : 'bg-[var(--pin-bg-surface-strong)] hover:bg-[var(--pin-bg-surface)]'
           }`}
         title={isTaskRunning ? t('image.regenerateStuck') : t(`${assetKey}.regenerateImage`)}
       >
         {isGroupTaskRunning ? (
           <TaskStatusInline state={displayTaskPresentation} className="[&_span]:sr-only [&_svg]:text-white" />
         ) : (
-          <AppIcon name="refresh" className={`w-4 h-4 ${isTaskRunning ? 'text-white' : 'text-[var(--glass-text-secondary)]'}`} />
+          <AppIcon name="refresh" className={`w-4 h-4 ${isTaskRunning ? 'text-white' : 'text-[var(--pin-text-secondary)]'}`} />
         )}
       </button>
       {!isTaskRunning && currentImageUrl && onUndo && hasPreviousVersion && (
         <button
           onClick={onUndo}
           disabled={isTaskRunning || isAnyTaskRunning}
-          className="w-7 h-7 rounded-full bg-[var(--glass-bg-surface-strong)] hover:bg-[var(--glass-tone-warning-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
+          className="w-7 h-7 rounded-full bg-[var(--pin-bg-surface-strong)] hover:bg-[var(--pin-tone-warning-fg)] hover:text-white flex items-center justify-center transition-all shadow-sm disabled:opacity-50"
           title={t('image.undo')}
         >
-          <AppIcon name="undo" className="w-4 h-4 text-[var(--glass-tone-warning-fg)] hover:text-white" />
+          <AppIcon name="undo" className="w-4 h-4 text-[var(--pin-tone-warning-fg)] hover:text-white" />
         </button>
       )}
     </>
@@ -343,25 +343,25 @@ export default function LocationCard({
       {/* {onCopyFromGlobal && (
           <button
             onClick={onCopyFromGlobal}
-          className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--glass-tone-info-bg)] flex items-center justify-center transition-colors"
+          className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--pin-tone-info-bg)] flex items-center justify-center transition-colors"
           title={t('character.copyFromGlobal')}
         >
-          <AppIcon name="arrowDownCircle" className="w-3.5 h-3.5 text-[var(--glass-tone-info-fg)]" />
+          <AppIcon name="arrowDownCircle" className="w-3.5 h-3.5 text-[var(--pin-tone-info-fg)]" />
         </button>
       )} */}
         <button
           onClick={onEdit}
-        className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--glass-bg-muted)] flex items-center justify-center transition-colors"
+        className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--pin-bg-muted)] flex items-center justify-center transition-colors"
           title={t(`${assetKey}.edit`)}
       >
-        <AppIcon name="edit" className="w-3.5 h-3.5 text-[var(--glass-text-secondary)]" />
+        <AppIcon name="edit" className="w-3.5 h-3.5 text-[var(--pin-text-secondary)]" />
       </button>
         <button
           onClick={onDelete}
-        className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--glass-tone-danger-bg)] flex items-center justify-center transition-colors"
+        className="flex-shrink-0 w-5 h-5 rounded hover:bg-[var(--pin-tone-danger-bg)] flex items-center justify-center transition-colors"
           title={t(`${assetKey}.delete`)}
       >
-        <AppIcon name="trash" className="w-3.5 h-3.5 text-[var(--glass-tone-danger-fg)]" />
+        <AppIcon name="trash" className="w-3.5 h-3.5 text-[var(--pin-tone-danger-fg)]" />
       </button>
     </>
   )
@@ -370,7 +370,7 @@ export default function LocationCard({
   const canGenerate = canGenerateLocationBackedAsset(location, assetType)
 
   return (
-    <div className="flex flex-col gap-2 glass-surface-elevated p-3">
+    <div className="flex flex-col gap-2 pin-surface-elevated p-3">
       <input
         ref={fileInputRef}
         type="file"

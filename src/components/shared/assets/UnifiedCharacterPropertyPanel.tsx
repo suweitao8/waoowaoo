@@ -326,7 +326,7 @@ export default function UnifiedCharacterPropertyPanel({
     const generationState = useMemo(() => {
         if (generationPhase === 'idle') return null
         return resolveTaskPresentationState({
-            phase: generationPhase === 'complete' ? 'complete' : 'processing',
+            phase: generationPhase === 'complete' ? 'completed' : 'processing',
             intent: 'generate',
             resource: generationPhase === 'generating-voice' ? 'audio' : 'image',
             hasOutput: generationPhase === 'complete',
@@ -388,13 +388,13 @@ export default function UnifiedCharacterPropertyPanel({
 
     const content = (
         <>
-            <div className="fixed inset-0 z-[9999] glass-overlay" onClick={onClose} />
+            <div className="fixed inset-0 z-[9999] pin-overlay" onClick={onClose} />
             <div
-                className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 glass-surface-modal w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]"
+                className="fixed z-[10000] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pin-surface-modal w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* 头部 */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] shrink-0">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)] shrink-0">
                     <div className="flex items-center gap-3">
                         <span
                             className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-black text-white tracking-wide"
@@ -405,14 +405,14 @@ export default function UnifiedCharacterPropertyPanel({
                         >
                             {t(`characterProfile.importance.${editingRoleLevel}` as never)}
                         </span>
-                        <h2 className="font-semibold text-[var(--glass-text-primary)] text-lg">
+                        <h2 className="font-semibold text-[var(--pin-text-primary)] text-lg">
                             {t('unifiedPanel.editTitle', { name })}
                         </h2>
                     </div>
                     <button
                         onClick={onClose}
                         disabled={generationPhase !== 'idle'}
-                        className="glass-btn-base glass-btn-soft p-1.5 text-[var(--glass-text-tertiary)] disabled:opacity-50"
+                        className="pin-btn-base pin-btn-soft p-1.5 text-[var(--pin-text-tertiary)] disabled:opacity-50"
                     >
                         <AppIcon name="close" className="w-5 h-5" />
                     </button>
@@ -422,14 +422,14 @@ export default function UnifiedCharacterPropertyPanel({
                 <div className="flex-1 overflow-y-auto app-scrollbar p-5 space-y-4">
                     {/* 名称输入 */}
                     <div className="space-y-2">
-                        <label className="glass-field-label block">
+                        <label className="pin-field-label block">
                             {t('character.name')}
                         </label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="glass-input-base w-full px-3 py-2"
+                            className="pin-input-base w-full px-3 py-2"
                             placeholder={t('modal.namePlaceholder')}
                         />
                     </div>
@@ -437,17 +437,17 @@ export default function UnifiedCharacterPropertyPanel({
                     {/* Project 模式：角色介绍 */}
                     {mode === 'project' && (
                         <div className="space-y-2">
-                            <label className="glass-field-label block">
+                            <label className="pin-field-label block">
                                 {t('modal.introduction')}
                             </label>
                             <textarea
                                 value={editingIntroduction}
                                 onChange={(e) => setEditingIntroduction(e.target.value)}
                                 rows={3}
-                                className="glass-textarea-base w-full px-3 py-2 resize-none"
+                                className="pin-textarea-base w-full px-3 py-2 resize-none"
                                 placeholder={t('modal.introductionPlaceholder')}
                             />
-                            <p className="glass-field-hint">
+                            <p className="pin-field-hint">
                                 {t('modal.introductionTip')}
                             </p>
                         </div>
@@ -462,63 +462,63 @@ export default function UnifiedCharacterPropertyPanel({
                     >
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('basicAttributes.gender')}
                                 </label>
                                 <input
                                     type="text"
                                     value={editingGender}
                                     onChange={(e) => setEditingGender(e.target.value)}
-                                    className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                    className="pin-input-base w-full px-3 py-1.5 text-sm"
                                     placeholder={t('basicAttributes.genderPlaceholder')}
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('basicAttributes.age')}
                                 </label>
                                 <input
                                     type="text"
                                     value={editingAgeRange}
                                     onChange={(e) => setEditingAgeRange(e.target.value)}
-                                    className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                    className="pin-input-base w-full px-3 py-1.5 text-sm"
                                     placeholder={t('basicAttributes.agePlaceholder')}
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('basicAttributes.identity')}
                                 </label>
                                 <input
                                     type="text"
                                     value={editingIdentity}
                                     onChange={(e) => setEditingIdentity(e.target.value)}
-                                    className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                    className="pin-input-base w-full px-3 py-1.5 text-sm"
                                     placeholder={t('basicAttributes.identityPlaceholder')}
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('basicAttributes.height')}
                                 </label>
                                 <input
                                     type="text"
                                     value={editingHeight}
                                     onChange={(e) => setEditingHeight(e.target.value)}
-                                    className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                    className="pin-input-base w-full px-3 py-1.5 text-sm"
                                     placeholder={t('basicAttributes.heightPlaceholder')}
                                 />
                             </div>
                         </div>
                         <div className="space-y-1.5 mt-4">
-                            <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                            <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                 {t('basicAttributes.bodyType')}
                             </label>
                             <input
                                 type="text"
                                 value={editingBodyType}
                                 onChange={(e) => setEditingBodyType(e.target.value)}
-                                className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                className="pin-input-base w-full px-3 py-1.5 text-sm"
                                 placeholder={t('basicAttributes.bodyTypePlaceholder')}
                             />
                         </div>
@@ -534,13 +534,13 @@ export default function UnifiedCharacterPropertyPanel({
                         <div className="space-y-4">
                             {/* 角色层级 */}
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('characterProfile.importanceLevel')}
                                 </label>
                                 <select
                                     value={editingRoleLevel}
                                     onChange={(e) => setEditingRoleLevel(e.target.value as RoleLevel)}
-                                    className="glass-select-base w-full px-3 py-2"
+                                    className="pin-select-base w-full px-3 py-2"
                                 >
                                     {ROLE_LEVELS.map((level) => (
                                         <option key={level} value={level}>
@@ -552,31 +552,31 @@ export default function UnifiedCharacterPropertyPanel({
 
                             {/* 角色原型 */}
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('characterProfile.characterArchetype')}
                                 </label>
                                 <input
                                     type="text"
                                     value={editingArchetype}
                                     onChange={(e) => setEditingArchetype(e.target.value)}
-                                    className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                    className="pin-input-base w-full px-3 py-1.5 text-sm"
                                     placeholder={t('characterProfile.archetypePlaceholder')}
                                 />
                             </div>
 
                             {/* 性格标签 */}
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('characterProfile.personalityTags')}
                                 </label>
                                 <div className="flex flex-wrap gap-1.5 mb-2">
                                     {editingPersonalityTags.map((tag, i) => (
-                                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] rounded-lg text-xs">
+                                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] rounded-lg text-xs">
                                             {tag}
                                             <button
                                                 type="button"
                                                 onClick={() => removePersonalityTag(i)}
-                                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]"
+                                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]"
                                             >
                                                 <AppIcon name="closeSm" className="h-3 w-3" />
                                             </button>
@@ -589,14 +589,14 @@ export default function UnifiedCharacterPropertyPanel({
                                         value={newPersonalityTag}
                                         onChange={(e) => setNewPersonalityTag(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addPersonalityTag())}
-                                        className="glass-input-base flex-1 px-3 py-1.5 text-sm"
+                                        className="pin-input-base flex-1 px-3 py-1.5 text-sm"
                                         placeholder={t('characterProfile.addTagPlaceholder')}
                                     />
                                     <button
                                         type="button"
                                         onClick={addPersonalityTag}
                                         disabled={!newPersonalityTag.trim()}
-                                        className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
+                                        className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
                                     >
                                         {t('common.add')}
                                     </button>
@@ -616,26 +616,26 @@ export default function UnifiedCharacterPropertyPanel({
                             {/* 时代和阶层 */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                         {t('unifiedPanel.fields.era')}
                                     </label>
                                     <input
                                         type="text"
                                         value={editingEraPeriod}
                                         onChange={(e) => setEditingEraPeriod(e.target.value)}
-                                        className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                        className="pin-input-base w-full px-3 py-1.5 text-sm"
                                         placeholder={t('unifiedPanel.placeholders.era')}
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                         {t('unifiedPanel.fields.socialClass')}
                                     </label>
                                     <input
                                         type="text"
                                         value={editingSocialClass}
                                         onChange={(e) => setEditingSocialClass(e.target.value)}
-                                        className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                        className="pin-input-base w-full px-3 py-1.5 text-sm"
                                         placeholder={t('unifiedPanel.placeholders.socialClass')}
                                     />
                                 </div>
@@ -643,13 +643,13 @@ export default function UnifiedCharacterPropertyPanel({
 
                             {/* 服装华丽度 */}
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('characterProfile.costumeLevelLabel')}
                                 </label>
                                 <select
                                     value={editingCostumeTier}
                                     onChange={(e) => setEditingCostumeTier(Number(e.target.value) as CostumeTier)}
-                                    className="glass-select-base w-full px-3 py-2"
+                                    className="pin-select-base w-full px-3 py-2"
                                 >
                                     {COSTUME_TIERS.map((tier) => (
                                         <option key={tier} value={tier}>
@@ -661,17 +661,17 @@ export default function UnifiedCharacterPropertyPanel({
 
                             {/* 建议色彩 */}
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('characterProfile.suggestedColors')}
                                 </label>
                                 <div className="flex flex-wrap gap-1.5 mb-2">
                                     {editingSuggestedColors.map((color, i) => (
-                                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] rounded-lg text-xs">
+                                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--pin-bg-muted)] text-[var(--pin-text-secondary)] rounded-lg text-xs">
                                             {color}
                                             <button
                                                 type="button"
                                                 onClick={() => removeColor(i)}
-                                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]"
+                                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]"
                                             >
                                                 <AppIcon name="closeSm" className="h-3 w-3" />
                                             </button>
@@ -684,14 +684,14 @@ export default function UnifiedCharacterPropertyPanel({
                                         value={newColor}
                                         onChange={(e) => setNewColor(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addColor())}
-                                        className="glass-input-base flex-1 px-3 py-1.5 text-sm"
+                                        className="pin-input-base flex-1 px-3 py-1.5 text-sm"
                                         placeholder={t('characterProfile.colorPlaceholder')}
                                     />
                                     <button
                                         type="button"
                                         onClick={addColor}
                                         disabled={!newColor.trim()}
-                                        className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
+                                        className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
                                     >
                                         {t('common.add')}
                                     </button>
@@ -700,9 +700,9 @@ export default function UnifiedCharacterPropertyPanel({
 
                             {/* 辨识标志 */}
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('characterProfile.primaryMarker')}
-                                    <span className="text-xs text-[var(--glass-text-tertiary)] ml-1">
+                                    <span className="text-xs text-[var(--pin-text-tertiary)] ml-1">
                                         {t('characterProfile.markerNote')}
                                     </span>
                                 </label>
@@ -710,24 +710,24 @@ export default function UnifiedCharacterPropertyPanel({
                                     type="text"
                                     value={editingPrimaryIdentifier}
                                     onChange={(e) => setEditingPrimaryIdentifier(e.target.value)}
-                                    className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                    className="pin-input-base w-full px-3 py-1.5 text-sm"
                                     placeholder={t('characterProfile.markingsPlaceholder')}
                                 />
                             </div>
 
                             {/* 视觉关键词 */}
                             <div className="space-y-1.5">
-                                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                     {t('characterProfile.visualKeywords')}
                                 </label>
                                 <div className="flex flex-wrap gap-1.5 mb-2">
                                     {editingVisualKeywords.map((keyword, i) => (
-                                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] rounded-lg text-xs">
+                                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] rounded-lg text-xs">
                                             {keyword}
                                             <button
                                                 type="button"
                                                 onClick={() => removeKeyword(i)}
-                                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]"
+                                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]"
                                             >
                                                 <AppIcon name="closeSm" className="h-3 w-3" />
                                             </button>
@@ -740,14 +740,14 @@ export default function UnifiedCharacterPropertyPanel({
                                         value={newKeyword}
                                         onChange={(e) => setNewKeyword(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                                        className="glass-input-base flex-1 px-3 py-1.5 text-sm"
+                                        className="pin-input-base flex-1 px-3 py-1.5 text-sm"
                                         placeholder={t('characterProfile.keywordsPlaceholder')}
                                     />
                                     <button
                                         type="button"
                                         onClick={addKeyword}
                                         disabled={!newKeyword.trim()}
-                                        className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
+                                        className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
                                     >
                                         {t('common.add')}
                                     </button>
@@ -767,12 +767,12 @@ export default function UnifiedCharacterPropertyPanel({
                             {/* 文生图提示词 */}
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                         {t('character.imagePrompt')}
                                     </label>
                                     {isGeneratingImagePrompt && (
-                                        <span className="text-xs text-[var(--glass-text-tertiary)] flex items-center gap-1">
-                                            <AppIcon name="loading" className="w-3 h-3 animate-spin" />
+                                        <span className="text-xs text-[var(--pin-text-tertiary)] flex items-center gap-1">
+                                            <AppIcon name="loader" className="w-3 h-3 animate-spin" />
                                             {t('unifiedPanel.generating')}
                                         </span>
                                     )}
@@ -781,10 +781,10 @@ export default function UnifiedCharacterPropertyPanel({
                                     value={imagePrompt}
                                     onChange={(e) => setImagePrompt(e.target.value)}
                                     rows={4}
-                                    className="glass-textarea-base w-full px-3 py-2 text-sm resize-none"
+                                    className="pin-textarea-base w-full px-3 py-2 text-sm resize-none"
                                     placeholder={t('modal.imagePromptPlaceholder')}
                                 />
-                                <p className="text-xs text-[var(--glass-text-tertiary)]">
+                                <p className="text-xs text-[var(--pin-text-tertiary)]">
                                     {t('unifiedPanel.imagePromptHint')}
                                 </p>
                             </div>
@@ -792,24 +792,18 @@ export default function UnifiedCharacterPropertyPanel({
                             {/* 音色提示词 */}
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                         {t('unifiedPanel.fields.voicePrompt')}
                                     </label>
-                                    {isGeneratingVoicePrompt && (
-                                        <span className="text-xs text-[var(--glass-text-tertiary)] flex items-center gap-1">
-                                            <AppIcon name="loading" className="w-3 h-3 animate-spin" />
-                                            {t('unifiedPanel.generating')}
-                                        </span>
-                                    )}
                                 </div>
                                 <textarea
                                     value={voicePrompt}
                                     onChange={(e) => setVoicePrompt(e.target.value)}
                                     rows={3}
-                                    className="glass-textarea-base w-full px-3 py-2 text-sm resize-none"
+                                    className="pin-textarea-base w-full px-3 py-2 text-sm resize-none"
                                     placeholder={t('unifiedPanel.placeholders.voicePrompt')}
                                 />
-                                <p className="text-xs text-[var(--glass-text-tertiary)]">
+                                <p className="text-xs text-[var(--pin-text-tertiary)]">
                                     {t('unifiedPanel.voicePromptHint')}
                                 </p>
                             </div>
@@ -818,24 +812,24 @@ export default function UnifiedCharacterPropertyPanel({
 
                     {/* 形象描述 */}
                     <div className="space-y-2">
-                        <label className="glass-field-label block">
+                        <label className="pin-field-label block">
                             {t('modal.appearancePrompt')}
                         </label>
                         <textarea
                             value={editingDescription}
                             onChange={(e) => setEditingDescription(e.target.value)}
                             rows={6}
-                            className="glass-textarea-base w-full px-3 py-2 resize-none"
+                            className="pin-textarea-base w-full px-3 py-2 resize-none"
                             placeholder={t('modal.descPlaceholder')}
                         />
                     </div>
                 </div>
 
                 {/* 底部按钮 */}
-                <div className="flex gap-3 justify-end p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] rounded-b-lg flex-shrink-0">
+                <div className="flex gap-3 justify-end p-4 border-t border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)] rounded-b-lg flex-shrink-0">
                     <button
                         onClick={onClose}
-                        className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg"
+                        className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg"
                         disabled={generationPhase !== 'idle'}
                     >
                         {t('common.cancel')}
@@ -843,7 +837,7 @@ export default function UnifiedCharacterPropertyPanel({
                     <button
                         onClick={handleConfirmAndGenerate}
                         disabled={generationPhase !== 'idle' || !editingDescription.trim()}
-                        className="glass-btn-base glass-btn-primary px-6 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="pin-btn-base pin-btn-primary px-6 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                         {generationPhase !== 'idle' ? (
                             <TaskStatusInline state={generationState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -856,27 +850,27 @@ export default function UnifiedCharacterPropertyPanel({
 
             {/* 重新生成警告对话框 */}
             {showRegenerateWarning && (
-                <div className="fixed inset-0 z-[10001] flex items-center justify-center p-4 glass-overlay">
-                    <div className="glass-surface-modal w-full max-w-sm p-5 text-center">
-                        <div className="w-12 h-12 mx-auto glass-chip glass-chip-warning rounded-full flex items-center justify-center mb-3 p-0">
-                            <AppIcon name="alert" className="w-6 h-6 text-[var(--glass-tone-warning-fg)]" />
+                <div className="fixed inset-0 z-[10001] flex items-center justify-center p-4 pin-overlay">
+                    <div className="pin-surface-modal w-full max-w-sm p-5 text-center">
+                        <div className="w-12 h-12 mx-auto pin-badge pin-badge-warning rounded-full flex items-center justify-center mb-3 p-0">
+                            <AppIcon name="alert" className="w-6 h-6 text-[var(--pin-tone-warning-fg)]" />
                         </div>
-                        <h3 className="font-semibold text-[var(--glass-text-primary)] mb-2">
+                        <h3 className="font-semibold text-[var(--pin-text-primary)] mb-2">
                             {t('unifiedPanel.regenerateWarning.title')}
                         </h3>
-                        <p className="text-sm text-[var(--glass-text-secondary)] mb-4">
+                        <p className="text-sm text-[var(--pin-text-secondary)] mb-4">
                             {t('unifiedPanel.regenerateWarning.message')}
                         </p>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setShowRegenerateWarning(false)}
-                                className="glass-btn-base glass-btn-secondary flex-1 py-2 rounded-lg text-sm"
+                                className="pin-btn-base pin-btn-secondary flex-1 py-2 rounded-lg text-sm"
                             >
                                 {t('common.cancel')}
                             </button>
                             <button
                                 onClick={doConfirmAndGenerate}
-                                className="glass-btn-base glass-btn-primary flex-1 py-2 rounded-lg text-sm"
+                                className="pin-btn-base pin-btn-primary flex-1 py-2 rounded-lg text-sm"
                             >
                                 {t('unifiedPanel.regenerateWarning.confirm')}
                             </button>
@@ -891,9 +885,11 @@ export default function UnifiedCharacterPropertyPanel({
 }
 
 // ===== 折叠面板组件 =====
+import type { AppIconName } from '@/components/ui/icons'
+
 interface PropertySectionProps {
     title: string
-    icon: string
+    icon: AppIconName
     isExpanded: boolean
     onToggle: () => void
     children: React.ReactNode
@@ -901,23 +897,23 @@ interface PropertySectionProps {
 
 function PropertySection({ title, icon, isExpanded, onToggle, children }: PropertySectionProps) {
     return (
-        <div className="border border-[var(--glass-stroke-base)] rounded-xl overflow-hidden">
+        <div className="border border-[var(--pin-stroke-base)] rounded-xl overflow-hidden">
             <button
                 type="button"
                 onClick={onToggle}
-                className="w-full flex items-center gap-2 px-4 py-3 bg-[var(--glass-bg-muted)] hover:bg-[var(--glass-bg-surface-strong)] transition-colors"
+                className="w-full flex items-center gap-2 px-4 py-3 bg-[var(--pin-bg-muted)] hover:bg-[var(--pin-bg-surface-strong)] transition-colors"
             >
-                <AppIcon name={icon} className="w-4 h-4 text-[var(--glass-text-tertiary)]" />
-                <span className="text-sm font-medium text-[var(--glass-text-primary)] flex-1 text-left">
+                <AppIcon name={icon} className="w-4 h-4 text-[var(--pin-text-tertiary)]" />
+                <span className="text-sm font-medium text-[var(--pin-text-primary)] flex-1 text-left">
                     {title}
                 </span>
                 <AppIcon
                     name="chevronDown"
-                    className={`w-4 h-4 text-[var(--glass-text-tertiary)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 text-[var(--pin-text-tertiary)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                 />
             </button>
             {isExpanded && (
-                <div className="p-4 bg-[var(--glass-bg-surface)]">
+                <div className="p-4 bg-[var(--pin-bg-surface)]">
                     {children}
                 </div>
             )}

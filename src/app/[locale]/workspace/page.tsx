@@ -731,10 +731,10 @@ export default function WorkspacePage() {
 
   if (status === 'loading' || !session) {
     return (
-      <div className="glass-page min-h-screen flex items-center justify-center">
+      <div className="pin-page min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[var(--glass-accent-from)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[var(--glass-text-secondary)]">{tc('loading')}</p>
+          <div className="w-8 h-8 border-2 border-[var(--pin-color-brand)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[var(--pin-text-secondary)]">{tc('loading')}</p>
         </div>
       </div>
     )
@@ -743,13 +743,13 @@ export default function WorkspacePage() {
   // 数据加载中，显示完整加载状态
   if (loading) {
     return (
-      <div className="glass-page min-h-screen">
+      <div className="pin-page min-h-screen">
         <Navbar />
         <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
           <div className="flex items-center justify-center h-[60vh]">
             <div className="text-center">
-              <div className="w-8 h-8 border-2 border-[var(--glass-accent-from)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-[var(--glass-text-secondary)]">{tc('loading')}</p>
+              <div className="w-8 h-8 border-2 border-[var(--pin-color-brand)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-[var(--pin-text-secondary)]">{tc('loading')}</p>
             </div>
           </div>
         </main>
@@ -758,7 +758,7 @@ export default function WorkspacePage() {
   }
 
   return (
-    <div className="glass-page min-h-screen">
+    <div className="pin-page min-h-screen">
       {/* Header - 统一导航栏 */}
       <Navbar />
 
@@ -766,8 +766,8 @@ export default function WorkspacePage() {
       <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[var(--glass-text-primary)] mb-2">{t('title')}</h1>
-            <p className="text-[var(--glass-text-secondary)]">{t('subtitle')}</p>
+            <h1 className="text-3xl font-bold text-[var(--pin-text-primary)] mb-2">{t('title')}</h1>
+            <p className="text-[var(--pin-text-secondary)]">{t('subtitle')}</p>
           </div>
 
           {/* 搜索框 */}
@@ -778,11 +778,11 @@ export default function WorkspacePage() {
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               placeholder={t('searchPlaceholder')}
-              className="glass-input-base w-64 px-3 py-2"
+              className="pin-input-base w-64 px-3 py-2"
             />
             <button
               onClick={handleSearch}
-              className="glass-btn-base glass-btn-primary px-4 py-2"
+              className="pin-btn-base pin-btn-primary px-4 py-2"
             >
               {t('searchButton')}
             </button>
@@ -793,7 +793,7 @@ export default function WorkspacePage() {
                   setSearchQuery('')
                   setPagination(prev => ({ ...prev, page: 1 }))
                 }}
-                className="glass-btn-base glass-btn-secondary px-4 py-2"
+                className="pin-btn-base pin-btn-secondary px-4 py-2"
               >
                 {t('clearButton')}
               </button>
@@ -806,13 +806,13 @@ export default function WorkspacePage() {
           {/* New Project Card */}
           <div
             onClick={() => openCreateModal()}
-            className="glass-surface p-6 cursor-pointer group flex items-center justify-center bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-blue-600/5 hover:from-blue-500/10 hover:via-cyan-500/10 hover:to-blue-600/10 transition-all duration-300"
+            className="pin-surface p-6 cursor-pointer group flex items-center justify-center bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-blue-600/5 hover:from-blue-500/10 hover:via-cyan-500/10 hover:to-blue-600/10 transition-all duration-300"
           >
             <div className="flex flex-col items-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 group-hover:scale-110 transition-all duration-300">
                 <AppIcon name="plus" className="w-6 h-6 text-white" />
               </div>
-              <span className="text-sm font-medium text-[var(--glass-text-secondary)] group-hover:text-[var(--glass-text-primary)] transition-colors">{t('newProject')}</span>
+              <span className="text-sm font-medium text-[var(--pin-text-secondary)] group-hover:text-[var(--pin-text-primary)] transition-colors">{t('newProject')}</span>
             </div>
           </div>
 
@@ -821,7 +821,7 @@ export default function WorkspacePage() {
             <Link
               key={project.id}
               href={{ pathname: `/workspace/${project.id}` }}
-              className="glass-surface cursor-pointer relative group block hover:border-[var(--glass-tone-info-fg)]/40 transition-all duration-300 overflow-hidden"
+              className="pin-surface cursor-pointer relative group block hover:border-[var(--pin-tone-info-fg)]/40 transition-all duration-300 overflow-hidden"
             >
               {/* 悬停光效 */}
               <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -831,14 +831,14 @@ export default function WorkspacePage() {
                 <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                   <button
                     onClick={(e) => openEditModal(project, e)}
-                    className="glass-btn-base glass-btn-secondary p-2 rounded-lg transition-colors"
+                    className="pin-btn-base pin-btn-secondary p-2 rounded-lg transition-colors"
                     title={t('editProject')}
                   >
-                    <AppIcon name="editSquare" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
+                    <AppIcon name="editSquare" className="w-4 h-4 text-[var(--pin-tone-info-fg)]" />
                   </button>
                   <button
                     onClick={(e) => openDeleteConfirm(project, e)}
-                    className="glass-btn-base glass-btn-secondary p-2 rounded-lg transition-colors"
+                    className="pin-btn-base pin-btn-secondary p-2 rounded-lg transition-colors"
                     title={t('deleteProject')}
                     disabled={deletingProjectId === project.id}
                   >
@@ -853,21 +853,21 @@ export default function WorkspacePage() {
                         className="[&>span]:sr-only"
                       />
                     ) : (
-                      <AppIcon name="trash" className="w-4 h-4 text-[var(--glass-tone-danger-fg)]" />
+                      <AppIcon name="trash" className="w-4 h-4 text-[var(--pin-tone-danger-fg)]" />
                     )}
                   </button>
                 </div>
 
                 {/* 标题 */}
-                <h3 className="text-lg font-bold text-[var(--glass-text-primary)] mb-2 line-clamp-2 pr-20 group-hover:text-[var(--glass-tone-info-fg)] transition-colors">
+                <h3 className="text-lg font-bold text-[var(--pin-text-primary)] mb-2 line-clamp-2 pr-20 group-hover:text-[var(--pin-tone-info-fg)] transition-colors">
                   {project.name}
                 </h3>
 
                 {/* 描述：优先用户描述，fallback 到第一集故事 */}
                 {(project.description || project.stats?.firstEpisodePreview) && (
                   <div className="flex items-start gap-2 mb-4">
-                    <AppIcon name="fileText" className="w-4 h-4 text-[var(--glass-text-tertiary)] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-[var(--glass-text-secondary)] line-clamp-2 leading-relaxed">
+                    <AppIcon name="fileText" className="w-4 h-4 text-[var(--pin-text-tertiary)] mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-[var(--pin-text-secondary)] line-clamp-2 leading-relaxed">
                       {project.description || project.stats?.firstEpisodePreview}
                     </p>
                   </div>
@@ -902,19 +902,19 @@ export default function WorkspacePage() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2.5 mb-3">
-                    <AppIcon name="statsBar" className="w-4 h-4 text-[var(--glass-text-tertiary)] flex-shrink-0" />
-                    <span className="text-xs text-[var(--glass-text-tertiary)]">{t('noContent')}</span>
+                    <AppIcon name="statsBar" className="w-4 h-4 text-[var(--pin-text-tertiary)] flex-shrink-0" />
+                    <span className="text-xs text-[var(--pin-text-tertiary)]">{t('noContent')}</span>
                   </div>
                 )}
 
                 {/* 底部信息 */}
-                <div className="flex items-center justify-between text-[11px] text-[var(--glass-text-tertiary)]">
+                <div className="flex items-center justify-between text-[11px] text-[var(--pin-text-tertiary)]">
                   <div className="flex items-center gap-1">
                     <AppIcon name="clock" className="w-3 h-3" />
                     {formatDate(project.updatedAt)}
                   </div>
                   {project.totalCost !== undefined && project.totalCost > 0 && (
-                    <span className="text-[11px] font-mono font-medium text-[var(--glass-text-secondary)]">
+                    <span className="text-[11px] font-mono font-medium text-[var(--pin-text-secondary)]">
                       {formatProjectCost(project.totalCost)}
                     </span>
                   )}
@@ -927,19 +927,19 @@ export default function WorkspacePage() {
         {/* Empty State */}
         {projects.length === 0 && (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-[var(--glass-bg-muted)] rounded-xl flex items-center justify-center mx-auto mb-4">
-              <AppIcon name="folderCards" className="w-8 h-8 text-[var(--glass-text-tertiary)]" />
+            <div className="w-16 h-16 bg-[var(--pin-bg-muted)] rounded-xl flex items-center justify-center mx-auto mb-4">
+              <AppIcon name="folderCards" className="w-8 h-8 text-[var(--pin-text-tertiary)]" />
             </div>
-            <h3 className="text-lg font-medium text-[var(--glass-text-primary)] mb-2">
+            <h3 className="text-lg font-medium text-[var(--pin-text-primary)] mb-2">
               {searchQuery ? t('noResults') : t('noProjects')}
             </h3>
-            <p className="text-[var(--glass-text-secondary)] mb-6">
+            <p className="text-[var(--pin-text-secondary)] mb-6">
               {searchQuery ? t('noResultsDesc') : t('noProjectsDesc')}
             </p>
             {!searchQuery && (
               <button
                 onClick={() => openCreateModal()}
-                className="glass-btn-base glass-btn-primary px-6 py-3"
+                className="pin-btn-base pin-btn-primary px-6 py-3"
               >
                 {t('newProject')}
               </button>
@@ -953,7 +953,7 @@ export default function WorkspacePage() {
             <button
               onClick={() => handlePageChange(pagination.page - 1)}
               disabled={pagination.page <= 1}
-              className="glass-btn-base glass-btn-secondary px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="pin-btn-base pin-btn-secondary px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <AppIcon name="chevronLeft" className="w-5 h-5" />
             </button>
@@ -970,13 +970,13 @@ export default function WorkspacePage() {
                 <span key={page} className="flex items-center">
                   {/* 显示省略号 */}
                   {index > 0 && array[index - 1] !== page - 1 && (
-                    <span className="px-2 text-[var(--glass-text-tertiary)]">...</span>
+                    <span className="px-2 text-[var(--pin-text-tertiary)]">...</span>
                   )}
                   <button
                     onClick={() => handlePageChange(page)}
-                    className={`glass-btn-base px-4 py-2 ${page === pagination.page
-                      ? 'glass-btn-primary'
-                      : 'glass-btn-secondary'
+                    className={`pin-btn-base px-4 py-2 ${page === pagination.page
+                      ? 'pin-btn-primary'
+                      : 'pin-btn-secondary'
                       }`}
                   >
                     {page}
@@ -987,12 +987,12 @@ export default function WorkspacePage() {
             <button
               onClick={() => handlePageChange(pagination.page + 1)}
               disabled={pagination.page >= pagination.totalPages}
-              className="glass-btn-base glass-btn-secondary px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="pin-btn-base pin-btn-secondary px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <AppIcon name="chevronRight" className="w-5 h-5" />
             </button>
 
-            <span className="ml-4 text-sm text-[var(--glass-text-tertiary)]">
+            <span className="ml-4 text-sm text-[var(--pin-text-tertiary)]">
               {t('totalProjects', { count: pagination.total })}
             </span>
           </div>
@@ -1001,9 +1001,9 @@ export default function WorkspacePage() {
 
       {/* Create Project Modal - 简化版，只有名称和描述 */}
       {showCreateModal && (
-        <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="glass-surface-modal p-6 w-full max-w-md mx-4">
-            <h2 className="text-xl font-bold text-[var(--glass-text-primary)] mb-4">{t('createProject')}</h2>
+        <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="pin-surface-modal p-6 w-full max-w-md mx-4">
+            <h2 className="text-xl font-bold text-[var(--pin-text-primary)] mb-4">{t('createProject')}</h2>
             {modelNotConfigured && (
               <div className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400">
                 <AppIcon name="alert" className="w-4 h-4 shrink-0 mt-0.5" />
@@ -1023,17 +1023,17 @@ export default function WorkspacePage() {
             <form onSubmit={handleCreateProject}>
               {/* 小说文件上传区域 */}
               <div className="mb-4">
-                <label className="glass-field-label block mb-2">
+                <label className="pin-field-label block mb-2">
                   {t('novelFile')} ({t('optional')})
                 </label>
                 {!novelFile ? (
-                  <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[var(--glass-stroke-strong)] rounded-xl cursor-pointer hover:border-[var(--glass-tone-info-fg)]/40 transition-colors">
+                  <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[var(--pin-stroke-strong)] rounded-xl cursor-pointer hover:border-[var(--pin-tone-info-fg)]/40 transition-colors">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <AppIcon name="upload" className="w-6 h-6 mb-2 text-[var(--glass-text-tertiary)]" />
-                      <p className="text-sm text-[var(--glass-text-secondary)]">
+                      <AppIcon name="upload" className="w-6 h-6 mb-2 text-[var(--pin-text-tertiary)]" />
+                      <p className="text-sm text-[var(--pin-text-secondary)]">
                         {t('dragDropFile')} <span className="font-semibold">{t('browse')}</span>
                       </p>
-                      <p className="text-xs text-[var(--glass-text-tertiary)]">{t('supportedFormats')}</p>
+                      <p className="text-xs text-[var(--pin-text-tertiary)]">{t('supportedFormats')}</p>
                     </div>
                     <input
                       type="file"
@@ -1043,30 +1043,30 @@ export default function WorkspacePage() {
                     />
                   </label>
                 ) : (
-                  <div className="flex items-center justify-between p-3 border border-[var(--glass-stroke-strong)] rounded-xl bg-[var(--glass-bg-muted)]">
+                  <div className="flex items-center justify-between p-3 border border-[var(--pin-stroke-strong)] rounded-xl bg-[var(--pin-bg-muted)]">
                     <div className="flex items-center gap-2">
-                      <AppIcon name="fileText" className="w-5 h-5 text-[var(--glass-tone-info-fg)]" />
-                      <span className="text-sm text-[var(--glass-text-primary)] truncate max-w-[200px]">{novelFileName}</span>
-                      <span className="text-xs text-[var(--glass-text-tertiary)]">({Math.round(novelContent.length / 1024)}KB)</span>
+                      <AppIcon name="fileText" className="w-5 h-5 text-[var(--pin-tone-info-fg)]" />
+                      <span className="text-sm text-[var(--pin-text-primary)] truncate max-w-[200px]">{novelFileName}</span>
+                      <span className="text-xs text-[var(--pin-text-tertiary)]">({Math.round(novelContent.length / 1024)}KB)</span>
                     </div>
                     <button
                       type="button"
                       onClick={handleClearNovelFile}
-                      className="text-[var(--glass-text-tertiary)] hover:text-[var(--glass-tone-danger-fg)] transition-colors"
+                      className="text-[var(--pin-text-tertiary)] hover:text-[var(--pin-tone-danger-fg)] transition-colors"
                     >
                       <AppIcon name="close" className="w-4 h-4" />
                     </button>
                   </div>
                 )}
                 {novelContent && (
-                  <p className="mt-2 text-xs text-[var(--glass-text-tertiary)]">
+                  <p className="mt-2 text-xs text-[var(--pin-text-tertiary)]">
                     {t('novelWillBeSplit', { chars: novelContent.length.toLocaleString() })}
                   </p>
                 )}
               </div>
 
               <div className="mb-4">
-                <label htmlFor="name" className="glass-field-label block mb-2">
+                <label htmlFor="name" className="pin-field-label block mb-2">
                   {t('projectName')} *
                 </label>
                 <input
@@ -1079,7 +1079,7 @@ export default function WorkspacePage() {
                       setCreateError(null)
                     }
                   }}
-                  className="glass-input-base w-full px-3 py-2"
+                  className="pin-input-base w-full px-3 py-2"
                   placeholder={t('projectNamePlaceholder')}
                   maxLength={100}
                   required
@@ -1087,7 +1087,7 @@ export default function WorkspacePage() {
                 />
               </div>
               <div className="mb-6">
-                <label htmlFor="description" className="glass-field-label block mb-2">
+                <label htmlFor="description" className="pin-field-label block mb-2">
                   {t('projectDescription')}
                 </label>
                 <textarea
@@ -1099,7 +1099,7 @@ export default function WorkspacePage() {
                       setCreateError(null)
                     }
                   }}
-                  className="glass-textarea-base w-full px-3 py-2"
+                  className="pin-textarea-base w-full px-3 py-2"
                   placeholder={t('projectDescriptionPlaceholder')}
                   rows={3}
                   maxLength={500}
@@ -1108,7 +1108,7 @@ export default function WorkspacePage() {
 
               {/* 画面风格选择 */}
               <div className="mb-4">
-                <label className="glass-field-label block mb-2">
+                <label className="pin-field-label block mb-2">
                   {t('artStyle')}
                 </label>
                 <div className="grid grid-cols-5 gap-2">
@@ -1119,8 +1119,8 @@ export default function WorkspacePage() {
                       onClick={() => setFormData({ ...formData, artStyle: style.value })}
                       className={`flex flex-col items-center justify-center p-2 rounded-lg border transition-all ${
                         formData.artStyle === style.value
-                          ? 'border-[var(--glass-tone-info-fg)] bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)]'
-                          : 'border-[var(--glass-stroke-strong)] hover:border-[var(--glass-tone-info-fg)]/40 text-[var(--glass-text-secondary)]'
+                          ? 'border-[var(--pin-tone-info-fg)] bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)]'
+                          : 'border-[var(--pin-stroke-strong)] hover:border-[var(--pin-tone-info-fg)]/40 text-[var(--pin-text-secondary)]'
                       }`}
                       title={style.label}
                     >
@@ -1133,7 +1133,7 @@ export default function WorkspacePage() {
 
               {/* 画面比例选择 */}
               <div className="mb-6">
-                <label className="glass-field-label block mb-2">
+                <label className="pin-field-label block mb-2">
                   {t('videoRatio')}
                 </label>
                 <div className="grid grid-cols-5 gap-2">
@@ -1144,8 +1144,8 @@ export default function WorkspacePage() {
                       onClick={() => setFormData({ ...formData, videoRatio: ratio.value })}
                       className={`flex items-center justify-center p-2 rounded-lg border transition-all text-sm ${
                         formData.videoRatio === ratio.value
-                          ? 'border-[var(--glass-tone-info-fg)] bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)]'
-                          : 'border-[var(--glass-stroke-strong)] hover:border-[var(--glass-tone-info-fg)]/40 text-[var(--glass-text-secondary)]'
+                          ? 'border-[var(--pin-tone-info-fg)] bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)]'
+                          : 'border-[var(--pin-stroke-strong)] hover:border-[var(--pin-tone-info-fg)]/40 text-[var(--pin-text-secondary)]'
                       }`}
                     >
                       {ratio.label}
@@ -1161,12 +1161,12 @@ export default function WorkspacePage() {
 
               {/* 拆解进度条 */}
               {splitProgress && (
-                <div className="mb-4 p-4 rounded-xl border border-[var(--glass-stroke-strong)] bg-[var(--glass-bg-muted)]">
+                <div className="mb-4 p-4 rounded-xl border border-[var(--pin-stroke-strong)] bg-[var(--pin-bg-muted)]">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-[var(--glass-text-primary)]">{splitProgress.status}</span>
-                    <span className="text-xs text-[var(--glass-text-tertiary)]">{splitProgress.current}/{splitProgress.total}</span>
+                    <span className="text-sm text-[var(--pin-text-primary)]">{splitProgress.status}</span>
+                    <span className="text-xs text-[var(--pin-text-tertiary)]">{splitProgress.current}/{splitProgress.total}</span>
                   </div>
-                  <div className="w-full h-2 bg-[var(--glass-stroke-subtle)] rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-[var(--pin-stroke-base)] rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 ease-out"
                       style={{ width: `${splitProgress.total > 0 ? (splitProgress.current / splitProgress.total * 100) : 0}%` }}
@@ -1186,14 +1186,14 @@ export default function WorkspacePage() {
                     setNovelFileName('')
                     setSplitProgress(null)
                   }}
-                  className="glass-btn-base glass-btn-secondary px-4 py-2"
+                  className="pin-btn-base pin-btn-secondary px-4 py-2"
                   disabled={createLoading}
                 >
                   {tc('cancel')}
                 </button>
                 <button
                   type="submit"
-                  className="glass-btn-base glass-btn-primary px-4 py-2 disabled:opacity-50"
+                  className="pin-btn-base pin-btn-primary px-4 py-2 disabled:opacity-50"
                   disabled={createLoading || !formData.name.trim()}
                 >
                   {createLoading ? t('creating') : (novelContent ? t('createProjectWithNovel') : t('createProject'))}
@@ -1206,12 +1206,12 @@ export default function WorkspacePage() {
 
       {/* Edit Project Modal */}
       {showEditModal && editingProject && (
-        <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="glass-surface-modal p-6 w-full max-w-md mx-4">
-            <h2 className="text-xl font-bold text-[var(--glass-text-primary)] mb-4">{t('editProject')}</h2>
+        <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="pin-surface-modal p-6 w-full max-w-md mx-4">
+            <h2 className="text-xl font-bold text-[var(--pin-text-primary)] mb-4">{t('editProject')}</h2>
             <form onSubmit={handleEditProject}>
               <div className="mb-4">
-                <label htmlFor="edit-name" className="glass-field-label block mb-2">
+                <label htmlFor="edit-name" className="pin-field-label block mb-2">
                   {t('projectName')} *
                 </label>
                 <input
@@ -1224,14 +1224,14 @@ export default function WorkspacePage() {
                       setEditError(null)
                     }
                   }}
-                  className="glass-input-base w-full px-3 py-2"
+                  className="pin-input-base w-full px-3 py-2"
                   placeholder={t('projectNamePlaceholder')}
                   maxLength={100}
                   required
                 />
               </div>
               <div className="mb-6">
-                <label htmlFor="edit-description" className="glass-field-label block mb-2">
+                <label htmlFor="edit-description" className="pin-field-label block mb-2">
                   {t('projectDescription')}
                 </label>
                 <textarea
@@ -1243,7 +1243,7 @@ export default function WorkspacePage() {
                       setEditError(null)
                     }
                   }}
-                  className="glass-textarea-base w-full px-3 py-2"
+                  className="pin-textarea-base w-full px-3 py-2"
                   placeholder={t('projectDescriptionPlaceholder')}
                   rows={3}
                   maxLength={500}
@@ -1263,14 +1263,14 @@ export default function WorkspacePage() {
                     setEditError(null)
                     setEditFormData({ name: '', description: '' })
                   }}
-                  className="glass-btn-base glass-btn-secondary px-4 py-2"
+                  className="pin-btn-base pin-btn-secondary px-4 py-2"
                   disabled={createLoading}
                 >
                   {tc('cancel')}
                 </button>
                 <button
                   type="submit"
-                  className="glass-btn-base glass-btn-primary px-4 py-2 disabled:opacity-50"
+                  className="pin-btn-base pin-btn-primary px-4 py-2 disabled:opacity-50"
                   disabled={createLoading || !editFormData.name.trim()}
                 >
                   {createLoading ? t('saving') : tc('save')}

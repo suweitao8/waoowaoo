@@ -27,13 +27,13 @@ const IMAGE_GENERATION_COUNT_CONFIG: Record<ImageGenerationCountScope, ImageGene
   'storyboard-candidates': {
     defaultValue: 1,
     min: 1,
-    max: 4,
+    max: 1,
     storageKey: 'image-count:storyboard-candidates',
   },
   'reference-to-character': {
-    defaultValue: 3,
+    defaultValue: 1,
     min: 1,
-    max: 6,
+    max: 1,
     storageKey: 'image-count:reference-to-character',
   },
 }

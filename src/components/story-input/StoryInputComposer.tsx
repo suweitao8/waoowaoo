@@ -55,6 +55,18 @@ interface StoryInputComposerProps {
   onCompositionEnd?: (event: React.CompositionEvent<HTMLTextAreaElement>) => void
   /** @deprecated 不再使用，保留仅为 API 兼容 */
   textareaClassName?: string
+  /** 视频比例 */
+  videoRatio?: string
+  /** 视频比例变更回调 */
+  onVideoRatioChange?: (ratio: string) => void
+  /** 比例选项 */
+  ratioOptions?: Array<{ value: string; label: string }>
+  /** 艺术风格 */
+  artStyle?: string
+  /** 艺术风格变更回调 */
+  onArtStyleChange?: (style: string) => void
+  /** 风格选项 */
+  styleOptions?: Array<{ value: string; label: string }>
 }
 
 /**
@@ -133,10 +145,10 @@ export default function StoryInputComposer({
   }, [disabled, onValueChange])
 
   return (
-    <div className="relative w-full glass-surface-elevated rounded-2xl">
+    <div className="relative w-full pin-surface-elevated rounded-2xl">
       <div className="p-4">
         {/* 顶部工具栏：左侧标题 + 风格选择 + 操作按钮 */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-3 border-b border-[var(--glass-stroke-base)]">
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-3 border-b border-[var(--pin-stroke-base)]">
           {/* 左侧标题（剧集名称） */}
           {leftTitle && (
             <div className="flex-shrink-0">

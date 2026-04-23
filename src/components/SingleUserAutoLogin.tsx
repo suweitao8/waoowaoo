@@ -54,8 +54,8 @@ export function SingleUserAutoLogin({ children }: { children: React.ReactNode })
   // 显示加载状态
   if (isSingleUserMode() && status === 'loading') {
     return (
-      <div className="glass-page min-h-screen flex items-center justify-center">
-        <div className="text-[var(--glass-text-secondary)]">Loading...</div>
+      <div className="pin-page min-h-screen flex items-center justify-center">
+        <div className="text-[var(--pin-text-secondary)]">Loading...</div>
       </div>
     )
   }
@@ -63,8 +63,8 @@ export function SingleUserAutoLogin({ children }: { children: React.ReactNode })
   // 单用户模式下，正在自动登录时显示加载
   if (isSingleUserMode() && !session && isAutoLoggingIn) {
     return (
-      <div className="glass-page min-h-screen flex items-center justify-center">
-        <div className="text-[var(--glass-text-secondary)]">Auto-login...</div>
+      <div className="pin-page min-h-screen flex items-center justify-center">
+        <div className="text-[var(--pin-text-secondary)]">Auto-login...</div>
       </div>
     )
   }

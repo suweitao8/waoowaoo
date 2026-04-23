@@ -110,50 +110,50 @@ export function NarratorVoiceConfigSection({
   }
 
   return (
-    <div className="glass-surface-soft p-5 sm:p-6 space-y-4">
+    <div className="pin-surface-soft p-5 sm:p-6 space-y-4">
       <button
         type="button"
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between"
       >
         <div className="flex items-center gap-2">
-          <AppIcon name="mic" className="w-4 h-4 text-[var(--glass-tone-info-fg)]" />
-          <h3 className="text-sm font-semibold text-[var(--glass-text-tertiary)]">{t('title')}</h3>
+          <AppIcon name="mic" className="w-4 h-4 text-[var(--pin-tone-info-fg)]" />
+          <h3 className="text-sm font-semibold text-[var(--pin-text-tertiary)]">{t('title')}</h3>
         </div>
         <div className="flex items-center gap-2">
           {hasVoice ? (
-            <span className="glass-chip glass-chip-success text-xs px-2 py-0.5">
+            <span className="pin-badge pin-badge-success text-xs px-2 py-0.5">
               <AppIcon name="check" className="w-3 h-3" />
               {t('configured')}
             </span>
           ) : (
-            <span className="glass-chip glass-chip-neutral text-xs px-2 py-0.5">
+            <span className="pin-badge pin-badge-neutral text-xs px-2 py-0.5">
               {t('notConfigured')}
             </span>
           )}
           <AppIcon
             name={isExpanded ? 'chevronUp' : 'chevronDown'}
-            className="w-4 h-4 text-[var(--glass-text-tertiary)]"
+            className="w-4 h-4 text-[var(--pin-text-tertiary)]"
           />
         </div>
       </button>
 
       {isExpanded && (
         <div className="space-y-4 pt-2">
-          <p className="text-xs text-[var(--glass-text-tertiary)]">{t('subtitle')}</p>
+          <p className="text-xs text-[var(--pin-text-tertiary)]">{t('subtitle')}</p>
 
           {hasVoice && !generatedVoices.length ? (
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={handleRedesign}
-                className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg text-sm flex items-center gap-2"
+                className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg text-sm flex items-center gap-2"
               >
                 <AppIcon name="refresh" className="w-4 h-4" />
                 {t('redesign')}
               </button>
               {narratorVoiceType && (
-                <span className="text-xs text-[var(--glass-text-tertiary)]">
+                <span className="text-xs text-[var(--pin-text-tertiary)]">
                   {narratorVoiceType === 'qwen-designed' ? 'AI 设计音色' : narratorVoiceType}
                 </span>
               )}
@@ -186,7 +186,7 @@ export function NarratorVoiceConfigSection({
                       void handleGenerate()
                     }}
                     disabled={isDesignSubmitting}
-                    className="glass-btn-base glass-btn-secondary flex-1 py-2 rounded-lg text-sm"
+                    className="pin-btn-base pin-btn-secondary flex-1 py-2 rounded-lg text-sm"
                   >
                     {t('regenerate')}
                   </button>
@@ -194,7 +194,7 @@ export function NarratorVoiceConfigSection({
                     type="button"
                     onClick={handleConfirmSelection}
                     disabled={selectedIndex === null}
-                    className="glass-btn-base glass-btn-tone-success flex-1 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                    className="pin-btn-base pin-btn-tone-success flex-1 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                   >
                     {t('confirmUse')}
                   </button>

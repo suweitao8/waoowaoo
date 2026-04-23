@@ -345,23 +345,23 @@ export function CharacterEditModal({
     }
 
     return (
-        <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 p-4">
-            <div className="glass-surface-modal max-w-2xl w-full max-h-[80vh] flex flex-col">
+        <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 p-4">
+            <div className="pin-surface-modal max-w-2xl w-full max-h-[80vh] flex flex-col">
                 <div className="p-6 space-y-4 overflow-y-auto flex-1">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">
+                        <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">
                             {t('modal.editCharacter')} - {characterName}
                         </h3>
                         <button
                             onClick={onClose}
-                            className="glass-btn-base glass-btn-soft w-9 h-9 rounded-full text-[var(--glass-text-tertiary)]"
+                            className="pin-btn-base pin-btn-soft w-9 h-9 rounded-full text-[var(--pin-text-tertiary)]"
                         >
                             <AppIcon name="close" className="w-6 h-6" />
                         </button>
                     </div>
 
                     <div className="space-y-2">
-                        <label className="glass-field-label block">
+                        <label className="pin-field-label block">
                             {t('character.name')}
                         </label>
                         <div className="flex gap-2">
@@ -369,14 +369,14 @@ export function CharacterEditModal({
                                 type="text"
                                 value={editingName}
                                 onChange={(e) => setEditingName(e.target.value)}
-                                className="glass-input-base flex-1 px-3 py-2"
+                                className="pin-input-base flex-1 px-3 py-2"
                                 placeholder={t('modal.namePlaceholder')}
                             />
                             {editingName !== characterName && (
                                 <button
                                     onClick={handleSaveName}
                                     disabled={updateAssetHubName.isPending || updateProjectName.isPending || !editingName.trim()}
-                                    className="glass-btn-base glass-btn-tone-success px-3 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
+                                    className="pin-btn-base pin-btn-tone-success px-3 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm whitespace-nowrap"
                                 >
                                     {(updateAssetHubName.isPending || updateProjectName.isPending)
                                         ? t('smartImport.preview.saving')
@@ -388,17 +388,17 @@ export function CharacterEditModal({
 
                     {mode === 'project' && (
                         <div className="space-y-2">
-                            <label className="glass-field-label block">
+                            <label className="pin-field-label block">
                                 {t('modal.introduction')}
                             </label>
                             <textarea
                                 value={editingIntroduction}
                                 onChange={(e) => setEditingIntroduction(e.target.value)}
                                 rows={3}
-                                className="glass-textarea-base w-full px-3 py-2 resize-none"
+                                className="pin-textarea-base w-full px-3 py-2 resize-none"
                                 placeholder={t('modal.introductionPlaceholder')}
                             />
-                            <p className="glass-field-hint">
+                            <p className="pin-field-hint">
                                 {t('modal.introductionTip')}
                             </p>
                         </div>
@@ -416,9 +416,9 @@ export function CharacterEditModal({
                     )}
 
                     {mode === 'asset-hub' && changeReason && (
-                        <div className="text-sm text-[var(--glass-text-secondary)]">
+                        <div className="text-sm text-[var(--pin-text-secondary)]">
                             {t('character.appearance')}:
-                            <span className="ml-1 inline-flex items-center rounded-full px-2 py-0.5 bg-[var(--glass-tone-neutral-bg)] text-[var(--glass-tone-neutral-fg)]">
+                            <span className="ml-1 inline-flex items-center rounded-full px-2 py-0.5 bg-[var(--pin-tone-neutral-bg)] text-[var(--pin-tone-neutral-fg)]">
                                 {changeReason}
                             </span>
                         </div>
@@ -443,13 +443,13 @@ export function CharacterEditModal({
                     {/* AI 提示词输入框 */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <label className="glass-field-label block">
+                            <label className="pin-field-label block">
                                 {t('character.imagePrompt')}
                             </label>
                             <button
                                 onClick={handleGenerateImagePrompt}
                                 disabled={isGeneratingPrompt || (!editingName.trim() && !editingDescription.trim())}
-                                className="glass-btn-base glass-btn-tone-info px-3 py-1.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-1.5"
+                                className="pin-btn-base pin-btn-tone-info px-3 py-1.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center gap-1.5"
                             >
                                 {isGeneratingPrompt ? (
                                     <TaskStatusInline state={generatingPromptState} className="text-white [&>span]:text-white [&_svg]:text-white text-xs" />
@@ -464,20 +464,20 @@ export function CharacterEditModal({
                         <textarea
                             value={editingImagePrompt}
                             onChange={(e) => setEditingImagePrompt(e.target.value)}
-                            className="glass-textarea-base w-full px-3 py-2 min-h-[100px]"
+                            className="pin-textarea-base w-full px-3 py-2 min-h-[100px]"
                             placeholder={t('modal.imagePromptPlaceholder')}
                             rows={4}
                         />
-                        <p className="text-xs text-[var(--glass-text-tertiary)]">
+                        <p className="text-xs text-[var(--pin-text-tertiary)]">
                             {t('modal.imagePromptHint')}
                         </p>
                     </div>
                 </div>
 
-                <div className="flex gap-3 justify-end p-4 border-t border-[var(--glass-stroke-base)] bg-[var(--glass-bg-surface-strong)] rounded-b-lg flex-shrink-0">
+                <div className="flex gap-3 justify-end p-4 border-t border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface-strong)] rounded-b-lg flex-shrink-0">
                     <button
                         onClick={onClose}
-                        className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg"
+                        className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg"
                         disabled={isSaving}
                     >
                         {t('common.cancel')}
@@ -485,7 +485,7 @@ export function CharacterEditModal({
                     <button
                         onClick={handleSaveOnly}
                         disabled={isSaving || !editingDescription.trim()}
-                        className="glass-btn-base glass-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="pin-btn-base pin-btn-tone-info px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                         {isSaving ? (
                             <TaskStatusInline state={savingState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -496,7 +496,7 @@ export function CharacterEditModal({
                     <button
                         onClick={handleSaveAndGenerate}
                         disabled={isSaving || isTaskRunning || !editingDescription.trim()}
-                        className="glass-btn-base glass-btn-primary px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="pin-btn-base pin-btn-primary px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                         {isTaskRunning ? (
                             <TaskStatusInline state={taskRunningState} className="text-white [&>span]:text-white [&_svg]:text-white" />

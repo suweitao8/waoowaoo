@@ -115,7 +115,7 @@ export default function AssetLibrary({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="fixed top-20 right-4 z-40 flex items-center gap-2 px-5 py-2.5 glass-btn-base glass-btn-secondary text-[var(--glass-text-secondary)] font-medium"
+        className="fixed top-20 right-4 z-40 flex items-center gap-2 px-5 py-2.5 pin-btn-base pin-btn-secondary text-[var(--pin-text-secondary)] font-medium"
       >
         <AppIcon name="folderCards" className="w-5 h-5" />
         {t('assetLibrary.button')}
@@ -123,15 +123,15 @@ export default function AssetLibrary({
 
       {/* 全屏弹窗 - 现代玻璃态风格 */}
       {isOpen && (
-        <div className="fixed inset-0 glass-overlay z-50 flex items-center justify-center p-6">
-          <div className="glass-surface-modal w-full h-full max-w-[95vw] max-h-[95vh] flex flex-col overflow-hidden">
+        <div className="fixed inset-0 pin-overlay z-50 flex items-center justify-center p-6">
+          <div className="pin-surface-modal w-full h-full max-w-[95vw] max-h-[95vh] flex flex-col overflow-hidden">
             {/* 头部 */}
-            <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--glass-stroke-base)]">
+            <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--pin-stroke-base)]">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-[var(--glass-accent-from)] rounded-2xl flex items-center justify-center shadow-[var(--glass-shadow-md)]">
+                <div className="w-10 h-10 bg-[var(--pin-color-brand)] rounded-2xl flex items-center justify-center shadow-[var(--pin-shadow-md)]">
                   <AppIcon name="folderCards" className="w-5 h-5 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-[var(--glass-text-primary)]">{t('assetLibrary.title')}</h2>
+                <h2 className="text-2xl font-bold text-[var(--pin-text-primary)]">{t('assetLibrary.title')}</h2>
 
                 {/* 下载按钮 - 紧贴标题 */}
                 <button
@@ -139,7 +139,7 @@ export default function AssetLibrary({
                   onClick={handleDownloadAll}
                   disabled={isDownloading}
                   title={t('common.download')}
-                  className="w-9 h-9 glass-btn-base glass-btn-secondary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-9 h-9 pin-btn-base pin-btn-secondary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <AppIcon
                     name={isDownloading ? 'refresh' : 'download'}
@@ -150,9 +150,9 @@ export default function AssetLibrary({
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="w-10 h-10 glass-btn-base glass-btn-secondary flex items-center justify-center"
+                className="w-10 h-10 pin-btn-base pin-btn-secondary flex items-center justify-center"
               >
-                <AppIcon name="close" className="w-5 h-5 text-[var(--glass-text-tertiary)]" />
+                <AppIcon name="close" className="w-5 h-5 text-[var(--pin-text-tertiary)]" />
               </button>
             </div>
 

@@ -156,26 +156,26 @@ export function CharacterPropertyEditor({
             {/* 第一行：性别、年龄 */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                         {t('basicAttributes.gender')}
                     </label>
                     <input
                         type="text"
                         value={gender}
                         onChange={createChangeHandler(setGender)}
-                        className="glass-input-base w-full px-3 py-1.5 text-sm"
+                        className="pin-input-base w-full px-3 py-1.5 text-sm"
                         placeholder={t('basicAttributes.genderPlaceholder')}
                     />
                 </div>
                 <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                         {t('basicAttributes.age')}
                     </label>
                     <input
                         type="text"
                         value={ageRange}
                         onChange={createChangeHandler(setAgeRange)}
-                        className="glass-input-base w-full px-3 py-1.5 text-sm"
+                        className="pin-input-base w-full px-3 py-1.5 text-sm"
                         placeholder={t('basicAttributes.agePlaceholder')}
                     />
                 </div>
@@ -184,26 +184,26 @@ export function CharacterPropertyEditor({
             {/* 第二行：身份、身高 */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                         {t('basicAttributes.identity')}
                     </label>
                     <input
                         type="text"
                         value={identity}
                         onChange={createChangeHandler(setIdentity)}
-                        className="glass-input-base w-full px-3 py-1.5 text-sm"
+                        className="pin-input-base w-full px-3 py-1.5 text-sm"
                         placeholder={t('basicAttributes.identityPlaceholder')}
                     />
                 </div>
                 <div className="space-y-1.5">
-                    <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                    <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                         {t('basicAttributes.height')}
                     </label>
                     <input
                         type="text"
                         value={height}
                         onChange={createChangeHandler(setHeight)}
-                        className="glass-input-base w-full px-3 py-1.5 text-sm"
+                        className="pin-input-base w-full px-3 py-1.5 text-sm"
                         placeholder={t('basicAttributes.heightPlaceholder')}
                     />
                 </div>
@@ -211,31 +211,31 @@ export function CharacterPropertyEditor({
 
             {/* 第三行：外貌体型 */}
             <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                     {t('basicAttributes.bodyType')}
                 </label>
                 <input
                     type="text"
                     value={bodyType}
                     onChange={createChangeHandler(setBodyType)}
-                    className="glass-input-base w-full px-3 py-1.5 text-sm"
+                    className="pin-input-base w-full px-3 py-1.5 text-sm"
                     placeholder={t('basicAttributes.bodyTypePlaceholder')}
                 />
             </div>
 
             {/* 性格标签 */}
             <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                     {t('basicAttributes.personality')}
                 </label>
                 <div className="flex flex-wrap gap-1.5 mb-2">
                     {personalityTags.map((tag, i) => (
-                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] rounded-lg text-xs">
+                        <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] rounded-lg text-xs">
                             {tag}
                             <button
                                 type="button"
                                 onClick={() => removePersonalityTag(i)}
-                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]"
+                                className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]"
                             >
                                 <AppIcon name="closeSm" className="h-3 w-3" />
                             </button>
@@ -248,14 +248,14 @@ export function CharacterPropertyEditor({
                         value={newPersonalityTag}
                         onChange={(e) => setNewPersonalityTag(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addPersonalityTag())}
-                        className="glass-input-base flex-1 px-3 py-1.5 text-sm"
+                        className="pin-input-base flex-1 px-3 py-1.5 text-sm"
                         placeholder={t('basicAttributes.personalityPlaceholder')}
                     />
                     <button
                         type="button"
                         onClick={addPersonalityTag}
                         disabled={!newPersonalityTag.trim()}
-                        className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
+                        className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
                     >
                         {t('common.add')}
                     </button>
@@ -266,28 +266,28 @@ export function CharacterPropertyEditor({
             {showAllProperties && (
                 <>
                     {/* 时代和阶层 */}
-                    <div className="grid grid-cols-2 gap-4 pt-2 border-t border-[var(--glass-stroke-base)]">
+                    <div className="grid grid-cols-2 gap-4 pt-2 border-t border-[var(--pin-stroke-base)]">
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                            <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                 {t('unifiedPanel.fields.era')}
                             </label>
                             <input
                                 type="text"
                                 value={eraPeriod}
                                 onChange={createChangeHandler(setEraPeriod)}
-                                className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                className="pin-input-base w-full px-3 py-1.5 text-sm"
                                 placeholder={t('unifiedPanel.placeholders.era')}
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                            <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                                 {t('unifiedPanel.fields.socialClass')}
                             </label>
                             <input
                                 type="text"
                                 value={socialClass}
                                 onChange={createChangeHandler(setSocialClass)}
-                                className="glass-input-base w-full px-3 py-1.5 text-sm"
+                                className="pin-input-base w-full px-3 py-1.5 text-sm"
                                 placeholder={t('unifiedPanel.placeholders.socialClass')}
                             />
                         </div>
@@ -295,13 +295,13 @@ export function CharacterPropertyEditor({
 
                     {/* 角色层级 */}
                     <div className="space-y-1.5">
-                        <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                        <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                             {t('characterProfile.importanceLevel')}
                         </label>
                         <select
                             value={roleLevel}
                             onChange={createChangeHandler((v) => setRoleLevel(v as RoleLevel))}
-                            className="glass-select-base w-full px-3 py-2"
+                            className="pin-select-base w-full px-3 py-2"
                         >
                             {ROLE_LEVELS.map((level) => (
                                 <option key={level} value={level}>
@@ -313,27 +313,27 @@ export function CharacterPropertyEditor({
 
                     {/* 角色原型 */}
                     <div className="space-y-1.5">
-                        <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                        <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                             {t('characterProfile.characterArchetype')}
                         </label>
                         <input
                             type="text"
                             value={archetype}
                             onChange={createChangeHandler(setArchetype)}
-                            className="glass-input-base w-full px-3 py-1.5 text-sm"
+                            className="pin-input-base w-full px-3 py-1.5 text-sm"
                             placeholder={t('characterProfile.archetypePlaceholder')}
                         />
                     </div>
 
                     {/* 服装华丽度 */}
                     <div className="space-y-1.5">
-                        <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                        <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                             {t('characterProfile.costumeLevelLabel')}
                         </label>
                         <select
                             value={costumeTier}
                             onChange={createChangeHandler((v) => setCostumeTier(Number(v) as CostumeTier))}
-                            className="glass-select-base w-full px-3 py-2"
+                            className="pin-select-base w-full px-3 py-2"
                         >
                             {COSTUME_TIERS.map((tier) => (
                                 <option key={tier} value={tier}>
@@ -345,17 +345,17 @@ export function CharacterPropertyEditor({
 
                     {/* 建议色彩 */}
                     <div className="space-y-1.5">
-                        <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                        <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                             {t('characterProfile.suggestedColors')}
                         </label>
                         <div className="flex flex-wrap gap-1.5 mb-2">
                             {suggestedColors.map((color, i) => (
-                                <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--glass-bg-muted)] text-[var(--glass-text-secondary)] rounded-lg text-xs">
+                                <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--pin-bg-muted)] text-[var(--pin-text-secondary)] rounded-lg text-xs">
                                     {color}
                                     <button
                                         type="button"
                                         onClick={() => removeColor(i)}
-                                        className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]"
+                                        className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]"
                                     >
                                         <AppIcon name="closeSm" className="h-3 w-3" />
                                     </button>
@@ -368,14 +368,14 @@ export function CharacterPropertyEditor({
                                 value={newColor}
                                 onChange={(e) => setNewColor(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addColor())}
-                                className="glass-input-base flex-1 px-3 py-1.5 text-sm"
+                                className="pin-input-base flex-1 px-3 py-1.5 text-sm"
                                 placeholder={t('characterProfile.colorPlaceholder')}
                             />
                             <button
                                 type="button"
                                 onClick={addColor}
                                 disabled={!newColor.trim()}
-                                className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
+                                className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
                             >
                                 {t('common.add')}
                             </button>
@@ -384,9 +384,9 @@ export function CharacterPropertyEditor({
 
                     {/* 辨识标志 */}
                     <div className="space-y-1.5">
-                        <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                        <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                             {t('characterProfile.primaryMarker')}
-                            <span className="text-xs text-[var(--glass-text-tertiary)] ml-1">
+                            <span className="text-xs text-[var(--pin-text-tertiary)] ml-1">
                                 {t('characterProfile.markerNote')}
                             </span>
                         </label>
@@ -394,24 +394,24 @@ export function CharacterPropertyEditor({
                             type="text"
                             value={primaryIdentifier}
                             onChange={createChangeHandler(setPrimaryIdentifier)}
-                            className="glass-input-base w-full px-3 py-1.5 text-sm"
+                            className="pin-input-base w-full px-3 py-1.5 text-sm"
                             placeholder={t('characterProfile.markingsPlaceholder')}
                         />
                     </div>
 
                     {/* 视觉关键词 */}
                     <div className="space-y-1.5">
-                        <label className="text-xs font-medium text-[var(--glass-text-secondary)]">
+                        <label className="text-xs font-medium text-[var(--pin-text-secondary)]">
                             {t('characterProfile.visualKeywords')}
                         </label>
                         <div className="flex flex-wrap gap-1.5 mb-2">
                             {visualKeywords.map((keyword, i) => (
-                                <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--glass-tone-info-bg)] text-[var(--glass-tone-info-fg)] rounded-lg text-xs">
+                                <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 bg-[var(--pin-tone-info-bg)] text-[var(--pin-tone-info-fg)] rounded-lg text-xs">
                                     {keyword}
                                     <button
                                         type="button"
                                         onClick={() => removeKeyword(i)}
-                                        className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--glass-text-primary)]"
+                                        className="inline-flex h-4 w-4 items-center justify-center hover:text-[var(--pin-text-primary)]"
                                     >
                                         <AppIcon name="closeSm" className="h-3 w-3" />
                                     </button>
@@ -424,14 +424,14 @@ export function CharacterPropertyEditor({
                                 value={newKeyword}
                                 onChange={(e) => setNewKeyword(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
-                                className="glass-input-base flex-1 px-3 py-1.5 text-sm"
+                                className="pin-input-base flex-1 px-3 py-1.5 text-sm"
                                 placeholder={t('characterProfile.keywordsPlaceholder')}
                             />
                             <button
                                 type="button"
                                 onClick={addKeyword}
                                 disabled={!newKeyword.trim()}
-                                className="glass-btn-base glass-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
+                                className="pin-btn-base pin-btn-secondary px-3 py-1.5 text-sm rounded-lg disabled:opacity-50"
                             >
                                 {t('common.add')}
                             </button>
@@ -447,22 +447,22 @@ export function CharacterPropertyEditor({
     }
 
     return (
-        <div className="border border-[var(--glass-stroke-base)] rounded-xl overflow-hidden">
+        <div className="border border-[var(--pin-stroke-base)] rounded-xl overflow-hidden">
             <button
                 type="button"
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-[var(--glass-bg-muted)] hover:bg-[var(--glass-bg-surface-strong)] transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 bg-[var(--pin-bg-muted)] hover:bg-[var(--pin-bg-surface-strong)] transition-colors"
             >
-                <span className="text-sm font-medium text-[var(--glass-text-primary)]">
+                <span className="text-sm font-medium text-[var(--pin-text-primary)]">
                     {t('basicAttributes.title')}
                 </span>
                 <AppIcon
                     name="chevronDown"
-                    className={`w-4 h-4 text-[var(--glass-text-tertiary)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 text-[var(--pin-text-tertiary)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                 />
             </button>
             {isExpanded && (
-                <div className="p-4 bg-[var(--glass-bg-surface)]">
+                <div className="p-4 bg-[var(--pin-bg-surface)]">
                     {content}
                 </div>
             )}

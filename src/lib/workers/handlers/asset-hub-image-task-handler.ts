@@ -1,12 +1,10 @@
 import { type Job } from 'bullmq'
 import { prisma } from '@/lib/prisma'
-import { CHARACTER_ASSET_IMAGE_RATIO, LOCATION_IMAGE_RATIO, PROP_IMAGE_RATIO, addCharacterPromptSuffix, addLocationPromptSuffix, addPropPromptSuffix, getArtStylePrompt } from '@/lib/constants'
+import { CHARACTER_ASSET_IMAGE_RATIO, LOCATION_IMAGE_RATIO, PROP_IMAGE_RATIO, getArtStylePrompt } from '@/lib/constants'
 import { type TaskJobData } from '@/lib/task/types'
 import { encodeImageUrls } from '@/lib/contracts/image-urls-contract'
 import { normalizeImageGenerationCount } from '@/lib/image-generation/count'
 import { PRIMARY_APPEARANCE_INDEX } from '@/lib/constants'
-import { buildLocationImagePromptCore } from '@/lib/location-image-prompt'
-import { buildPropImagePromptCore } from '@/lib/prop-image-prompt'
 import {
   assertTaskActive,
   getUserModels,
@@ -16,6 +14,9 @@ import {
   generateCleanImageToStorage,
   parseJsonStringArray,
 } from './image-task-handler-shared'
+import { getUserPromptTemplatesCached } from '@/lib/user-prompt-templates'
+import { buildCharacterPrompt, buildLocationPrompt, buildPropPrompt } from '@/lib/prompt-templates'
+import { formatLocationAvailableSlotsText, parseLocationAvailableSlots } from '@/lib/location-available-slots'
 
 interface GlobalCharacterAppearanceRecord {
   id: string
@@ -64,6 +65,10 @@ export async function handleAssetHubImageTask(job: Job<TaskJobData>) {
   const userId = job.data.userId
   const userModels = await getUserModels(userId)
 
+  // 获取用户提示词模板配置
+  const userTemplates = await getUserPromptTemplatesCached(userId)
+  const locale = job.data.locale === 'en' ? 'en' : 'zh'
+
   // 调试日志
   console.log('[asset-hub-image] userModels:', JSON.stringify({
     characterModel: userModels.characterModel,
@@ -102,7 +107,11 @@ export async function handleAssetHubImageTask(job: Job<TaskJobData>) {
 
     for (let i = 0; i < count; i++) {
       const raw = base[i] || base[0]
-      const prompt = artStyle ? `${addCharacterPromptSuffix(raw)}，${artStyle}` : addCharacterPromptSuffix(raw)
+      // 使用用户配置的模板生成提示词
+      const promptCore = buildCharacterPrompt(userTemplates.characterPromptTemplate, {
+        description: raw,
+      })
+      const prompt = artStyle ? `${promptCore}，${artStyle}` : promptCore
       const imageKey = await generateCleanImageToStorage({
         job,
         userId,
@@ -151,24 +160,29 @@ export async function handleAssetHubImageTask(job: Job<TaskJobData>) {
 
     for (const image of targetImages) {
       if (!image.description) continue
-      const promptCore = payload.type === 'prop'
-        ? buildPropImagePromptCore({
+
+      // 使用用户配置的模板生成提示词
+      let promptCore: string
+      if (payload.type === 'prop') {
+        promptCore = buildPropPrompt(userTemplates.propPromptTemplate, {
           description: image.description,
         })
-        : buildLocationImagePromptCore({
+      } else {
+        const availableSlotsText = formatLocationAvailableSlotsText(
+          parseLocationAvailableSlots(image.availableSlots),
+          locale,
+        )
+        promptCore = buildLocationPrompt(userTemplates.locationPromptTemplate, {
           description: image.description,
-          availableSlotsRaw: image.availableSlots,
-          locale: job.data.locale === 'en' ? 'en' : 'zh',
+          availableSlots: availableSlotsText,
         })
-      const promptWithSuffix = payload.type === 'prop'
-        ? addPropPromptSuffix(promptCore)
-        : addLocationPromptSuffix(promptCore)
-      const prompt = artStyle ? `${promptWithSuffix}，${artStyle}` : promptWithSuffix
+      }
+
+      const prompt = artStyle ? `${promptCore}，${artStyle}` : promptCore
       const aspectRatio = payload.type === 'prop' ? PROP_IMAGE_RATIO : LOCATION_IMAGE_RATIO
 
       // 调试日志：查看实际传递的提示词
       console.log(`[asset-hub-image] type: ${payload.type}, promptCore: ${promptCore.substring(0, 100)}...`)
-      console.log(`[asset-hub-image] promptWithSuffix: ${promptWithSuffix.substring(0, 150)}...`)
       console.log(`[asset-hub-image] final prompt: ${prompt.substring(0, 200)}...`)
       console.log(`[asset-hub-image] aspectRatio: ${aspectRatio}`)
 

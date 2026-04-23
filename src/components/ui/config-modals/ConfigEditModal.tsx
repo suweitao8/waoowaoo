@@ -346,18 +346,18 @@ export function SettingsModal({
 
     return (
         <div
-            className="fixed inset-0 z-[100] flex items-center justify-center glass-overlay animate-fadeIn"
+            className="fixed inset-0 z-[100] flex items-center justify-center pin-overlay animate-fadeIn"
             onClick={(e) => {
                 if (e.target === e.currentTarget) onClose()
             }}
         >
-            <div className="glass-surface-modal p-7 w-full max-w-3xl transform transition-all scale-100 max-h-[90vh] flex flex-col">
+            <div className="pin-surface-modal p-7 w-full max-w-3xl transform transition-all scale-100 max-h-[90vh] flex flex-col">
                 <div className="flex justify-between items-center mb-2">
-                    <h2 className="text-2xl font-bold text-[var(--glass-text-primary)]">{t('title')}</h2>
+                    <h2 className="text-2xl font-bold text-[var(--pin-text-primary)]">{t('title')}</h2>
                     <div className="flex items-center gap-3">
-                        <div className={`glass-chip text-xs transition-all duration-300 ${saveStatus === 'saved'
-                            ? 'glass-chip-success'
-                            : 'glass-chip-neutral'
+                        <div className={`pin-badge text-xs transition-all duration-300 ${saveStatus === 'saved'
+                            ? 'pin-badge-success'
+                            : 'pin-badge-neutral'
                             }`}>
                             {saveStatus === 'saved' ? (
                                 <>
@@ -366,30 +366,30 @@ export function SettingsModal({
                                 </>
                             ) : (
                                 <>
-                                    <span className="w-1.5 h-1.5 bg-[var(--glass-tone-success-fg)] rounded-full"></span>
+                                    <span className="w-1.5 h-1.5 bg-[var(--pin-tone-success-fg)] rounded-full"></span>
                                     {t('autoSave')}
                                 </>
                             )}
                         </div>
                         <button
                             onClick={onClose}
-                            className="glass-btn-base glass-btn-soft rounded-full p-2 text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]"
+                            className="pin-btn-base pin-btn-soft rounded-full p-2 text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]"
                         >
                             <AppIcon name="close" className="w-6 h-6" />
                         </button>
                     </div>
                 </div>
-                <p className="text-[12px] text-[var(--glass-text-tertiary)] mb-6">{t('subtitle')}</p>
+                <p className="text-[12px] text-[var(--pin-text-tertiary)] mb-6">{t('subtitle')}</p>
                 <div className="space-y-5 flex-1 min-h-0 overflow-y-auto app-scrollbar">
                     {/* 项目类型选择 */}
-                    <div className="glass-surface-soft p-5 sm:p-6 space-y-4">
-                        <h3 className="text-sm font-semibold text-[var(--glass-text-tertiary)]">{t('projectType')}</h3>
+                    <div className="pin-surface-soft p-5 sm:p-6 space-y-4">
+                        <h3 className="text-sm font-semibold text-[var(--pin-text-tertiary)]">{t('projectType')}</h3>
                         <div className="space-y-2">
                             <div className="flex gap-3">
                                 <button
                                     type="button"
                                     disabled
-                                    className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium glass-btn-secondary opacity-50 cursor-not-allowed"
+                                    className="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium pin-btn-secondary opacity-50 cursor-not-allowed"
                                 >
                                     {t('projectTypeAnimation')}
                                 </button>
@@ -398,22 +398,22 @@ export function SettingsModal({
                                     onClick={() => handleChange(onProjectTypeChange)('audiobook')}
                                     className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
                                         projectType === 'audiobook'
-                                            ? 'glass-btn-primary'
-                                            : 'glass-btn-secondary'
+                                            ? 'pin-btn-primary'
+                                            : 'pin-btn-secondary'
                                     }`}
                                 >
                                     {t('projectTypeAudiobook')}
                                 </button>
                             </div>
-                            <p className="text-xs text-[var(--glass-text-tertiary)]">{t('projectTypeHint')}</p>
+                            <p className="text-xs text-[var(--pin-text-tertiary)]">{t('projectTypeHint')}</p>
                         </div>
                     </div>
 
-                    <div className="glass-surface-soft p-5 sm:p-6 space-y-4">
-                        <h3 className="text-sm font-semibold text-[var(--glass-text-tertiary)]">{t('visualSettings')}</h3>
+                    <div className="pin-surface-soft p-5 sm:p-6 space-y-4">
+                        <h3 className="text-sm font-semibold text-[var(--pin-text-tertiary)]">{t('visualSettings')}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('visualStyle')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('visualStyle')}</label>
                                 <StyleSelector
                                     value={artStyle}
                                     onChange={(value) => handleChange(onArtStyleChange)(value)}
@@ -421,7 +421,7 @@ export function SettingsModal({
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('aspectRatio')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('aspectRatio')}</label>
                                 <RatioSelector
                                     value={videoRatio}
                                     onChange={(value) => { handleChange(onVideoRatioChange)(value) }}
@@ -431,14 +431,14 @@ export function SettingsModal({
                         </div>
                     </div>
 
-                    <div className="glass-surface-soft p-5 sm:p-6 space-y-4">
-                        <h3 className="text-sm font-semibold text-[var(--glass-text-tertiary)]">{t('modelParams')}</h3>
+                    <div className="pin-surface-soft p-5 sm:p-6 space-y-4">
+                        <h3 className="text-sm font-semibold text-[var(--pin-text-tertiary)]">{t('modelParams')}</h3>
                         {!modelsLoaded && (
-                            <div className="text-xs text-[var(--glass-text-tertiary)]">{t('loadingModels')}</div>
+                            <div className="text-xs text-[var(--pin-text-tertiary)]">{t('loadingModels')}</div>
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('analysisModel')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('analysisModel')}</label>
                                 <ModelCapabilityDropdown
                                     models={userModels.llm}
                                     value={analysisModel}
@@ -454,7 +454,7 @@ export function SettingsModal({
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('characterModel')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('characterModel')}</label>
                                 <ModelCapabilityDropdown
                                     models={userModels.image}
                                     value={characterModel}
@@ -469,7 +469,7 @@ export function SettingsModal({
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('locationModel')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('locationModel')}</label>
                                 <ModelCapabilityDropdown
                                     models={userModels.image}
                                     value={locationModel}
@@ -484,7 +484,7 @@ export function SettingsModal({
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('storyboardModel')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('storyboardModel')}</label>
                                 <ModelCapabilityDropdown
                                     models={userModels.image}
                                     value={imageModel}
@@ -499,7 +499,7 @@ export function SettingsModal({
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('editModel')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('editModel')}</label>
                                 <ModelCapabilityDropdown
                                     models={userModels.image}
                                     value={editModel}
@@ -514,7 +514,7 @@ export function SettingsModal({
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('videoModel')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('videoModel')}</label>
                                 <ModelCapabilityDropdown
                                     models={normalVideoModels}
                                     value={videoModel}
@@ -529,7 +529,7 @@ export function SettingsModal({
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-[var(--glass-text-secondary)]">{t('audioModel')}</label>
+                                <label className="text-sm font-medium text-[var(--pin-text-secondary)]">{t('audioModel')}</label>
                                 <ModelCapabilityDropdown
                                     models={userModels.audio}
                                     value={audioModel}

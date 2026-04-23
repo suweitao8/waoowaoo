@@ -92,17 +92,17 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
     }
 
     return (
-        <div className="fixed inset-0 glass-overlay flex items-center justify-center z-50 p-4">
-            <div className="glass-surface-modal max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
+        <div className="fixed inset-0 pin-overlay flex items-center justify-center z-50 p-4">
+            <div className="pin-surface-modal max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
                 <div className="p-6 overflow-y-auto app-scrollbar flex-1 min-h-0">
                     {/* 标题 */}
                     <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-lg font-semibold text-[var(--glass-text-primary)]">
+                        <h3 className="text-lg font-semibold text-[var(--pin-text-primary)]">
                             {t('modal.newLocation')}
                         </h3>
                         <button
                             onClick={onClose}
-                            className="glass-btn-base glass-btn-soft h-8 w-8 rounded-full flex items-center justify-center text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]"
+                            className="pin-btn-base pin-btn-soft h-8 w-8 rounded-full flex items-center justify-center text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]"
                         >
                             <XMarkIcon className="w-5 h-5" />
                         </button>
@@ -110,8 +110,8 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
 
                     <div className="space-y-5">
                         {/* AI 设计区域 */}
-                        <div className="glass-surface-soft border border-[var(--glass-stroke-base)] rounded-xl p-4 space-y-3">
-                            <div className="flex items-center gap-2 text-sm font-semibold text-[var(--glass-text-primary)]">
+                        <div className="pin-surface-soft border border-[var(--pin-stroke-base)] rounded-xl p-4 space-y-3">
+                            <div className="flex items-center gap-2 text-sm font-semibold text-[var(--pin-text-primary)]">
                                 <SparklesIcon className="w-4 h-4" />
                                 <span>{t('modal.aiDesign')}</span>
                             </div>
@@ -121,7 +121,7 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
                                     value={aiInstruction}
                                     onChange={(e) => setAiInstruction(e.target.value)}
                                     placeholder={t('modal.aiDesignLocationPlaceholder')}
-                                    className="glass-input-base flex-1 px-3 py-2 text-sm"
+                                    className="pin-input-base flex-1 px-3 py-2 text-sm"
                                     disabled={isAiDesigning}
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter' && !e.shiftKey) {
@@ -133,7 +133,7 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
                                 <button
                                     onClick={handleAiDesign}
                                     disabled={isAiDesigning || !aiInstruction.trim()}
-                                    className="glass-btn-base glass-btn-tone-info px-4 py-2 rounded-lg text-sm"
+                                    className="pin-btn-base pin-btn-tone-info px-4 py-2 rounded-lg text-sm"
                                 >
                                     {isAiDesigning ? (
                                         <TaskStatusInline state={aiDesigningState} className="text-white [&>span]:text-white [&_svg]:text-white" />
@@ -145,14 +145,14 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
                                     )}
                                 </button>
                             </div>
-                            <p className="glass-field-hint">
+                            <p className="pin-field-hint">
                                 {t('modal.aiDesignLocationTip')}
                             </p>
                         </div>
 
                         {/* 场景名称 */}
                         <div className="space-y-2">
-                            <label className="glass-field-label block">
+                            <label className="pin-field-label block">
                                 {t('modal.locationNameLabel')}
                             </label>
                             <input
@@ -160,13 +160,13 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder={t('modal.locationNamePlaceholder')}
-                                className="glass-input-base w-full px-3 py-2 text-sm"
+                                className="pin-input-base w-full px-3 py-2 text-sm"
                             />
                         </div>
 
                         {/* 风格选择 */}
                         <div className="space-y-2">
-                            <label className="glass-field-label block">
+                            <label className="pin-field-label block">
                                 画面风格
                             </label>
                             <div className="grid grid-cols-2 gap-2">
@@ -175,9 +175,9 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
                                         key={style.value}
                                         type="button"
                                         onClick={() => setArtStyle(style.value)}
-                                        className={`glass-btn-base px-3 py-2 rounded-lg text-sm border flex items-center justify-start transition-all ${artStyle === style.value
-                                            ? 'glass-btn-tone-info border-[var(--glass-stroke-focus)]'
-                                            : 'glass-btn-soft border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] hover:border-[var(--glass-stroke-strong)]'
+                                        className={`pin-btn-base px-3 py-2 rounded-lg text-sm border flex items-center justify-start transition-all ${artStyle === style.value
+                                            ? 'pin-btn-tone-info border-[var(--pin-stroke-focus)]'
+                                            : 'pin-btn-soft border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] hover:border-[var(--pin-stroke-strong)]'
                                             }`}
                                     >
                                         <span>{style.label}</span>
@@ -188,23 +188,23 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
 
                         {/* 场景描述 */}
                         <div className="space-y-2">
-                            <label className="glass-field-label block">
+                            <label className="pin-field-label block">
                                 {t('modal.locationSummaryLabel')}
                             </label>
                             <textarea
                                 value={summary}
                                 onChange={(e) => setSummary(e.target.value)}
                                 placeholder={t('modal.locationSummaryPlaceholder')}
-                                className="glass-textarea-base w-full h-40 px-3 py-2 text-sm resize-none"
+                                className="pin-textarea-base w-full h-40 px-3 py-2 text-sm resize-none"
                             />
                         </div>
                     </div>
 
                     {/* 按钮区 */}
-                    <div className="flex gap-3 justify-end mt-6 pt-4 border-t border-[var(--glass-stroke-base)]">
+                    <div className="flex gap-3 justify-end mt-6 pt-4 border-t border-[var(--pin-stroke-base)]">
                         <button
                             onClick={onClose}
-                            className="glass-btn-base glass-btn-secondary px-4 py-2 rounded-lg text-sm"
+                            className="pin-btn-base pin-btn-secondary px-4 py-2 rounded-lg text-sm"
                             disabled={isSubmitting}
                         >
                             {t('common.cancel')}
@@ -212,7 +212,7 @@ export function AddLocationModal({ folderId, onClose, onSuccess }: AddLocationMo
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting || !name.trim() || !summary.trim()}
-                            className="glass-btn-base glass-btn-primary px-4 py-2 rounded-lg text-sm"
+                            className="pin-btn-base pin-btn-primary px-4 py-2 rounded-lg text-sm"
                         >
                             {isSubmitting ? (
                                 <TaskStatusInline state={submittingState} className="text-white [&>span]:text-white [&_svg]:text-white" />

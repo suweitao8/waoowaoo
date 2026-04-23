@@ -30,7 +30,7 @@ export default function VideoTimelinePanel({
   const tVoice = useTranslations('voice')
 
   return (
-    <div className="glass-surface-elevated overflow-hidden">
+    <div className="pin-surface-elevated overflow-hidden">
       <div
         role="button"
         tabIndex={0}
@@ -41,21 +41,21 @@ export default function VideoTimelinePanel({
             onToggleExpanded()
           }
         }}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-[var(--glass-bg-muted)]/50 transition-colors cursor-pointer"
+        className="w-full px-6 py-4 flex items-center justify-between hover:bg-[var(--pin-bg-muted)]/50 transition-colors cursor-pointer"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[var(--glass-accent-from)] rounded-xl flex items-center justify-center shadow-[var(--glass-shadow-md)]">
+          <div className="w-10 h-10 bg-[var(--pin-color-brand)] rounded-xl flex items-center justify-center shadow-[var(--pin-shadow-md)]">
             <AppIcon name="micOutline" className="w-5 h-5 text-white" />
           </div>
           <div className="text-left">
-            <h3 className="font-bold text-[var(--glass-text-primary)]">{tVoice('title')}</h3>
-            <p className="text-sm text-[var(--glass-text-tertiary)]">
+            <h3 className="font-bold text-[var(--pin-text-primary)]">{tVoice('title')}</h3>
+            <p className="text-sm text-[var(--pin-text-tertiary)]">
               {tVoice('linesCount', { count: allVoiceLines.length })}
               {tVoice('audioGeneratedCount', { count: allVoiceLines.filter((line) => line.audioUrl).length })}
             </p>
           </div>
         </div>
-        <AppIcon name="chevronDown" className={`w-5 h-5 text-[var(--glass-text-tertiary)] transition-transform ${expanded ? 'rotate-180' : ''}`} />
+        <AppIcon name="chevronDown" className={`w-5 h-5 text-[var(--pin-text-tertiary)] transition-transform ${expanded ? 'rotate-180' : ''}`} />
       </div>
 
       {expanded && (

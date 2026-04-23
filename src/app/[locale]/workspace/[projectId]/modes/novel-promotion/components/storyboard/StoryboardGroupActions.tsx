@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { resolveTaskPresentationState } from '@/lib/task/presentation'
 import TaskStatusInline from '@/components/task/TaskStatusInline'
-import { GlassButton } from '@/components/ui/primitives'
+import { PinButton } from '@/components/ui/primitives'
 import { AppIcon } from '@/components/ui/icons'
 
 interface StoryboardGroupActionsProps {
@@ -54,7 +54,7 @@ export default function StoryboardGroupActions({
 
   return (
     <div className="flex items-center gap-2">
-      <GlassButton
+      <PinButton
         variant="secondary"
         size="sm"
         onClick={onRegenerateText}
@@ -68,10 +68,10 @@ export default function StoryboardGroupActions({
             <span>{t('group.regenerateText')}</span>
           </>
         )}
-      </GlassButton>
+      </PinButton>
 
       {pendingCount > 0 && (
-        <GlassButton
+        <PinButton
           variant="primary"
           size="sm"
           onClick={onGenerateAllIndividually}
@@ -87,19 +87,19 @@ export default function StoryboardGroupActions({
               <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-white/25 text-white">{pendingCount}</span>
             </>
           )}
-        </GlassButton>
+        </PinButton>
       )}
 
-      <GlassButton
+      <PinButton
         variant="secondary"
         size="sm"
         onClick={onAddPanel}
       >
         <AppIcon name="plusMd" className="h-3.5 w-3.5" />
         <span>{t('group.addPanel')}</span>
-      </GlassButton>
+      </PinButton>
 
-      <GlassButton
+      <PinButton
         variant="danger"
         size="sm"
         onClick={onDeleteStoryboard}
@@ -108,7 +108,7 @@ export default function StoryboardGroupActions({
       >
         <AppIcon name="trashAlt" className="h-3.5 w-3.5" />
         <span>{t('common.delete')}</span>
-      </GlassButton>
+      </PinButton>
     </div>
   )
 }

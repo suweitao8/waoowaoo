@@ -275,17 +275,17 @@ export default function NanoTestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--glass-bg-app)]">
+    <div className="min-h-screen bg-[var(--pin-bg-canvas)]">
       <Navbar />
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* 标题 */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[var(--glass-text-primary)] flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-[var(--pin-text-primary)] flex items-center gap-3">
             <AppIcon name="sparklesAlt" className="w-7 h-7 text-indigo-500" />
             Nano Banana API 测试
           </h1>
-          <p className="text-[var(--glass-text-secondary)] mt-2">
+          <p className="text-[var(--pin-text-secondary)] mt-2">
             测试 Grsai Nano Banana 图像生成 API
           </p>
         </div>
@@ -294,14 +294,14 @@ export default function NanoTestPage() {
           {/* 左侧：配置 */}
           <div className="space-y-6">
             {/* API Key 配置 */}
-            <div className="glass-surface p-5 rounded-2xl">
-              <h2 className="text-lg font-semibold text-[var(--glass-text-primary)] mb-4 flex items-center gap-2">
+            <div className="pin-surface p-5 rounded-2xl">
+              <h2 className="text-lg font-semibold text-[var(--pin-text-primary)] mb-4 flex items-center gap-2">
                 <AppIcon name="settingsHex" className="w-5 h-5" />
                 API 配置
               </h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm text-[var(--glass-text-secondary)] mb-2">
+                  <label className="block text-sm text-[var(--pin-text-secondary)] mb-2">
                     Grsai API Key (直接测试用)
                   </label>
                   <input
@@ -309,30 +309,30 @@ export default function NanoTestPage() {
                     value={apiKey}
                     onChange={(e) => setApiKey(e.target.value)}
                     placeholder="输入你的 Grsai API Key"
-                    className="glass-input-base w-full px-3 py-2 text-sm"
+                    className="pin-input-base w-full px-3 py-2 text-sm"
                   />
                 </div>
-                <div className="text-xs text-[var(--glass-text-tertiary)]">
+                <div className="text-xs text-[var(--pin-text-tertiary)]">
                   提示: API Key 可以从 grsai.dakka.com.cn 获取
                 </div>
               </div>
             </div>
 
             {/* 生成参数 */}
-            <div className="glass-surface p-5 rounded-2xl">
-              <h2 className="text-lg font-semibold text-[var(--glass-text-primary)] mb-4 flex items-center gap-2">
+            <div className="pin-surface p-5 rounded-2xl">
+              <h2 className="text-lg font-semibold text-[var(--pin-text-primary)] mb-4 flex items-center gap-2">
                 <AppIcon name="settingsHex" className="w-5 h-5" />
                 生成参数
               </h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm text-[var(--glass-text-secondary)] mb-2">
+                  <label className="block text-sm text-[var(--pin-text-secondary)] mb-2">
                     模型
                   </label>
                   <select
                     value={model}
                     onChange={(e) => setModel(e.target.value)}
-                    className="glass-input-base w-full px-3 py-2 text-sm"
+                    className="pin-input-base w-full px-3 py-2 text-sm"
                   >
                     {NANO_MODELS.map(m => (
                       <option key={m.value} value={m.value}>{m.label}</option>
@@ -341,13 +341,13 @@ export default function NanoTestPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-[var(--glass-text-secondary)] mb-2">
+                  <label className="block text-sm text-[var(--pin-text-secondary)] mb-2">
                     尺寸 (16:9)
                   </label>
                   <select
                     value={size}
                     onChange={(e) => setSize(e.target.value)}
-                    className="glass-input-base w-full px-3 py-2 text-sm"
+                    className="pin-input-base w-full px-3 py-2 text-sm"
                   >
                     {PRESET_SIZES.map(s => (
                       <option key={s.label} value={s.label}>{s.label}</option>
@@ -356,7 +356,7 @@ export default function NanoTestPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-[var(--glass-text-secondary)] mb-2">
+                  <label className="block text-sm text-[var(--pin-text-secondary)] mb-2">
                     提示词
                   </label>
                   <textarea
@@ -364,7 +364,7 @@ export default function NanoTestPage() {
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="输入提示词..."
                     rows={3}
-                    className="glass-input-base w-full px-3 py-2 text-sm resize-none"
+                    className="pin-input-base w-full px-3 py-2 text-sm resize-none"
                   />
                 </div>
               </div>
@@ -375,14 +375,14 @@ export default function NanoTestPage() {
               <button
                 onClick={handleDirectTest}
                 disabled={generating || !prompt.trim() || !apiKey.trim()}
-                className="glass-btn-base glass-btn-primary flex-1 py-3 rounded-xl text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+                className="pin-btn-base pin-btn-primary flex-1 py-3 rounded-xl text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {generating ? '生成中...' : '直接测试 API'}
               </button>
               <button
                 onClick={handleSystemTest}
                 disabled={generating || !prompt.trim()}
-                className="glass-btn-base glass-btn-secondary flex-1 py-3 rounded-xl text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+                className="pin-btn-base pin-btn-secondary flex-1 py-3 rounded-xl text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {generating ? '生成中...' : '系统 API 测试'}
               </button>
@@ -393,12 +393,12 @@ export default function NanoTestPage() {
           <div className="space-y-6">
             {/* 进度 */}
             {progress && (
-              <div className="glass-surface p-5 rounded-2xl">
+              <div className="pin-surface p-5 rounded-2xl">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-[var(--glass-text-secondary)]">{progress.status}</span>
-                  <span className="text-sm text-[var(--glass-text-primary)]">{progress.current}%</span>
+                  <span className="text-sm text-[var(--pin-text-secondary)]">{progress.status}</span>
+                  <span className="text-sm text-[var(--pin-text-primary)]">{progress.current}%</span>
                 </div>
-                <div className="h-2 bg-[var(--glass-bg-muted)] rounded-full overflow-hidden">
+                <div className="h-2 bg-[var(--pin-bg-muted)] rounded-full overflow-hidden">
                   <div
                     className="h-full bg-indigo-500 transition-all duration-300"
                     style={{ width: `${progress.current}%` }}
@@ -409,8 +409,8 @@ export default function NanoTestPage() {
 
             {/* 图片结果 */}
             {result && (
-              <div className="glass-surface p-5 rounded-2xl">
-                <h2 className="text-lg font-semibold text-[var(--glass-text-primary)] mb-4">
+              <div className="pin-surface p-5 rounded-2xl">
+                <h2 className="text-lg font-semibold text-[var(--pin-text-primary)] mb-4">
                   生成结果
                 </h2>
                 {result.error ? (
@@ -425,7 +425,7 @@ export default function NanoTestPage() {
                       className="w-full rounded-xl"
                     />
                     {result.duration && (
-                      <div className="text-sm text-[var(--glass-text-secondary)]">
+                      <div className="text-sm text-[var(--pin-text-secondary)]">
                         耗时: {result.duration.toFixed(1)}秒
                       </div>
                     )}
@@ -435,19 +435,19 @@ export default function NanoTestPage() {
             )}
 
             {/* 日志 */}
-            <div className="glass-surface p-5 rounded-2xl">
-              <h2 className="text-lg font-semibold text-[var(--glass-text-primary)] mb-4 flex items-center justify-between">
+            <div className="pin-surface p-5 rounded-2xl">
+              <h2 className="text-lg font-semibold text-[var(--pin-text-primary)] mb-4 flex items-center justify-between">
                 <span>日志</span>
                 <button
                   onClick={() => setLogs([])}
-                  className="text-xs text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]"
+                  className="text-xs text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]"
                 >
                   清除
                 </button>
               </h2>
-              <div className="bg-[var(--glass-bg-muted)] rounded-xl p-4 h-64 overflow-y-auto font-mono text-xs text-[var(--glass-text-secondary)]">
+              <div className="bg-[var(--pin-bg-muted)] rounded-xl p-4 h-64 overflow-y-auto font-mono text-xs text-[var(--pin-text-secondary)]">
                 {logs.length === 0 ? (
-                  <div className="text-[var(--glass-text-tertiary)]">暂无日志</div>
+                  <div className="text-[var(--pin-text-tertiary)]">暂无日志</div>
                 ) : (
                   logs.map((log, i) => (
                     <div key={i} className="mb-1">{log}</div>

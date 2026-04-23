@@ -13,6 +13,7 @@ import type { VideoEditorProject } from '@/features/video-editor/types/editor.ty
 /**
  * 剪辑阶段
  * 使用 Remotion 进行视频编辑
+ * 从剧本配音和分镜画面构建有声书
  */
 export default function EditorStage() {
   const t = useTranslations('video')
@@ -21,12 +22,13 @@ export default function EditorStage() {
   const { data: voiceLinesData } = useVoiceLines(episodeId || null)
   const [project, setProject] = useState<VideoEditorProject | null>(null)
   const [loading, setLoading] = useState(true)
+  const [building, setBuilding] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   // 加载或创建编辑器项目
   useEffect(() => {
     const loadProject = async () => {
-      if (!episodeId || !episode) {
+      if (!episodeId) {
         setLoading(false)
         return
       }
@@ -46,46 +48,60 @@ export default function EditorStage() {
           }
         }
 
-        // 没有已保存的项目，尝试构建有声书项目
-        if (voiceLinesData?.lines && voiceLinesData.lines.length > 0) {
-          const buildRes = await apiFetch(
-            `/api/novel-promotion/${projectId}/episodes/${episodeId}/build-audiobook`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ fps: 12, width: 1920, height: 1080 }),
-            }
-          )
-
-          if (buildRes.ok) {
-            const buildData = await buildRes.json()
-            if (buildData.editorProject) {
-              setProject(buildData.editorProject)
-              setLoading(false)
-              return
-            }
-          }
-        }
-
-        // 没有配音数据，创建空项目
-        setProject(null)
+        // 没有已保存的项目
+        setLoading(false)
       } catch (err) {
         console.error('Failed to load editor project:', err)
         setError(t('editor.error.loadFailed'))
-      } finally {
         setLoading(false)
       }
     }
 
     loadProject()
-  }, [projectId, episodeId, episode, voiceLinesData, t])
+  }, [projectId, episodeId, t])
+
+  // 构建有声书项目
+  const handleBuild = async () => {
+    if (!episodeId) return
+
+    try {
+      setBuilding(true)
+      setError(null)
+
+      const buildRes = await apiFetch(
+        `/api/novel-promotion/${projectId}/episodes/${episodeId}/build-audiobook`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fps: 12, width: 1920, height: 1080 }),
+        }
+      )
+
+      if (buildRes.ok) {
+        const buildData = await buildRes.json()
+        if (buildData.editorProject) {
+          setProject(buildData.editorProject)
+        } else if (buildData.error) {
+          setError(buildData.error)
+        }
+      } else {
+        const errorData = await buildRes.json()
+        setError(errorData.error || '构建失败')
+      }
+    } catch (err) {
+      console.error('Failed to build audiobook:', err)
+      setError('构建失败，请重试')
+    } finally {
+      setBuilding(false)
+    }
+  }
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
         <div className="text-center">
-          <div className="w-12 h-12 rounded-full border-2 border-[var(--glass-accent-from)] border-t-transparent animate-spin mx-auto mb-4" />
-          <p className="text-[var(--glass-text-secondary)]">{t('editor.loading')}</p>
+          <div className="w-12 h-12 rounded-full border-2 border-[var(--pin-color-brand)] border-t-transparent animate-spin mx-auto mb-4" />
+          <p className="text-[var(--pin-text-secondary)]">{t('editor.loading')}</p>
         </div>
       </div>
     )
@@ -94,12 +110,15 @@ export default function EditorStage() {
   if (error) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
-        <div className="text-center glass-surface-soft p-8 rounded-xl">
-          <AppIcon name="alert" className="w-12 h-12 text-[var(--glass-tone-danger-fg)] mx-auto mb-4" />
-          <p className="text-[var(--glass-text-primary)] mb-4">{error}</p>
+        <div className="text-center pin-surface-soft p-8 rounded-xl">
+          <AppIcon name="alert" className="w-12 h-12 text-[var(--pin-tone-danger-fg)] mx-auto mb-4" />
+          <p className="text-[var(--pin-text-primary)] mb-4">{error}</p>
           <button
-            onClick={() => window.location.reload()}
-            className="glass-btn-base glass-btn-primary px-4 py-2"
+            onClick={() => {
+              setError(null)
+              handleBuild()
+            }}
+            className="pin-btn-base pin-btn-primary px-4 py-2"
           >
             {t('editor.retry')}
           </button>
@@ -109,16 +128,41 @@ export default function EditorStage() {
   }
 
   if (!project) {
+    const hasVoiceLines = voiceLinesData?.lines && voiceLinesData.lines.length > 0
+    const hasEpisode = !!episode
+
     return (
       <div className="flex items-center justify-center h-[60vh]">
-        <div className="text-center glass-surface-soft p-8 rounded-xl max-w-md">
-          <AppIcon name="video" className="w-12 h-12 text-[var(--glass-text-tertiary)] mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-[var(--glass-text-primary)] mb-2">
-            {t('editor.empty.title')}
+        <div className="text-center pin-surface-soft p-8 rounded-xl max-w-md">
+          <AppIcon name="video" className="w-12 h-12 text-[var(--pin-text-tertiary)] mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-[var(--pin-text-primary)] mb-2">
+            有声书剪辑
           </h3>
-          <p className="text-[var(--glass-text-secondary)] text-sm">
-            {t('editor.empty.description')}
+          <p className="text-[var(--pin-text-secondary)] text-sm mb-4">
+            从剧本配音和分镜画面构建视频
           </p>
+
+          {!hasEpisode && (
+            <p className="text-[var(--pin-tone-warning-fg)] text-sm mb-4">
+              请先选择一个剧集
+            </p>
+          )}
+
+          {hasEpisode && !hasVoiceLines && (
+            <p className="text-[var(--pin-tone-warning-fg)] text-sm mb-4">
+              当前剧集暂无配音数据，请先在剧本阶段生成配音
+            </p>
+          )}
+
+          {hasEpisode && hasVoiceLines && (
+            <button
+              onClick={handleBuild}
+              disabled={building}
+              className="pin-btn-base pin-btn-primary px-6 py-2 disabled:opacity-50"
+            >
+              {building ? '构建中...' : '生成有声书'}
+            </button>
+          )}
         </div>
       </div>
     )

@@ -49,23 +49,23 @@ export function WorldContextModal({ isOpen, onClose, text, onChange }: WorldCont
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center glass-overlay animate-fadeIn"
+      className="fixed inset-0 z-[100] flex items-center justify-center pin-overlay animate-fadeIn"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
     >
-      <div className="glass-surface-modal p-7 w-full max-w-3xl transform transition-all scale-100 h-[80vh] flex flex-col">
+      <div className="pin-surface-modal p-7 w-full max-w-3xl transform transition-all scale-100 h-[80vh] flex flex-col">
         <div className="flex justify-between items-center mb-6 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--glass-text-primary)]">{t('title')}</h2>
-              <p className="text-[var(--glass-text-tertiary)] text-sm">{t('description')}</p>
+              <h2 className="text-2xl font-bold text-[var(--pin-text-primary)]">{t('title')}</h2>
+              <p className="text-[var(--pin-text-tertiary)] text-sm">{t('description')}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div
-              className={`glass-chip text-xs transition-all duration-300 ${
-                saveStatus === 'saved' ? 'glass-chip-success' : 'glass-chip-neutral'
+              className={`pin-badge text-xs transition-all duration-300 ${
+                saveStatus === 'saved' ? 'pin-badge-success' : 'pin-badge-neutral'
               }`}
             >
               {saveStatus === 'saved' ? (
@@ -75,31 +75,31 @@ export function WorldContextModal({ isOpen, onClose, text, onChange }: WorldCont
                 </>
               ) : (
                 <>
-                  <span className="w-1.5 h-1.5 bg-[var(--glass-tone-success-fg)] rounded-full"></span>
+                  <span className="w-1.5 h-1.5 bg-[var(--pin-tone-success-fg)] rounded-full"></span>
                   {tc('autoSave')}
                 </>
               )}
             </div>
             <button
               onClick={onClose}
-              className="glass-btn-base glass-btn-soft rounded-full p-2 text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]"
+              className="pin-btn-base pin-btn-soft rounded-full p-2 text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]"
             >
               <AppIcon name="close" className="w-6 h-6" />
             </button>
           </div>
         </div>
 
-        <div className="flex-1 glass-surface-soft p-4 overflow-hidden flex flex-col">
+        <div className="flex-1 pin-surface-soft p-4 overflow-hidden flex flex-col">
           <textarea
             value={text}
             onChange={(event) => handleTextChange(event.target.value)}
             placeholder={t('placeholder')}
-            className="glass-textarea-base app-scrollbar flex-1 text-base resize-none leading-relaxed placeholder:text-[var(--glass-text-tertiary)]/70 p-4"
+            className="pin-textarea-base app-scrollbar flex-1 text-base resize-none leading-relaxed placeholder:text-[var(--pin-text-tertiary)]/70 p-4"
           />
         </div>
 
         <div className="mt-6 pt-0 flex justify-start items-center flex-shrink-0">
-          <span className="text-xs text-[var(--glass-text-tertiary)]">{t('hint')}</span>
+          <span className="text-xs text-[var(--pin-text-tertiary)]">{t('hint')}</span>
         </div>
       </div>
     </div>

@@ -95,23 +95,23 @@ function DefaultParamsRenderer({ fields, overrides, onChange, className }: { fie
                 if (field.field === 'duration' || field.options.length >= 4) {
                     return (
                         <div key={field.field} className="flex items-center justify-between gap-4 px-1 py-1 relative group">
-                            <span className="text-[13px] font-semibold text-[var(--glass-text-secondary)] shrink-0">{field.label || field.field}</span>
+                            <span className="text-[13px] font-semibold text-[var(--pin-text-secondary)] shrink-0">{field.label || field.field}</span>
                             <div className="relative">
                                 <select
                                     value={val}
                                     onChange={(e) => onChange(field.field, e.target.value, field.options[0])}
-                                    className="appearance-none bg-transparent hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e] text-[13px] font-bold text-[var(--glass-text-primary)] pl-3 pr-7 py-1 rounded-md transition-colors outline-none cursor-pointer border border-transparent"
+                                    className="appearance-none bg-transparent hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e] text-[13px] font-bold text-[var(--pin-text-primary)] pl-3 pr-7 py-1 rounded-md transition-colors outline-none cursor-pointer border border-transparent"
                                 >
                                     {field.options.map(opt => <option key={String(opt)} value={String(opt)}>{String(opt)}</option>)}
                                 </select>
-                                <AppIcon name="chevronDown" className="w-3.5 h-3.5 text-[var(--glass-text-tertiary)] absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-[var(--glass-text-primary)] transition-colors" />
+                                <AppIcon name="chevronDown" className="w-3.5 h-3.5 text-[var(--pin-text-tertiary)] absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-[var(--pin-text-primary)] transition-colors" />
                             </div>
                         </div>
                     )
                 }
                 return (
                     <div key={field.field} className="flex items-center justify-between gap-4 px-1 py-1">
-                        <span className="text-[13px] font-semibold text-[var(--glass-text-secondary)] shrink-0">{field.label || field.field}</span>
+                        <span className="text-[13px] font-semibold text-[var(--pin-text-secondary)] shrink-0">{field.label || field.field}</span>
                         <div className="flex bg-[#f2f2f7] dark:bg-[#1c1c1e] p-[3px] rounded-lg shadow-inner">
                             {field.options.map(opt => {
                                 const s = String(opt)
@@ -141,32 +141,32 @@ export function IOSVariant1(props: ModelDropdownTestProps) {
 
     return (
         <>
-            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className={`w-full h-[46px] px-4 rounded-[14px] bg-[var(--glass-bg-surface)] border transition-colors ${isOpen ? 'border-[var(--glass-tone-info-fg)]' : 'border-[var(--glass-stroke-subtle)] hover:border-[var(--glass-stroke-active)]'}`}>
+            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className={`w-full h-[46px] px-4 rounded-[14px] bg-[var(--pin-bg-surface)] border transition-colors ${isOpen ? 'border-[var(--pin-tone-info-fg)]' : 'border-[var(--pin-stroke-base)] hover:border-[var(--pin-stroke-focus)]'}`}>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <span className="font-semibold text-[14px] text-[var(--glass-text-primary)]">{activeModel?.label || props.placeholder}</span>
+                        <span className="font-semibold text-[14px] text-[var(--pin-text-primary)]">{activeModel?.label || props.placeholder}</span>
                         {activeModel?.providerName && (
-                            <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] whitespace-nowrap">
+                            <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] whitespace-nowrap">
                                 {activeModel.providerName}
                             </span>
                         )}
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="text-[13px] text-[var(--glass-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
-                        <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180 text-[var(--glass-tone-info-fg)]' : 'text-[var(--glass-text-tertiary)]'} drop-shadow-[0_1px_3px_var(--glass-tone-info-bg)]`} />
+                        <span className="text-[13px] text-[var(--pin-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
+                        <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180 text-[var(--pin-tone-info-fg)]' : 'text-[var(--pin-text-tertiary)]'} drop-shadow-[0_1px_3px_var(--pin-tone-info-bg)]`} />
                     </div>
                 </div>
             </button>
             {isOpen && createPortal(
-                <div ref={panelRef} style={panelStyle} className="glass-surface-modal rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-[var(--glass-stroke-subtle)] bg-[var(--glass-bg-base)] flex flex-col p-2">
+                <div ref={panelRef} style={panelStyle} className="pin-surface-modal rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] flex flex-col p-2">
                     <div className="overflow-y-auto max-h-[220px]">
                         {props.models.map(m => (
-                            <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-3 py-2.5 rounded-[12px] font-medium transition-colors hover:bg-[var(--glass-bg-hover)] ${m.value === props.value ? 'bg-[var(--glass-bg-surface-strong)]' : ''}`}>
-                                <span className={m.value === props.value ? 'text-[var(--glass-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--glass-tone-info-bg)]' : 'text-[var(--glass-text-primary)]'}>{m.label}</span>
+                            <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-3 py-2.5 rounded-[12px] font-medium transition-colors hover:bg-[var(--pin-bg-fog)] ${m.value === props.value ? 'bg-[var(--pin-bg-surface-strong)]' : ''}`}>
+                                <span className={m.value === props.value ? 'text-[var(--pin-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--pin-tone-info-bg)]' : 'text-[var(--pin-text-primary)]'}>{m.label}</span>
                             </button>
                         ))}
                     </div>
-                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--glass-stroke-subtle)] mx-2 my-2" />}
+                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--pin-stroke-base)] mx-2 my-2" />}
                     <DefaultParamsRenderer fields={props.capabilityFields} overrides={props.capabilityOverrides} onChange={props.onCapabilityChange} className="space-y-3 p-2" />
                 </div>, document.body
             )}
@@ -185,33 +185,33 @@ export function IOSVariant2(props: ModelDropdownTestProps) {
 
     return (
         <>
-            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className="w-full h-[46px] px-4 rounded-[14px] bg-[var(--glass-bg-surface)] border border-[var(--glass-stroke-subtle)] flex items-center justify-between hover:border-[var(--glass-stroke-active)] transition-colors">
+            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className="w-full h-[46px] px-4 rounded-[14px] bg-[var(--pin-bg-surface)] border border-[var(--pin-stroke-base)] flex items-center justify-between hover:border-[var(--pin-stroke-focus)] transition-colors">
                 <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[14px] text-[var(--glass-text-primary)]">{activeModel?.label || props.placeholder}</span>
+                    <span className="font-semibold text-[14px] text-[var(--pin-text-primary)]">{activeModel?.label || props.placeholder}</span>
                     {activeModel?.providerName && (
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] whitespace-nowrap">
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] whitespace-nowrap">
                             {activeModel.providerName}
                         </span>
                     )}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="text-[13px] text-[var(--glass-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
-                    <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180 text-[var(--glass-text-primary)]' : 'text-[var(--glass-text-tertiary)]'}`} />
+                    <span className="text-[13px] text-[var(--pin-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
+                    <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180 text-[var(--pin-text-primary)]' : 'text-[var(--pin-text-tertiary)]'}`} />
                 </div>
             </button>
             {isOpen && createPortal(
-                <div ref={panelRef} style={panelStyle} className="glass-surface-modal rounded-[20px] shadow-lg border border-[var(--glass-stroke-subtle)] bg-[var(--glass-bg-base)] flex flex-col pt-3 pb-2 overflow-hidden">
+                <div ref={panelRef} style={panelStyle} className="pin-surface-modal rounded-[20px] shadow-lg border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] flex flex-col pt-3 pb-2 overflow-hidden">
                     <div className="overflow-y-auto max-h-[220px]">
                         {props.models.map(m => {
                             const active = m.value === props.value
                             return (
-                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-5 py-2.5 transition-colors border-l-[3px] ${active ? 'border-[var(--glass-tone-info-fg)] bg-[var(--glass-bg-surface-strong)] text-[var(--glass-text-primary)] font-bold' : 'border-transparent text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-hover)]'}`}>
+                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-5 py-2.5 transition-colors border-l-[3px] ${active ? 'border-[var(--pin-tone-info-fg)] bg-[var(--pin-bg-surface-strong)] text-[var(--pin-text-primary)] font-bold' : 'border-transparent text-[var(--pin-text-secondary)] hover:bg-[var(--pin-bg-fog)]'}`}>
                                     {m.label}
                                 </button>
                             )
                         })}
                     </div>
-                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--glass-stroke-subtle)] mx-4 my-3" />}
+                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--pin-stroke-base)] mx-4 my-3" />}
                     <DefaultParamsRenderer fields={props.capabilityFields} overrides={props.capabilityOverrides} onChange={props.onCapabilityChange} className="space-y-4 px-5 pb-3" />
                 </div>, document.body
             )}
@@ -230,37 +230,37 @@ export function IOSVariant3(props: ModelDropdownTestProps) {
 
     return (
         <>
-            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className={`w-full h-[46px] px-4 rounded-[14px] bg-[var(--glass-bg-surface)] border transition-all duration-300 ${isOpen ? 'border-[var(--glass-tone-info-fg)] shadow-[0_0_8px_var(--glass-tone-info-bg)]' : 'border-[var(--glass-stroke-subtle)] hover:border-[var(--glass-stroke-active)]'}`}>
+            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className={`w-full h-[46px] px-4 rounded-[14px] bg-[var(--pin-bg-surface)] border transition-all duration-300 ${isOpen ? 'border-[var(--pin-tone-info-fg)] shadow-[0_0_8px_var(--pin-tone-info-bg)]' : 'border-[var(--pin-stroke-base)] hover:border-[var(--pin-stroke-focus)]'}`}>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <span className="font-semibold text-[14px] text-[var(--glass-text-primary)]">{activeModel?.label || props.placeholder}</span>
+                        <span className="font-semibold text-[14px] text-[var(--pin-text-primary)]">{activeModel?.label || props.placeholder}</span>
                         {activeModel?.providerName && (
-                            <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] whitespace-nowrap">
+                            <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] whitespace-nowrap">
                                 {activeModel.providerName}
                             </span>
                         )}
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="text-[13px] text-[var(--glass-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
-                        <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180 text-[var(--glass-tone-info-fg)]' : 'text-[var(--glass-text-tertiary)]'}`} />
+                        <span className="text-[13px] text-[var(--pin-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
+                        <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180 text-[var(--pin-tone-info-fg)]' : 'text-[var(--pin-text-tertiary)]'}`} />
                     </div>
                 </div>
             </button>
             {isOpen && createPortal(
-                <div ref={panelRef} style={panelStyle} className="glass-surface-modal rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[var(--glass-stroke-subtle)] bg-[var(--glass-bg-base)] flex flex-col p-2 overflow-hidden">
+                <div ref={panelRef} style={panelStyle} className="pin-surface-modal rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] flex flex-col p-2 overflow-hidden">
                     <div className="overflow-y-auto max-h-[220px]">
                         {props.models.map(m => {
                             const active = m.value === props.value
                             return (
-                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-3 py-2.5 rounded-[8px] transition-all border-l-[3px] hover:bg-[var(--glass-bg-hover)] ${active ? 'bg-[var(--glass-tone-info-bg)]/10 border-[var(--glass-tone-info-fg)] shadow-[-4px_0_12px_var(--glass-tone-info-bg)]' : 'border-transparent text-[var(--glass-text-secondary)]'}`}>
-                                    <span className={active ? 'text-[var(--glass-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--glass-tone-info-bg)] pl-1' : 'pl-1'}>
+                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-3 py-2.5 rounded-[8px] transition-all border-l-[3px] hover:bg-[var(--pin-bg-fog)] ${active ? 'bg-[var(--pin-tone-info-bg)]/10 border-[var(--pin-tone-info-fg)] shadow-[-4px_0_12px_var(--pin-tone-info-bg)]' : 'border-transparent text-[var(--pin-text-secondary)]'}`}>
+                                    <span className={active ? 'text-[var(--pin-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--pin-tone-info-bg)] pl-1' : 'pl-1'}>
                                         {m.label}
                                     </span>
                                 </button>
                             )
                         })}
                     </div>
-                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--glass-stroke-subtle)] mx-2 my-3" />}
+                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--pin-stroke-base)] mx-2 my-3" />}
                     <DefaultParamsRenderer fields={props.capabilityFields} overrides={props.capabilityOverrides} onChange={props.onCapabilityChange} className="space-y-4 px-2 pb-2" />
                 </div>, document.body
             )}
@@ -279,38 +279,38 @@ export function IOSVariant4(props: ModelDropdownTestProps) {
 
     return (
         <>
-            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className="w-full h-[46px] px-4 rounded-[14px] bg-[var(--glass-bg-surface)] border border-[var(--glass-stroke-subtle)] flex items-center justify-between hover:border-[var(--glass-stroke-active)] transition-colors">
+            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className="w-full h-[46px] px-4 rounded-[14px] bg-[var(--pin-bg-surface)] border border-[var(--pin-stroke-base)] flex items-center justify-between hover:border-[var(--pin-stroke-focus)] transition-colors">
                 <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[14px] text-[var(--glass-text-primary)]">{activeModel?.label || props.placeholder}</span>
+                    <span className="font-semibold text-[14px] text-[var(--pin-text-primary)]">{activeModel?.label || props.placeholder}</span>
                     {activeModel?.providerName && (
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] whitespace-nowrap">
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] whitespace-nowrap">
                             {activeModel.providerName}
                         </span>
                     )}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="text-[13px] text-[var(--glass-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
-                    <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''} text-[var(--glass-text-tertiary)]`} />
+                    <span className="text-[13px] text-[var(--pin-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
+                    <AppIcon name="chevronDown" className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''} text-[var(--pin-text-tertiary)]`} />
                 </div>
             </button>
             {isOpen && createPortal(
-                <div ref={panelRef} style={panelStyle} className="glass-surface-modal rounded-[20px] shadow-xl border border-[var(--glass-stroke-subtle)] bg-[var(--glass-bg-base)] flex flex-col p-2 overflow-hidden">
+                <div ref={panelRef} style={panelStyle} className="pin-surface-modal rounded-[20px] shadow-xl border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] flex flex-col p-2 overflow-hidden">
                     <div className="overflow-y-auto max-h-[220px]">
                         {props.models.map(m => {
                             const active = m.value === props.value
                             return (
-                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className="w-full relative text-left px-5 py-2.5 rounded-[10px] transition-colors hover:bg-[var(--glass-bg-hover)]">
+                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className="w-full relative text-left px-5 py-2.5 rounded-[10px] transition-colors hover:bg-[var(--pin-bg-fog)]">
                                     {active && (
-                                        <div className="absolute left-1.5 top-1/2 -translate-y-1/2 w-1 h-3/5 rounded-full bg-[var(--glass-tone-info-fg)] shadow-[0_0_8px_var(--glass-tone-info-bg)]" />
+                                        <div className="absolute left-1.5 top-1/2 -translate-y-1/2 w-1 h-3/5 rounded-full bg-[var(--pin-tone-info-fg)] shadow-[0_0_8px_var(--pin-tone-info-bg)]" />
                                     )}
-                                    <span className={active ? 'text-[var(--glass-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--glass-tone-info-bg)]' : 'text-[var(--glass-text-secondary)] font-medium'}>
+                                    <span className={active ? 'text-[var(--pin-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--pin-tone-info-bg)]' : 'text-[var(--pin-text-secondary)] font-medium'}>
                                         {m.label}
                                     </span>
                                 </button>
                             )
                         })}
                     </div>
-                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--glass-stroke-subtle)] mx-3 my-3" />}
+                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--pin-stroke-base)] mx-3 my-3" />}
                     <DefaultParamsRenderer fields={props.capabilityFields} overrides={props.capabilityOverrides} onChange={props.onCapabilityChange} className="space-y-4 px-3 pb-3" />
                 </div>, document.body
             )}
@@ -329,35 +329,35 @@ export function IOSVariant5(props: ModelDropdownTestProps) {
 
     return (
         <>
-            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className="w-full h-[46px] px-4 rounded-[14px] bg-[var(--glass-bg-surface)] border border-[var(--glass-stroke-subtle)] flex items-center justify-between hover:bg-[var(--glass-bg-surface-strong)] transition-colors">
+            <button ref={triggerRef} onClick={() => setIsOpen(!isOpen)} className="w-full h-[46px] px-4 rounded-[14px] bg-[var(--pin-bg-surface)] border border-[var(--pin-stroke-base)] flex items-center justify-between hover:bg-[var(--pin-bg-surface-strong)] transition-colors">
                 <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[14px] text-[var(--glass-text-primary)]">{activeModel?.label || props.placeholder}</span>
+                    <span className="font-semibold text-[14px] text-[var(--pin-text-primary)]">{activeModel?.label || props.placeholder}</span>
                     {activeModel?.providerName && (
-                        <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--glass-stroke-base)] text-[var(--glass-text-secondary)] whitespace-nowrap">
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded border border-[var(--pin-stroke-base)] text-[var(--pin-text-secondary)] whitespace-nowrap">
                             {activeModel.providerName}
                         </span>
                     )}
                 </div>
                 <div className="flex items-center gap-2">
-                    <span className="text-[13px] text-[var(--glass-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
-                    <AppIcon name="chevronDown" className="w-4 h-4 text-[var(--glass-text-tertiary)]" />
+                    <span className="text-[13px] text-[var(--pin-text-secondary)]">{resolveParamSummary(props.capabilityFields, props.capabilityOverrides)}</span>
+                    <AppIcon name="chevronDown" className="w-4 h-4 text-[var(--pin-text-tertiary)]" />
                 </div>
             </button>
             {isOpen && createPortal(
-                <div ref={panelRef} style={panelStyle} className="glass-surface-modal rounded-[20px] shadow-lg border border-[var(--glass-stroke-subtle)] bg-[var(--glass-bg-base)] flex flex-col p-2 overflow-hidden">
+                <div ref={panelRef} style={panelStyle} className="pin-surface-modal rounded-[20px] shadow-lg border border-[var(--pin-stroke-base)] bg-[var(--pin-bg-surface)] flex flex-col p-2 overflow-hidden">
                     <div className="overflow-y-auto max-h-[220px]">
                         {props.models.map(m => {
                             const active = m.value === props.value
                             return (
-                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-4 py-3 rounded-[12px] transition-all border-b-[2px] ${active ? 'border-[var(--glass-tone-info-fg)] bg-[var(--glass-bg-surface-strong)] shadow-[0_4px_16px_var(--glass-tone-info-bg)]' : 'border-transparent text-[var(--glass-text-secondary)] hover:bg-[var(--glass-bg-hover)]'}`}>
-                                    <span className={active ? 'text-[var(--glass-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--glass-tone-info-bg)]' : 'font-medium'}>
+                                <button key={m.value} onClick={() => props.onModelChange(m.value)} className={`w-full text-left px-4 py-3 rounded-[12px] transition-all border-b-[2px] ${active ? 'border-[var(--pin-tone-info-fg)] bg-[var(--pin-bg-surface-strong)] shadow-[0_4px_16px_var(--pin-tone-info-bg)]' : 'border-transparent text-[var(--pin-text-secondary)] hover:bg-[var(--pin-bg-fog)]'}`}>
+                                    <span className={active ? 'text-[var(--pin-tone-info-fg)] font-bold drop-shadow-[0_1px_4px_var(--pin-tone-info-bg)]' : 'font-medium'}>
                                         {m.label}
                                     </span>
                                 </button>
                             )
                         })}
                     </div>
-                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--glass-stroke-subtle)] mx-3 my-3" />}
+                    {props.capabilityFields.length > 0 && <div className="h-[1px] bg-[var(--pin-stroke-base)] mx-3 my-3" />}
                     <DefaultParamsRenderer fields={props.capabilityFields} overrides={props.capabilityOverrides} onChange={props.onCapabilityChange} className="space-y-4 px-3 pb-2" />
                 </div>, document.body
             )}

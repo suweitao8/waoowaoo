@@ -1,6 +1,6 @@
 import { type Job } from 'bullmq'
 import { prisma } from '@/lib/prisma'
-import { LOCATION_IMAGE_RATIO, PROP_IMAGE_RATIO, addLocationPromptSuffix, addPropPromptSuffix, getArtStylePrompt, isArtStyleValue, type ArtStyleValue } from '@/lib/constants'
+import { LOCATION_IMAGE_RATIO, PROP_IMAGE_RATIO, getArtStylePrompt, isArtStyleValue, type ArtStyleValue } from '@/lib/constants'
 import { normalizeImageGenerationCount } from '@/lib/image-generation/count'
 import { type TaskJobData } from '@/lib/task/types'
 import { reportTaskProgress } from '../shared'
@@ -13,8 +13,9 @@ import {
   generateProjectLabeledImageToStorage,
   pickFirstString,
 } from './image-task-handler-shared'
-import { buildLocationImagePromptCore } from '@/lib/location-image-prompt'
-import { buildPropImagePromptCore } from '@/lib/prop-image-prompt'
+import { getUserPromptTemplatesCached } from '@/lib/user-prompt-templates'
+import { buildLocationPrompt, buildPropPrompt } from '@/lib/prompt-templates'
+import { formatLocationAvailableSlotsText, parseLocationAvailableSlots } from '@/lib/location-available-slots'
 
 function resolvePayloadArtStyle(payload: AnyObj): ArtStyleValue | undefined {
   if (!Object.prototype.hasOwnProperty.call(payload, 'artStyle')) return undefined
@@ -69,6 +70,10 @@ export async function handleLocationImageTask(job: Job<TaskJobData>) {
   const payloadArtStyle = resolvePayloadArtStyle(payload)
   const artStyle = getArtStylePrompt(payloadArtStyle ?? models.artStyle, job.data.locale)
   const assetType = payload.type === 'prop' ? 'prop' : 'location'
+
+  // 获取用户提示词模板配置
+  const userTemplates = await getUserPromptTemplatesCached(userId)
+  const locale = job.data.locale === 'en' ? 'en' : 'zh'
 
   // targetId may be locationId (group) or locationImageId (single)
   const maybeLocationImage = await db.locationImage.findUnique({
@@ -143,20 +148,25 @@ export async function handleLocationImageTask(job: Job<TaskJobData>) {
     const name = locationNameMap[item.locationId] || item.location?.name || '场景'
     const promptBody = item.description || ''
     if (!promptBody) continue
-    const promptCore = assetType === 'prop'
-      ? buildPropImagePromptCore({
-        description: promptBody,
-      })
-      : buildLocationImagePromptCore({
-        description: promptBody,
-        availableSlotsRaw: item.availableSlots,
-        locale: job.data.locale === 'en' ? 'en' : 'zh',
-      })
 
-    const promptWithSuffix = assetType === 'prop'
-      ? addPropPromptSuffix(promptCore)
-      : addLocationPromptSuffix(promptCore)
-    const prompt = artStyle ? `${promptWithSuffix}，${artStyle}` : promptWithSuffix
+    // 使用用户配置的模板生成提示词
+    let promptCore: string
+    if (assetType === 'prop') {
+      promptCore = buildPropPrompt(userTemplates.propPromptTemplate, {
+        description: promptBody,
+      })
+    } else {
+      const availableSlotsText = formatLocationAvailableSlotsText(
+        parseLocationAvailableSlots(item.availableSlots),
+        locale,
+      )
+      promptCore = buildLocationPrompt(userTemplates.locationPromptTemplate, {
+        description: promptBody,
+        availableSlots: availableSlotsText,
+      })
+    }
+
+    const prompt = artStyle ? `${promptCore}，${artStyle}` : promptCore
     const aspectRatio = assetType === 'prop' ? PROP_IMAGE_RATIO : LOCATION_IMAGE_RATIO
 
     // 调试日志：打印图片生成参数

@@ -35,8 +35,8 @@ function SegmentedCurrent({ options, value, onChange }: {
             type="button"
             onClick={() => onChange(opt.value)}
             className={`flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-medium transition-all cursor-pointer ${value === opt.value
-              ? 'bg-white text-[var(--glass-text-primary)] dark:bg-[#2c2c2e] dark:text-white shadow-[0_3px_8px_rgba(0,0,0,0.12),0_3px_1px_rgba(0,0,0,0.04)] font-bold'
-              : 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]'
+              ? 'bg-white text-[var(--pin-text-primary)] dark:bg-[#2c2c2e] dark:text-white shadow-[0_3px_8px_rgba(0,0,0,0.12),0_3px_1px_rgba(0,0,0,0.04)] font-bold'
+              : 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]'
               }`}
           >
             {opt.label}
@@ -592,8 +592,8 @@ function SegmentedSlidingPillFinal({ options, value, onChange }: {
             type="button"
             onClick={() => onChange(opt.value)}
             className={`relative z-10 flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors duration-200 cursor-pointer ${value === opt.value
-              ? 'text-[var(--glass-text-primary)] dark:text-white font-bold'
-              : 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]'
+              ? 'text-[var(--pin-text-primary)] dark:text-white font-bold'
+              : 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]'
               }`}
           >
             {opt.label}
@@ -644,7 +644,7 @@ function SegmentedBlueNeonFinal({ options, value, onChange }: {
             onClick={() => onChange(opt.value)}
             className={`relative z-10 flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-medium transition-all duration-200 cursor-pointer ${value === opt.value
               ? 'text-white font-bold drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]'
-              : 'text-[var(--glass-text-tertiary)] hover:text-[var(--glass-text-secondary)]'
+              : 'text-[var(--pin-text-tertiary)] hover:text-[var(--pin-text-secondary)]'
               }`}
           >
             {opt.label}
