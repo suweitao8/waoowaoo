@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { AppIcon } from '@/components/ui/icons'
@@ -48,13 +47,9 @@ export default function Navbar() {
             {/* 左侧：Logo + 版本信息 */}
             <div className="flex items-center gap-2">
               <Link href={session ? buildAuthenticatedHomeTarget() : { pathname: '/' }} className="group">
-                <Image
-                  src="/logo-small.png?v=1"
-                  alt={tc('appName')}
-                  width={80}
-                  height={80}
-                  className="object-contain transition-transform group-hover:scale-110"
-                />
+                <span className="text-2xl font-semibold tracking-tight bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent transition-all group-hover:from-blue-400 group-hover:via-purple-400 group-hover:to-pink-400 group-hover:scale-105 inline-block">
+                  AnimCG
+                </span>
               </Link>
               <button
                 type="button"

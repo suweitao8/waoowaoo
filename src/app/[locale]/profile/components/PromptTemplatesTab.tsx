@@ -41,7 +41,7 @@ export default function PromptTemplatesTab() {
   const t = useTranslations('profile')
   const [styles, setStyles] = useState<StyleTemplateGroup[]>([])
   const [userTemplates, setUserTemplates] = useState<UserPromptTemplates>({})
-  const [selectedStyle, setSelectedStyle] = useState<string>('default')
+  const [selectedStyle, setSelectedStyle] = useState<string>('xianxia-3d') // 默认选择仙侠3D
   const [activeType, setActiveType] = useState<TemplateType>('character')
   const [isSaving, setIsSaving] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -67,6 +67,12 @@ export default function PromptTemplatesTab() {
         const data: PromptTemplatesResponse = await response.json()
         setStyles(data.styles)
         setUserTemplates(data.userTemplates)
+
+        // 从 localStorage 恢复用户上次选择的风格
+        const savedStyle = localStorage.getItem('prompt-template-selected-style')
+        if (savedStyle && data.styles.some(s => s.value === savedStyle)) {
+          setSelectedStyle(savedStyle)
+        }
       } catch (error) {
         console.error('Failed to load prompt templates:', error)
       } finally {
@@ -189,6 +195,12 @@ export default function PromptTemplatesTab() {
     label: s.label,
   }))
 
+  // 处理风格切换，保存到 localStorage
+  const handleStyleChange = useCallback((newStyle: string) => {
+    setSelectedStyle(newStyle)
+    localStorage.setItem('prompt-template-selected-style', newStyle)
+  }, [])
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -221,7 +233,7 @@ export default function PromptTemplatesTab() {
             <SelectVariantCard
               options={styleOptions}
               value={selectedStyle}
-              onChange={setSelectedStyle}
+              onChange={handleStyleChange}
               placeholder={t('selectStylePlaceholder')}
             />
           </div>

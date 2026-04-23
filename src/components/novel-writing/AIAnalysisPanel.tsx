@@ -1,9 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { AppIcon } from '@/components/ui/icons'
 import { apiFetch } from '@/lib/api-fetch'
+import { useTaskStatus } from '@/lib/query/hooks/useTaskStatus'
+import { TASK_TYPE } from '@/lib/task/types'
+import TaskStatusInline from '@/components/task/TaskStatusInline'
+import { resolveTaskPresentationState } from '@/lib/task/presentation'
 
 interface Chapter {
   id: string
@@ -44,16 +48,59 @@ export default function AIAnalysisPanel({
     }
   })
 
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // 监听分析任务状态
+  const taskStatus = useTaskStatus({
+    projectId,
+    targetType: 'NovelWritingProject',
+    targetId: projectId,
+    type: [TASK_TYPE.ANALYZE_NOVEL_WRITING],
+    enabled: !!projectId,
+  })
+
+  const isAnalyzing = taskStatus.data?.hasActive ?? false
   const hasAnalysis = worldContext || writingStyle || characters.length > 0
   const analyzedChapters = chapters.filter(ch => ch.analysisStatus === 'completed')
 
+  // 当任务完成时刷新数据
+  useEffect(() => {
+    if (taskStatus.data?.latest?.status === 'completed') {
+      // 获取分析结果
+      const fetchAnalysisResult = async () => {
+        try {
+          const response = await apiFetch(`/api/novel-writing/${projectId}`)
+          if (response.ok) {
+            const data = await response.json()
+            if (data.novelWritingData) {
+              setWorldContext(data.novelWritingData.worldContext || '')
+              setWritingStyle(data.novelWritingData.writingStyle || '')
+              try {
+                setCharacters(JSON.parse(data.novelWritingData.extractedCharacters || '[]'))
+              } catch {
+                setCharacters([])
+              }
+            }
+            onComplete()
+          }
+        } catch (err) {
+          console.error('获取分析结果失败:', err)
+        }
+      }
+      fetchAnalysisResult()
+    }
+  }, [taskStatus.data?.latest?.status, projectId, onComplete])
+
+  // 当任务失败时显示错误
+  useEffect(() => {
+    if (taskStatus.data?.lastError) {
+      setError(taskStatus.data.lastError.message || '分析失败')
+    }
+  }, [taskStatus.data?.lastError])
+
   // 执行 AI 分析（项目级别）
-  const handleAnalyze = async () => {
-    setIsAnalyzing(true)
+  const handleAnalyze = useCallback(async () => {
     setError(null)
 
     try {
@@ -62,29 +109,15 @@ export default function AIAnalysisPanel({
       })
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || '分析失败')
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data.error?.message || '分析失败')
       }
 
-      const data = await response.json()
-
-      if (data.analysis) {
-        setWorldContext(data.analysis.worldContext || '')
-        setWritingStyle(data.analysis.writingStyle || '')
-        try {
-          setCharacters(JSON.parse(data.analysis.extractedCharacters || '[]'))
-        } catch {
-          setCharacters([])
-        }
-      }
-
-      onComplete()
+      // 任务已提交，taskStatus hook 会自动追踪进度
     } catch (err) {
       setError(err instanceof Error ? err.message : '分析失败')
-    } finally {
-      setIsAnalyzing(false)
     }
-  }
+  }, [projectId])
 
   // 保存分析结果
   const handleSave = async () => {
@@ -165,6 +198,26 @@ export default function AIAnalysisPanel({
           </div>
         )}
 
+        {/* 任务进度 */}
+        {isAnalyzing && taskStatus.data?.latest && (
+          <div className="mb-4 p-4 rounded-xl border border-[var(--glass-stroke-strong)] bg-[var(--glass-bg-muted)]">
+            <div className="flex items-center gap-3">
+              <TaskStatusInline
+                state={resolveTaskPresentationState({
+                  phase: 'processing',
+                  intent: 'analyze',
+                  resource: 'text',
+                  hasOutput: false,
+                  progress: taskStatus.data.latest.progress,
+                })}
+              />
+              <span className="text-sm text-[var(--glass-text-secondary)]">
+                正在分析中，请稍候...
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* 项目汇总标签页 */}
         {activeTab === 'project' && (
           <>
@@ -184,6 +237,7 @@ export default function AIAnalysisPanel({
                     onChange={(e) => setWorldContext(e.target.value)}
                     placeholder={t('worldContextPlaceholder')}
                     className="glass-textarea-base w-full px-3 py-2 min-h-[120px]"
+                    disabled={isAnalyzing}
                   />
                 </div>
 
@@ -197,6 +251,7 @@ export default function AIAnalysisPanel({
                     onChange={(e) => setWritingStyle(e.target.value)}
                     placeholder={t('writingStylePlaceholder')}
                     className="glass-textarea-base w-full px-3 py-2 min-h-[80px]"
+                    disabled={isAnalyzing}
                   />
                 </div>
 
@@ -242,7 +297,7 @@ export default function AIAnalysisPanel({
                   </button>
                   <button
                     onClick={handleSave}
-                    disabled={isSaving}
+                    disabled={isSaving || isAnalyzing}
                     className="glass-btn-base glass-btn-primary px-4 py-2 text-sm disabled:opacity-50"
                   >
                     {isSaving ? '保存中...' : t('saveButton')}

@@ -1,0 +1,71 @@
+{
+  "title": "Novel Projects",
+  "subtitle": "Create your story world",
+  "searchPlaceholder": "Search projects...",
+  "newProject": "New Novel Project",
+  "createProject": "Create Project",
+  "projectName": "Project Name",
+  "projectNamePlaceholder": "Enter project name",
+  "projectDescription": "Description",
+  "projectDescriptionPlaceholder": "Briefly describe your story (optional)",
+  "novelFile": "Novel File",
+  "dragDropFile": "Drag and drop file here, or",
+  "browse": "browse",
+  "supportedFormats": "Supports .txt, .md formats, max 5MB",
+  "creating": "Creating...",
+  "createProjectWithNovel": "Create Project with Chapters",
+  "aiAnalyze": "AI Analyze",
+  "aiRewrite": "AI Rewrite",
+  "validation": {
+    "invalidFileType": "Unsupported file type, please upload .txt or .md file",
+    "fileTooLarge": "File size exceeds 5MB limit",
+    "fileReadError": "Failed to read file, please check file encoding",
+    "nameRequired": "Please enter project name"
+  },
+  "sidebar": {
+    "chapters": "Chapters",
+    "newChapter": "New Chapter",
+    "importNovel": "Import Novel",
+    "analyze": "Analyze Selected",
+    "rename": "Rename",
+    "delete": "Delete",
+    "summarize": "Summarize Project"
+  },
+  "analyze": {
+    "title": "AI Analysis",
+    "analyzing": "Analyzing...",
+    "analyzeButton": "Start Analysis",
+    "noContent": "Please select a chapter first",
+    "worldContext": "World Context",
+    "worldContextPlaceholder": "Describe the world background of your story...",
+    "writingStyle": "Writing Style",
+    "writingStylePlaceholder": "Describe the writing style, e.g., light-hearted, serious, humorous...",
+    "characters": "Character Info",
+    "projectSummary": "Project Summary",
+    "chapterAnalysis": "Chapter Analysis",
+    "description": "Description",
+    "saveButton": "Save",
+    "noAnalyzedChapters": "No analysis results yet, please select chapters and click analyze"
+  },
+  "rewrite": {
+    "title": "AI Rewrite",
+    "rewriting": "Rewriting...",
+    "rewriteButton": "Start Rewrite",
+    "noContent": "Please select a chapter first",
+    "original": "Original",
+    "rewritten": "Rewritten",
+    "apply": "Apply Rewrite",
+    "cancel": "Cancel",
+    "currentContent": "Current Content",
+    "instruction": "Rewrite Instruction",
+    "instructionPlaceholder": "Describe how you want to rewrite this content...",
+    "startRewrite": "Start Rewrite",
+    "originalText": "Original",
+    "rewrittenText": "Rewritten",
+    "applyChanges": "Apply Changes"
+  },
+  "reader": {
+    "noChapter": "Please select a chapter",
+    "noContent": "This chapter has no content"
+  }
+}

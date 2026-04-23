@@ -108,20 +108,9 @@ export const GET = apiHandler(async () => {
     variables: PROMPT_TEMPLATE_VARIABLES,
   }))
 
-  // 添加默认分组（用于用户设置全局默认模板）
-  const defaultGroup: StyleTemplateGroup = {
-    value: 'default' as ArtStyleValue,
-    label: '默认模板',
-    templates: {
-      character: DEFAULT_CHARACTER_TEMPLATE,
-      location: DEFAULT_LOCATION_TEMPLATE,
-      prop: DEFAULT_PROP_TEMPLATE,
-    },
-    variables: PROMPT_TEMPLATE_VARIABLES,
-  }
-
+  // 不再添加默认模板分组
   const response: PromptTemplatesResponse = {
-    styles: [defaultGroup, ...styles],
+    styles,
     userTemplates,
   }
 

@@ -29,6 +29,8 @@ export const PROMPT_IDS = {
   NP_SINGLE_PANEL_IMAGE: 'np_single_panel_image',
   NP_STORYBOARD_EDIT: 'np_storyboard_edit',
   NP_VOICE_ANALYSIS: 'np_voice_analysis',
+  // Novel Writing
+  NW_ANALYZE_PROJECT: 'nw_analyze_project',
   // ComfyUI
   COMFYUI_OPTIMIZE_PROMPT: 'comfyui_optimize_prompt',
   // ComfyUI Character Generation

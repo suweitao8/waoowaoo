@@ -1,10 +1,11 @@
 {
-  "workspace": "Workspace",
+  "workspace": "Comic Projects",
   "comfyui": "ComfyUI Test",
   "assetHub": "Asset Hub",
   "profile": "Settings",
   "downloadLogs": "Download Logs",
   "signin": "Sign In",
   "signup": "Sign Up",
-  "logout": "Logout"
+  "logout": "Logout",
+  "novelWriting": "Novel Projects"
 }

@@ -153,6 +153,10 @@ export const PROMPT_CATALOG: Record<PromptId, PromptCatalogEntry> = {
     pathStem: 'novel-promotion/voice_analysis',
     variableKeys: ['input', 'characters_lib_name', 'characters_introduction', 'storyboard_json'],
   },
+  [PROMPT_IDS.NW_ANALYZE_PROJECT]: {
+    pathStem: 'novel-writing/analyze_project',
+    variableKeys: ['input'],
+  },
   [PROMPT_IDS.COMFYUI_OPTIMIZE_PROMPT]: {
     pathStem: 'comfyui/optimize_prompt',
     variableKeys: ['user_input'],

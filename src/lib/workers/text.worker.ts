@@ -36,6 +36,7 @@ import { handleAssetHubAIModifyTask } from './handlers/asset-hub-ai-modify'
 import { handleReferenceToCharacterTask } from './handlers/reference-to-character'
 import { handleShotAITask } from './handlers/shot-ai-tasks'
 import { handleCharacterProfileTask } from './handlers/character-profile'
+import { handleAnalyzeNovelWritingTask } from './handlers/analyze-novel-writing'
 
 function readAssetKind(value: Record<string, unknown>): string {
   return typeof value.assetKind === 'string' ? value.assetKind : 'location'
@@ -693,6 +694,8 @@ async function processTextTask(job: Job<TaskJobData>) {
     case TASK_TYPE.REFERENCE_TO_CHARACTER:
     case TASK_TYPE.ASSET_HUB_REFERENCE_TO_CHARACTER:
       return await handleReferenceToCharacterTask(job)
+    case TASK_TYPE.ANALYZE_NOVEL_WRITING:
+      return await handleAnalyzeNovelWritingTask(job)
     case TASK_TYPE.REGENERATE_STORYBOARD_TEXT:
       return await handleRegenerateStoryboardTextTask(job)
     case TASK_TYPE.INSERT_PANEL:

@@ -1,0 +1,71 @@
+{
+  "title": "小说项目",
+  "subtitle": "创作你的故事世界",
+  "searchPlaceholder": "搜索项目...",
+  "newProject": "新建小说项目",
+  "createProject": "创建项目",
+  "projectName": "项目名称",
+  "projectNamePlaceholder": "输入项目名称",
+  "projectDescription": "项目描述",
+  "projectDescriptionPlaceholder": "简要描述你的故事（可选）",
+  "novelFile": "小说文件",
+  "dragDropFile": "拖拽文件到此处，或",
+  "browse": "点击上传",
+  "supportedFormats": "支持 .txt, .md 格式，最大 5MB",
+  "creating": "创建中...",
+  "createProjectWithNovel": "创建项目并导入章节",
+  "aiAnalyze": "AI 分析",
+  "aiRewrite": "AI 改写",
+  "validation": {
+    "invalidFileType": "不支持的文件类型，请上传 .txt 或 .md 文件",
+    "fileTooLarge": "文件大小超过 5MB 限制",
+    "fileReadError": "文件读取失败，请检查文件编码",
+    "nameRequired": "请输入项目名称"
+  },
+  "sidebar": {
+    "chapters": "章节",
+    "newChapter": "新建章节",
+    "importNovel": "导入小说",
+    "analyze": "分析选中章节",
+    "rename": "重命名",
+    "delete": "删除",
+    "summarize": "总结项目"
+  },
+  "analyze": {
+    "title": "AI 分析",
+    "analyzing": "正在分析...",
+    "analyzeButton": "开始分析",
+    "noContent": "请先选择章节",
+    "worldContext": "世界观设定",
+    "worldContextPlaceholder": "描述故事的世界观背景...",
+    "writingStyle": "写作风格",
+    "writingStylePlaceholder": "描述写作风格，如轻松、严肃、幽默等...",
+    "characters": "角色信息",
+    "projectSummary": "项目概要",
+    "chapterAnalysis": "章节分析",
+    "description": "描述",
+    "saveButton": "保存",
+    "noAnalyzedChapters": "暂无分析结果，请选择章节后点击分析"
+  },
+  "rewrite": {
+    "title": "AI 改写",
+    "rewriting": "正在改写...",
+    "rewriteButton": "开始改写",
+    "noContent": "请先选择章节",
+    "original": "原文",
+    "rewritten": "改写后",
+    "apply": "应用改写",
+    "cancel": "取消",
+    "currentContent": "当前内容",
+    "instruction": "改写指令",
+    "instructionPlaceholder": "描述你希望如何改写这段内容...",
+    "startRewrite": "开始改写",
+    "originalText": "原文",
+    "rewrittenText": "改写后",
+    "applyChanges": "应用更改"
+  },
+  "reader": {
+    "noChapter": "请选择章节",
+    "noContent": "该章节暂无内容"
+  }
+}
