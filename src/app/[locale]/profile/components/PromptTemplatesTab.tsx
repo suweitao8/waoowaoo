@@ -41,7 +41,7 @@ export default function PromptTemplatesTab() {
   const t = useTranslations('profile')
   const [styles, setStyles] = useState<StyleTemplateGroup[]>([])
   const [userTemplates, setUserTemplates] = useState<UserPromptTemplates>({})
-  const [selectedStyle, setSelectedStyle] = useState<string>('xianxia-3d') // 默认选择仙侠3D
+  const [selectedStyle, setSelectedStyle] = useState<string>('xianxia-3d') // 默认选择凡人修仙传
   const [activeType, setActiveType] = useState<TemplateType>('character')
   const [isSaving, setIsSaving] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
