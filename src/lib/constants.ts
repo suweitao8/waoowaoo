@@ -144,8 +144,8 @@ export const ART_STYLES = [
   },
   {
     value: 'xianxia-3d',
-    label: '仙侠3D',
-    preview: '仙',
+    label: '凡人修仙传',
+    preview: '凡',
     promptZh: 'UE5超写实3D，电影级仙侠动画，真人动捕，极致细节，10万根发丝物理模拟，真实毛孔与皮肤纹理，冷峻克制的东方水墨写意，工笔线条，留白美学，全局光照，体积雾，锐利对焦，8K，无滤镜，纪录片式厚重质感',
     promptEn: 'UE5 hyper-realistic 3D, cinematic xianxia animation, motion capture, extreme detail, 100k strand hair physics, realistic pores and skin texture, restrained oriental ink wash style, Gongbi linework, negative space aesthetics, global illumination, volumetric fog, sharp focus, 8K, no filter, documentary-style rich texture.'
   }
